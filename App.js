@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { View, Text } from 'react-native';
 import SplashScreen from './loadingscreen'; 
-import Homescreen from './Homescreen';
-import MainTabs from './MainTabs'; // หากคุณใช้ MainTabs เป็น Navigator หลัก
-import SearchScreen from './SearchScreen'; // แก้ไขให้ชื่อไฟล์ตรงกับที่มีจริง
-import CalendarScreen from './CalendarScreen';
-
-const Stack = createStackNavigator();
+import Homescreen from './Homescreen';  // ใช้ชื่อที่ถูกต้อง
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -15,13 +9,7 @@ const App = () => {
   return loading ? (
     <SplashScreen onFinish={() => setLoading(false)} />
   ) : (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Main" component={MainTabs} />
-        <Stack.Screen name="Search" component={SearchScreen} />
-        <Stack.Screen name="Calendar" component={CalendarScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Homescreen />
   );
 };
 
