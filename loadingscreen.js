@@ -5,7 +5,7 @@ const SplashScreen = ({ onFinish }) => {
   useEffect(() => {
     setTimeout(() => {
       onFinish();
-    }, 2000); // แสดงหน้าโหลด 2 วินาที
+    }, 3000); 
   }, []);
 
   return (

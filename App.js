@@ -1,20 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
+import SplashScreen from './loadingscreen'; // นำเข้า Splash Screen
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello welcome</Text>
-      <StatusBar style="auto" />
+const App = () => {
+  const [loading, setLoading] = useState(true);
+
+  return loading ? (
+    <SplashScreen onFinish={() => setLoading(false)} />
+  ) : (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text></Text>
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default App;
