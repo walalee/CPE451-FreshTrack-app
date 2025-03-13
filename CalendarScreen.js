@@ -10,14 +10,14 @@ const expiryData = [
     expiryDate: '24/02/2025',
     productName: 'แอปเปิลสด',
     category: 'ผลไม้',
-    image: require('../../assets/apple.jpg')
+    image: require('./assets/apple.jpg')
   },
   {
     id: '2',
     expiryDate: '24/02/2025',
     productName: 'นมวัว',
     category: 'เครื่องดื่ม',
-    image: require('../../assets/milk.jpg')
+    image: require('./assets/milk.jpg')
   }
 ];
 
