@@ -10,20 +10,28 @@ const UnitConverter = ({ navigation }) => {
   const [selectedUnit2, setSelectedUnit2] = useState("g");
 
   const weightUnits = {
-    kg: { label: "กิโลกรัม", factor: { g: 1000 } },
-    g: { label: "กรัม", factor: { kg: 0.001 } },
-    mg: { label: "มิลลิกรัม", factor: { g: 0.001 } },
-    µg: { label: "ไมโครกรัม", factor: { mg: 0.001 } },
-    ct: { label: "กะรัต", factor: { g: 0.2 } },
-    t: { label: "ตัน", factor: { kg: 1000 } },
-    lb: { label: "ปอนด์", factor: { kg: 0.453592 } },
-    oz: { label: "ออนซ์", factor: { g: 28.3495 } },
-    dr: { label: "ดรัม", factor: { g: 1.77185 } },
+    kg: { label: "กิโลกรัม", factor: { g: 1000, mg: 1e6, µg: 1e9, ct: 5000, t: 1e-3, lb: 2.20462, oz: 35.274, dr: 564.383, dg: 10 } },
+    g: { label: "กรัม", factor: { kg: 0.001, mg: 1000, µg: 1e3, ct: 5, t: 1e-6, lb: 0.00220462, oz: 0.035274, dr: 0.564383, dg: 0.1 } },
+    mg: { label: "มิลลิกรัม", factor: { g: 0.001, kg: 1e-6, µg: 1000, ct: 5e-3, t: 1e-9, lb: 2.2046e-6, oz: 3.5274e-5, dr: 5.64383e-4, dg: 1e-4 } },
+    µg: { label: "ไมโครกรัม", factor: { mg: 0.001, g: 1e-3, kg: 1e-6, ct: 5e-4, t: 1e-12, lb: 2.2046e-9, oz: 3.5274e-8, dr: 5.64383e-7, dg: 1e-7 } },
+    ct: { label: "กะรัต", factor: { g: 0.2, kg: 2e-4, mg: 200, µg: 2e5, t: 2e-7, lb: 4.4092e-4, oz: 0.007054, dr: 0.112868, dg: 2 } },
+    t: { label: "ตัน", factor: { kg: 1000, g: 1e6, mg: 1e9, µg: 1e12, ct: 5e6, lb: 2204.62, oz: 35274, dr: 564383, dg: 10000 } },
+    lb: { label: "ปอนด์", factor: { kg: 0.453592, g: 453.592, mg: 4.53592e5, µg: 4.53592e8, ct: 2279.6, t: 4.53592e-4, oz: 16, dr: 253.136, dg: 4.53592 } },
+    oz: { label: "ออนซ์", factor: { g: 28.3495, kg: 0.0283495, mg: 2.83495e4, µg: 2.83495e7, ct: 141.748, t: 2.83495e-5, lb: 0.0625, dr: 15.832, dg: 0.283495 } },
+    dr: { label: "ดรัม", factor: { g: 1.77185, kg: 0.00177185, mg: 1.77185e3, µg: 1.77185e6, ct: 8.85925, t: 1.77185e-6, lb: 0.0039, oz: 0.0625, dg: 0.177185 } },
+    dg: { label: "ขีด", factor: { g: 10, kg: 0.01, mg: 1e4, µg: 1e7, ct: 50, t: 1e-4, lb: 0.0220462, oz: 0.35274, dr: 5.64193 } },
   };
 
   const volumeUnits = {
-    ml: { label: "มิลลิลิตร", factor: { l: 0.001 } },
-    l: { label: "ลิตร", factor: { ml: 1000 } },
+      ml: { label: "มิลลิลิตร", factor: { l: 0.001, hl: 1e-5, m3: 1e-6, cm3: 1, dl: 0.01, cl: 0.1, dm3: 1e-3, mm3: 1000 } },
+      l: { label: "ลิตร", factor: { ml: 1000, hl: 0.01, m3: 0.001, cm3: 1000, dl: 10, cl: 100, dm3: 1, mm3: 1e6 } },
+      hl: { label: "เฮกโตลิตร", factor: { ml: 1e5, l: 100, m3: 0.1, cm3: 1e5, dl: 1e3, cl: 1e4, dm3: 100, mm3: 1e8 } },
+      m3: { label: "ลูกบาศก์เมตร", factor: { ml: 1e6, l: 1000, hl: 10, cm3: 1e6, dl: 1e4, cl: 1e5, dm3: 1000, mm3: 1e9 } },
+      cm3: { label: "ลูกบาศก์เซนติเมตร", factor: { ml: 1, l: 1e-3, hl: 1e-5, m3: 1e-6, dl: 1e-2, cl: 0.1, dm3: 1e-3, mm3: 1000 } },
+      dl: { label: "เดซิลิตร", factor: { ml: 100, l: 0.1, hl: 1e-3, m3: 1e-4, cm3: 100, cl: 10, dm3: 0.1, mm3: 1e5 } },
+      cl: { label: "เซนติลิตร", factor: { ml: 10, l: 0.01, hl: 1e-4, m3: 1e-5, cm3: 10, dl: 0.1, dm3: 1e-2, mm3: 1e4 } },
+      dm3: { label: "ลูกบาศก์เดซิเมตร", factor: { ml: 1e3, l: 1, hl: 1e-2, m3: 1e-3, cm3: 1e3, dl: 10, cl: 100, mm3: 1e6 } },
+      mm3: { label: "ลูกบาศก์มิลลิเมตร", factor: { ml: 1e-3, l: 1e-6, hl: 1e-8, m3: 1e-9, cm3: 1e-3, dl: 1e-5, cl: 1e-4, dm3: 1e-6 } }, 
   };
 
   const unitData = unitType === "weight" ? weightUnits : volumeUnits;
@@ -139,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 0,
-    marginTop: 20,
+    marginTop: 15,
   },
   backButton: {
     padding: 10,
@@ -159,14 +167,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 20,
-    padding: 30,
-    height: 140,
+    padding: 20,
+    height: 120,
   },
   picker: { flex: 2 },
-  input: { flex: 2, fontSize: 18, textAlign: "right", paddingRight: 10 },
-  unitLabel: { fontSize: 16, fontWeight: "bold" },
+  input: { flex: 2, fontSize: 20, textAlign: "right", paddingRight: 10 },
+  unitLabel: { fontSize: 20, fontWeight: "bold" },
   swapButton: { alignSelf: "center", marginVertical: 5 },
-  numpad: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginTop: 20 },
+  numpad: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginTop: 30 },
   numButton: {
     width: "22%",
     padding: 15,
