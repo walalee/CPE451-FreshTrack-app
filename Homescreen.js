@@ -153,6 +153,7 @@ export default function Homescreen() {
             tabBarIcon: ({ color, size }) => (
               <Icon name="swap-horizontal" size={size} color={color} />
             ),
+            headerShown: false,
           }}
         />
        <Tab.Screen 
