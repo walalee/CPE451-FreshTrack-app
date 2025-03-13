@@ -28,6 +28,13 @@ function HomeScreenComponent() {
   if (!fontsLoaded) {
     return null;
   }
+  
+  const getStatusColor = (daysLeft) => {
+    if (daysLeft === 0) return 'red';
+    if (daysLeft <= 3) return 'orange';
+    if (daysLeft <= 8) return 'yellow';
+    return 'green';
+  };
 
   const products = [
     { id: '1', name: 'เนื้อหมู', expiryDate: '26/02/2025', category: 'ของสด', location: 'ตู้เย็นช่องฟรีซ', daysLeft: 3 },
@@ -39,13 +46,6 @@ function HomeScreenComponent() {
   // ฟังก์ชันเพิ่มสินค้าใหม่
   const addProduct = (newProduct) => {
     setProducts([...products, { id: String(products.length + 1), ...newProduct }]);
-  };
-
-  const getStatusColor = (daysLeft) => {
-    if (daysLeft === 0) return 'red';
-    if (daysLeft <= 3) return 'orange';
-    if (daysLeft <= 8) return 'yellow';
-    return 'green';
   };
 
   const getStatusIcon = (daysLeft) => {
