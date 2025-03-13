@@ -71,12 +71,15 @@ function HomeScreenComponent() {
           <Icon name="search" size={20} color="red" />
           <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
           <Icon name="calendar" size={24} color="red" style={styles.icon} />
         </TouchableOpacity>
+
         <TouchableOpacity>
           <Icon name="filter" size={24} color="red" style={styles.icon} />
         </TouchableOpacity>
+
       </View>
       
       {/* Product List */}
@@ -119,6 +122,11 @@ function HomeStack() {
         name="EditProduct" 
         component={EditProduct}  // เพิ่ม EditProduct เข้ามาใน Stack
         options={{ title: 'แก้ไขสินค้า' }} 
+      />
+      <Stack.Screen 
+        name="Calendar" 
+        component={CalendarScreen}  
+        options={{ title: 'ปฏิทิน' }} 
       />
     </Stack.Navigator>
   );
