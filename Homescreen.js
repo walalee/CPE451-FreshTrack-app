@@ -1,7 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';  // เพิ่มการใช้งาน Stack.Navigator
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
 
@@ -11,10 +13,14 @@ import ConvertUnit from './ConvertUnit';
 import Note from './Note';
 import Profile from './Profile';
 import CalendarScreen from './CalendarScreen';
+import EditProduct from './EditProduct';  // อย่าลืม import `EditProduct`
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();  // สร้าง Stack Navigator
 
+// HomeScreenComponent
 function HomeScreenComponent() {
+  const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
     Prompt: require('./assets/Prompt-Regular.ttf'),
   });
@@ -28,10 +34,37 @@ function HomeScreenComponent() {
     { id: '2', name: 'แอปเปิ้ลแดง', expiryDate: '24/02/2025', category: 'ผลไม้', location: 'ตู้เย็นช่องผัก', daysLeft: 3 },
     { id: '3', name: 'เนื้อหมูสด', expiryDate: '04/03/2025', category: 'ของสด', location: 'ตู้เย็นช่องฟรีซ', daysLeft: 8 },
     { id: '4', name: 'ปลากระป๋อง', expiryDate: '12/07/2027', category: 'อาหารสำเร็จรูป', location: 'ตู้แห้ง', daysLeft: 868 }
-    ];
+  ];
+
+  // ฟังก์ชันเพิ่มสินค้าใหม่
+  const addProduct = (newProduct) => {
+    setProducts([...products, { id: String(products.length + 1), ...newProduct }]);
+  };
+
+  const getStatusColor = (daysLeft) => {
+    if (daysLeft === 0) return 'red';
+    if (daysLeft <= 3) return 'orange';
+    if (daysLeft <= 8) return 'yellow';
+    return 'green';
+  };
+
+  const getStatusIcon = (daysLeft) => {
+    if (daysLeft === 0) return 'alert-circle';
+    if (daysLeft <= 3) return 'flame';
+    if (daysLeft <= 8) return 'hourglass';
+    return 'checkmark-circle';
+  };
+
+  const getStatusText = (daysLeft) => {
+    if (daysLeft === 0) return 'หมดอายุแล้ว';
+    if (daysLeft <= 3) return 'ใกล้หมดอายุ';
+    if (daysLeft <= 8) return 'ปานกลาง';
+    return 'ปกติ';
+  };
 
   return (
     <View style={styles.container}>
+      
       {/* Search Bar & Calendar & Filter */}
       <View style={styles.searchContainer}>
         <TouchableOpacity style={styles.searchBar}>
@@ -51,22 +84,47 @@ function HomeScreenComponent() {
          data={products}
          keyExtractor={(item) => item.id}
          renderItem={({ item }) => (
-           <View style={styles.card}>
-             <Image source={{ uri: `https://picsum.photos/seed/${item.id}/50` }} style={styles.image} />
-             <View style={styles.textContainer}>
-               <Text style={styles.name}>{item.name}</Text>
-               <Text style={styles.details}>วันหมดอายุ: {item.expiryDate}</Text>
-               <Text style={styles.details}>หมวดหมู่: {item.category}</Text>
-               <Text style={styles.details}>สถานที่เก็บ: {item.location}</Text>
-               <Text style={styles.daysLeft}>เหลืออีก: {item.daysLeft} วัน</Text>
-             </View>
-           </View>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('EditProduct', { product: item })}  // ใช้ navigate ไปที่ EditProduct
+        >
+            <View style={[styles.statusBar, { backgroundColor: getStatusColor(item.daysLeft) }]} />
+            <Image source={{ uri: `https://picsum.photos/seed/${item.id}/50` }} style={styles.image} />
+            <View style={styles.textContainer}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.details}>วันหมดอายุ: {item.expiryDate}</Text>
+              <Text style={styles.details}>หมวดหมู่: {item.category}</Text>
+              <Text style={styles.details}>สถานที่เก็บ: {item.location}</Text>
+              <Text style={styles.daysLeft}>เหลืออีก: {item.daysLeft} วัน</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>
   );
 }
 
+// Stack Navigator สำหรับการจัดการหน้า EditProduct
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen 
+        name="Home" 
+        component={HomeScreenComponent} 
+        options={{
+          headerShown: false,
+        }} 
+      />
+      <Stack.Screen 
+        name="EditProduct" 
+        component={EditProduct}  // เพิ่ม EditProduct เข้ามาใน Stack
+        options={{ title: 'แก้ไขสินค้า' }} 
+      />
+    </Stack.Navigator>
+  );
+}
+
+// Tab.Navigator สำหรับหน้าหลัก
 export default function Homescreen() {
   return (
     <NavigationContainer>
@@ -75,12 +133,12 @@ export default function Homescreen() {
           tabBarActiveTintColor: 'white',
           tabBarInactiveTintColor: 'white',
           tabBarStyle: { backgroundColor: 'red', height: 60 },
-          tabBarLabelStyle: { fontFamily: 'Prompt', fontSize: 14 },
+          tabBarLabelStyle: { fontFamily: 'Prompt', fontSize: 12 },
         }}
       >
         <Tab.Screen 
           name="หน้าหลัก" 
-          component={HomeScreenComponent} 
+          component={HomeStack}  // เปลี่ยนเป็น HomeStack แทน
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="home" size={size} color={color} />
@@ -118,6 +176,7 @@ export default function Homescreen() {
             tabBarIcon: ({ color, size }) => (
               <Icon name="pencil" size={size} color={color} />
             ),
+            headerShown: false,
           }}
         />
         <Tab.Screen 
@@ -127,13 +186,13 @@ export default function Homescreen() {
             tabBarIcon: ({ color, size }) => (
               <Icon name="person" size={size} color={color} />
             ),
+            headerShown: false,
           }}
         />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: 'white' },
@@ -158,6 +217,15 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontFamily: 'Prompt',
   },
+
+  statusBar: {
+    height: 5,
+    width: '100%',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    marginBottom: 5,
+  },
+  
   icon: { marginHorizontal: 5 },
   card: {
     flexDirection: 'row',
