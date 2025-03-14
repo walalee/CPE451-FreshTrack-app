@@ -126,7 +126,9 @@ function HomeStack() {
       <Stack.Screen 
         name="Calendar" 
         component={CalendarScreen}  
-        options={{ title: 'ปฏิทิน' }} 
+        options={{
+          headerShown: false,
+        }}
       />
     </Stack.Navigator>
   );
@@ -170,7 +172,7 @@ export default function Homescreen() {
           options={{
             tabBarIcon: ({ color }) => (
               <View style={styles.addButtonContainer}>
-                <Icon name="add-circle" size={40} color={color} /> 
+                <Icon name="add-circle" size={30} color={color} /> 
               </View>
             ),
             tabBarLabel: '',
