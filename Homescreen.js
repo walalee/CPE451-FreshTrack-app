@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';  // เพิ่มการใช้งาน Stack.Navigator
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
@@ -14,7 +15,7 @@ import Note from './Note';
 import Profile from './Profile';
 import CalendarScreen from './CalendarScreen';
 import EditProduct from './EditProduct';  // อย่าลืม import `EditProduct`
-import FliterScreen from './FliterScreen';
+import FilterScreen from './FilterScreen';
 import ExpirationScreen from './ExpirationScreen';
 import CouponScreen from './CouponScreen';
 import NotiScreen from './NotiScreen';
@@ -39,78 +40,45 @@ function HomeScreenComponent() {
   if (!fontsLoaded) {
     return null;
   }
-  
-  const getStatusColor = (daysLeft) => {
-    if (daysLeft === 0) return 'red';
-    if (daysLeft <= 3) return 'orange';
-    if (daysLeft <= 8) return 'yellow';
-    return 'green';
-  };
-
-  const products = [/*ใส่ข้อมูล*/ ];
-
-  // ฟังก์ชันเพิ่มสินค้าใหม่
-  const addProduct = (newProduct) => {
-    setProducts([...products, { id: String(products.length + 1), ...newProduct }]);
-  };
-
-  const getStatusIcon = (daysLeft) => {
-    if (daysLeft === 0) return 'alert-circle';
-    if (daysLeft <= 3) return 'flame';
-    if (daysLeft <= 8) return 'hourglass';
-    return 'checkmark-circle';
-  };
-
-  const getStatusText = (daysLeft) => {
-    if (daysLeft === 0) return 'หมดอายุแล้ว';
-    if (daysLeft <= 3) return 'ใกล้หมดอายุ';
-    if (daysLeft <= 8) return 'ปานกลาง';
-    return 'ปกติ';
-  };
 
   return (
     <View style={styles.container}>
-      
-      {/* Search Bar & Calendar & Filter */}
-      <View style={styles.searchContainer}>
-        <TouchableOpacity style={styles.searchBar}>
-          <Icon name="search" size={20} color="red" />
-          <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
-          <Icon name="calendar" size={24} color="red" style={styles.icon} />
-        </TouchableOpacity>
+      {/* Header: ข้อความต้อนรับ + ไอคอน */}
+      <View style={styles.headerRow}>
+        <Text style={styles.greetingText}>สวัสดีผู้ใช้</Text>
 
-        <TouchableOpacity>
-          <Icon name="filter" size={24} color="red" style={styles.icon} />
-        </TouchableOpacity>
-
-      </View>
-      
-      {/* Product List */}
-      <FlatList
-         data={products}
-         keyExtractor={(item) => item.id}
-         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.navigate('EditProduct', { product: item })}  // ใช้ navigate ไปที่ EditProduct
-        >
-            <View style={[styles.statusBar, { backgroundColor: getStatusColor(item.daysLeft) }]} />
-            <View style={styles.textContainer}>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.details}>วันหมดอายุ: {item.expiryDate}</Text>
-              <Text style={styles.details}>หมวดหมู่: {item.category}</Text>
-              <Text style={styles.details}>สถานที่เก็บ: {item.location}</Text>
-              <Text style={styles.daysLeft}>เหลืออีก: {item.daysLeft} วัน</Text>
-            </View>
+        <View style={styles.iconRow}>
+          <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
+            <Icon name="calendar-clear-outline" size={26} color="#9D0300" />
           </TouchableOpacity>
-        )}
-      />
+
+          <TouchableOpacity>
+            <Icon name="notifications-outline" size={26} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Search Bar */}
+      <View style={styles.searchContainer}>
+        <View style={styles.searchBar}>
+          <Icon name="search" size={20} color="#706A6A" />
+          <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
+        </View>
+        <TouchableOpacity onPress={() => navigation.navigate('FilterScreen')} style={styles.filterIconContainer}>
+            <Icon name="options-outline" size={26} color="black" />
+          </TouchableOpacity>
+      </View>
+
+      <View style={styles.PromotionRow}>
+        <Text style={styles.PromotionText}>Promotion</Text>
+      </View>
+
     </View>
   );
-}
+};
+  
+
 
 // Stack Navigator สำหรับการจัดการหน้า EditProduct
 function HomeStack() {
@@ -147,8 +115,14 @@ export default function Homescreen() {
         screenOptions={{
           tabBarActiveTintColor: 'white',
           tabBarInactiveTintColor: 'white',
-          tabBarStyle: { backgroundColor: 'red', height: 60 },
-          tabBarLabelStyle: { fontFamily: 'Prompt', fontSize: 12 },
+          tabBarStyle: { 
+            backgroundColor: '#9D0300', 
+            height: 60, 
+            position: 'center',
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30
+          },
+          tabBarLabelStyle: { fontFamily: 'Prompt', fontSize: 12, },
         }}
       >
         <Tab.Screen 
@@ -156,8 +130,9 @@ export default function Homescreen() {
           component={HomeStack}  // เปลี่ยนเป็น HomeStack แทน
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Icon name="home" size={size} color={color} />
+              <Icon name="home-outline" size={size} color={color} />
             ),
+            tabBarLabelStyle: { fontFamily: 'Prompt', fontSize: 12 },
             headerShown: false, // ไม่ให้แสดง header บนสุด
           }}
         />
@@ -166,7 +141,7 @@ export default function Homescreen() {
           component={ConvertUnit} 
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Icon name="swap-horizontal" size={size} color={color} />
+              <Icon name="scale-outline" size={size} color={color} />
             ),
             headerShown: false,
           }}
@@ -177,7 +152,7 @@ export default function Homescreen() {
           options={{
             tabBarIcon: ({ color }) => (
               <View style={styles.addButtonContainer}>
-                <Icon name="add-circle" size={30} color={color} /> 
+                <Icon name="add-circle" size={40} color={color} /> 
               </View>
             ),
             tabBarLabel: '',
@@ -190,7 +165,7 @@ export default function Homescreen() {
           component={Note} 
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Icon name="pencil" size={size} color={color} />
+              <Icon name="document-text-outline" size={size} color={color} />
             ),
             headerShown: false,
           }}
@@ -200,7 +175,7 @@ export default function Homescreen() {
           component={Profile} 
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Icon name="person" size={size} color={color} />
+              <Icon name="person-outline" size={size} color={color} />
             ),
             headerShown: false,
           }}
@@ -211,7 +186,25 @@ export default function Homescreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'white' },
+  container: { flex: 1, backgroundColor: 'white', paddingTop: 50 },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
+    paddingRight: 20
+  },
+  greetingText: {
+    marginLeft: 15,
+    fontSize: 20,
+    color: 'black',
+    fontWeight: 'bold',
+    fontFamily: 'Prompt-Regular',
+  },
+  iconRow: {
+    flexDirection: 'row',
+    gap: 15,
+  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -221,40 +214,52 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
-    borderRadius: 20,
+    backgroundColor: '#E9E8E8',
+    borderRadius: 10,
     padding: 10,
     flex: 1,
     marginRight: 10,
-    marginTop: 20
+    marginTop: 5
   },
   searchText: {
     marginLeft: 10,
-    color: 'gray',
+    color: '#706A6A',
     fontFamily: 'Prompt',
   },
 
   statusBar: {
-    height: 5,
+    height: 10,
     width: '100%',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     marginBottom: 5,
   },
   
-  icon: { marginHorizontal: 5 },
-  card: {
-    flexDirection: 'row',
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+  icon: { marginRight: 20},
+
+  filterIconContainer: {
+    backgroundColor: '#E9E8E8', // สีพื้นหลัง (สามารถเปลี่ยนเป็นสีอื่นได้)
+    borderRadius: 10, // ทำให้ขอบมน
+    padding: 5, // เพิ่มขนาดพื้นที่รอบไอคอน
+    // marginLeft: 3, 
   },
+
+  PromotionRow: {
+    flexDirection: 'row',         // จัดเรียงองค์ประกอบในแนวนอน (row)
+    justifyContent: 'space-between', // จัดให้อยู่ซ้าย-ขวาห่างกันพอดี
+    alignItems: 'center',         // จัดให้อยู่ตรงกลางในแนวตั้ง
+    marginBottom: 5,              // เพิ่มระยะห่างด้านล่าง 5
+    paddingRight: 20
+  }, 
+
+  PromotionText: { 
+    fontFamily: 'Prompt',
+    fontSize: 18,
+    color: 'black',
+    fontWeight: 'bold',
+    marginLeft: 15,
+  },
+
   image: { width: 70, height: 50, borderRadius: 5, marginRight: 10 },
   textContainer: { flex: 1 },
   name: { fontSize: 16, fontFamily: 'Prompt', fontWeight: 'bold' },
