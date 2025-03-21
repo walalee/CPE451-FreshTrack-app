@@ -11,7 +11,7 @@ const SplashScreen = ({ onFinish }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('./assets/logo.png')}
+        source={require('./assets/logoWhite.png')}
         style={styles.logo}
         resizeMode="contain"
       />
@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF', // สีพื้นหลังของ Splash Screen
+    backgroundColor: '#9D0300', // สีพื้นหลังของ Splash Screen
   },
   logo: {
-    width: 200, // ปรับขนาดโลโก้ตามต้องการ
-    height: 100,
+    width: 400, // ปรับขนาดโลโก้ตามต้องการ
+    height: 200,
   },
 });
 

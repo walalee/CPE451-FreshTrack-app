@@ -14,6 +14,17 @@ import Note from './Note';
 import Profile from './Profile';
 import CalendarScreen from './CalendarScreen';
 import EditProduct from './EditProduct';  // อย่าลืม import `EditProduct`
+import FliterScreen from './FliterScreen';
+import ExpirationScreen from './ExpirationScreen';
+import CouponScreen from './CouponScreen';
+import NotiScreen from './NotiScreen';
+import CareScreen from './Category/CareScreen';
+import ChemicalScreen from './Category/ChemicalScreen';
+import FreshfoodScreen from './Category/FreshfoodScreen';
+import MedicalScreen from './Category/MedicalScreen';
+import Category from './Category/PetfoodScreen'; 
+import ProcessedScreen from './Category/ProcessedScreen';
+import VegFruitsScreen from './Category/VegFruitsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();  // สร้าง Stack Navigator
@@ -36,12 +47,7 @@ function HomeScreenComponent() {
     return 'green';
   };
 
-  const products = [
-    { id: '1', name: 'เนื้อหมู', expiryDate: '26/02/2025', category: 'ของสด', location: 'ตู้เย็นช่องฟรีซ', daysLeft: 3 },
-    { id: '2', name: 'แอปเปิ้ลแดง', expiryDate: '24/02/2025', category: 'ผลไม้', location: 'ตู้เย็นช่องผัก', daysLeft: 3 },
-    { id: '3', name: 'เนื้อหมูสด', expiryDate: '04/03/2025', category: 'ของสด', location: 'ตู้เย็นช่องฟรีซ', daysLeft: 8 },
-    { id: '4', name: 'ปลากระป๋อง', expiryDate: '12/07/2027', category: 'อาหารสำเร็จรูป', location: 'ตู้แห้ง', daysLeft: 868 }
-  ];
+  const products = [/*ใส่ข้อมูล*/ ];
 
   // ฟังก์ชันเพิ่มสินค้าใหม่
   const addProduct = (newProduct) => {
@@ -92,7 +98,6 @@ function HomeScreenComponent() {
             onPress={() => navigation.navigate('EditProduct', { product: item })}  // ใช้ navigate ไปที่ EditProduct
         >
             <View style={[styles.statusBar, { backgroundColor: getStatusColor(item.daysLeft) }]} />
-            <Image source={{ uri: `https://picsum.photos/seed/${item.id}/50` }} style={styles.image} />
             <View style={styles.textContainer}>
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.details}>วันหมดอายุ: {item.expiryDate}</Text>
