@@ -2,8 +2,8 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';  // เพิ่มการใช้งาน Stack.Navigator
-import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
@@ -29,6 +29,14 @@ import VegFruitsScreen from './Category/VegFruitsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();  // สร้าง Stack Navigator
+const {width} = Dimensions.get('window');
+
+const coupons = [
+  { id: 1, image: require('./assets/lotusCoupon.png') },
+  { id: 2, image: require('./assets/bigcCoupon.jpg') },
+  { id: 3, image: require('./assets/marko.png') },
+  { id: 4, image: require('./assets/topscoupon.jpg') },
+];
 
 // HomeScreenComponent
 function HomeScreenComponent() {
@@ -106,6 +114,24 @@ function HomeStack() {
     </Stack.Navigator>
   );
 }
+
+export function CouponCarousel() {
+  return (
+    <View style={{ width: '100%', height: 200 }}>
+      <Swiper loop autoplay showsPagination={true}>
+        {coupons.map((coupon) => (
+          <View key={coupon.id} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Image
+              source={coupon.image}
+              style={{ width: width * 0.8, height: '100%', resizeMode: 'contain' }}
+            />
+          </View>
+        ))}
+      </Swiper>
+    </View>
+  );
+}
+
 
 // Tab.Navigator สำหรับหน้าหลัก
 export default function Homescreen() {
@@ -256,7 +282,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Prompt',
     fontSize: 18,
     color: 'black',
-    fontWeight: 'bold',
+    //fontWeight: 'bold',
     marginLeft: 15,
   },
 
