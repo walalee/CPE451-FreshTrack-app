@@ -1,61 +1,44 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-
-const expiryData = [
-  {
-    id: '1',
-    expiryDate: '24/02/2025',
-    productName: 'แอปเปิลสด',
-    category: 'ผลไม้',
-    image: require('./assets/apple.jpg')
-  },
-  {
-    id: '2',
-    expiryDate: '24/02/2025',
-    productName: 'นมวัว',
-    category: 'เครื่องดื่ม',
-    image: require('./assets/milk.jpg')
-  }
-];
 
 const CalendarScreen = () => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
+      {/* วงกลมสีแดงเลือดหมูและมีเส้นรอบวงกลมใหญ่ */}
+      <View style={styles.redCircle1} />
+      <View style={styles.redCircle2} />
+      <View style={styles.redCircle3} />
+
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Calender</Text>
+        <Text style={styles.headerText}>Calendar</Text>
       </View>
-      <Calendar
-        current={new Date().toISOString().split('T')[0]}
-        minDate="2023-01-01"
-        maxDate="2025-12-31"
-        theme={{
-          calendarBackground: '#fff',
-          selectedDayBackgroundColor: '#e74c3c',
-          todayTextColor: '#e74c3c',
-          arrowColor: '#e74c3c',
-          monthTextColor: '#e74c3c',
-        }}
-      />
-      <ScrollView style={styles.expiryContainer}>
-        {expiryData.map((item) => (
-          <View key={item.id} style={styles.expiryCard}>
-            <Image source={item.image} style={styles.productImage} />
-            <View style={styles.textContainer}>
-              <Text style={styles.expiryDate}>วันหมดอายุ : {item.expiryDate}</Text>
-              <Text style={styles.productName}>ชื่อสินค้า : {item.productName}</Text>
-              <Text style={styles.category}>หมวดหมู่ : {item.category}</Text>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
+
+      {/* ปฏิทิน */}
+      <View style={styles.calendarWrapper}>
+        <Calendar
+          current={new Date().toISOString().split('T')[0]}
+          minDate="2023-01-01"
+          maxDate="2025-12-31"
+          theme={{
+            calendarBackground: 'white',
+            selectedDayBackgroundColor: '#e74c3c',
+            todayTextColor: '#e74c3c',
+            arrowColor: '#e74c3c',
+            monthTextColor: '#e74c3c',
+            textSectionTitleColor: 'black',
+            dayTextColor: 'black',
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -63,13 +46,53 @@ const CalendarScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
     padding: 16,
-    backgroundColor: '#f5f5f5'
+  },
+  /* วงกลมพื้นหลังสีแดงเลือดหมู */
+  redCircle1: {
+    position: 'absolute',
+    width: 250,
+    height: 250,
+    backgroundColor: '#800000', // สีแดงเลือดหมู
+    borderRadius: 125,
+    top: -80,
+    right: -50,
+    opacity: 0.9,
+    borderWidth: 8, // เพิ่มความหนาของเส้น
+    borderColor: '#800000', // สีแดงเลือดหมู
+    margin: 12, // ระยะห่างจากตัววงกลม
+  },
+  redCircle2: {
+    position: 'absolute',
+    width: 180,
+    height: 180,
+    backgroundColor: '#800000', // สีแดงเลือดหมู
+    borderRadius: 90,
+    top: '40%', // ซ้ายกลาง
+    left: -60,
+    opacity: 0.8,
+    borderWidth: 8, // เพิ่มความหนาของเส้น
+    borderColor: '#800000', // สีแดงเลือดหมู
+    margin: 12, // ระยะห่างจากตัววงกลม
+  },
+  redCircle3: {
+    position: 'absolute',
+    width: 120,
+    height: 120,
+    backgroundColor: '#800000', // สีแดงเลือดหมู
+    borderRadius: 60,
+    bottom: -30,
+    right: 40,
+    opacity: 0.7,
+    borderWidth: 8, // เพิ่มความหนาของเส้น
+    borderColor: '#800000', // สีแดงเลือดหมู
+    margin: 12, // ระยะห่างจากตัววงกลม
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginTop: 50, // ขยับทั้งปุ่มและข้อความลงมา 50 หน่วย
   },
   backButton: {
     marginRight: 10,
@@ -77,45 +100,15 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
+    color: 'black',
   },
-  expiryContainer: {
-    marginTop: 10,
-  },
-  expiryCard: {
-    flexDirection: 'row',
+  calendarWrapper: {
     backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 12,
+    borderRadius: 12,
+    padding: 10,
+    marginTop: 8, // เพิ่มระยะห่างด้านบนของปฏิทินจาก header
     elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2
   },
-  productImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 8,
-    marginRight: 10
-  },
-  textContainer: {
-    flex: 1
-  },
-  expiryDate: {
-    fontSize: 14,
-    color: '#e74c3c',
-    fontWeight: 'bold'
-  },
-  productName: {
-    fontSize: 14,
-    color: '#333'
-  },
-  category: {
-    fontSize: 14,
-    color: '#666'
-  }
 });
 
 export default CalendarScreen;
