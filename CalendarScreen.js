@@ -54,39 +54,39 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 250,
     height: 250,
-    backgroundColor: '#800000', // สีแดงเลือดหมู
+    backgroundColor: '#9D0300', // สีแดงเลือดหมู
     borderRadius: 125,
     top: -80,
     right: -50,
     opacity: 0.9,
     borderWidth: 8, // เพิ่มความหนาของเส้น
-    borderColor: '#800000', // สีแดงเลือดหมู
+    borderColor: '#9D0300', // สีแดงเลือดหมู
     margin: 12, // ระยะห่างจากตัววงกลม
   },
   redCircle2: {
     position: 'absolute',
     width: 180,
     height: 180,
-    backgroundColor: '#800000', // สีแดงเลือดหมู
+    backgroundColor: '#9D0300', // สีแดงเลือดหมู
     borderRadius: 90,
     top: '40%', // ซ้ายกลาง
     left: -60,
     opacity: 0.8,
     borderWidth: 8, // เพิ่มความหนาของเส้น
-    borderColor: '#800000', // สีแดงเลือดหมู
+    borderColor: '#9D0300', // สีแดงเลือดหมู
     margin: 12, // ระยะห่างจากตัววงกลม
   },
   redCircle3: {
     position: 'absolute',
     width: 120,
     height: 120,
-    backgroundColor: '#800000', // สีแดงเลือดหมู
+    backgroundColor: '#9D0300', // สีแดงเลือดหมู
     borderRadius: 60,
     bottom: -30,
     right: 40,
     opacity: 0.7,
     borderWidth: 8, // เพิ่มความหนาของเส้น
-    borderColor: '#800000', // สีแดงเลือดหมู
+    borderColor: '#9D0300', // สีแดงเลือดหมู
     margin: 12, // ระยะห่างจากตัววงกลม
   },
   header: {
