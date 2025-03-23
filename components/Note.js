@@ -1,26 +1,14 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Image,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 
-const ShoppingNotesScreen = ({ navigation }) => {
-  const [messages, setMessages] = useState([]);
+const App = ({ navigation }) => {
   const [text, setText] = useState("");
+  const [image, setImage] = useState(null);
+  const [messages, setMessages] = useState([]);
 
-  const handleSend = () => {
-    if (text.trim().length === 0) return;
-    setMessages([{ type: "text", content: text }, ...messages]);
-    setText("");
-  };
-
+  // ฟังก์ชันเลือกภาพ
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -30,165 +18,206 @@ const ShoppingNotesScreen = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      setMessages([
-        { type: "image", content: result.assets[0].uri },
-        ...messages,
-      ]);
+      setImage(result.uri);
     }
+  };
+
+  // ฟังก์ชันส่งข้อความ
+  const sendMessage = () => {
+    if (text.trim() !== "") {
+      const newMessage = {
+        text,
+        timestamp: new Date(), // เก็บเวลาส่งข้อความ
+      };
+      setMessages([...messages, newMessage]);
+      setText("");
+    }
+  };
+
+  // ฟังก์ชันคำนวณเวลาที่ข้อความถูกส่งไปแล้ว
+  const timeAgo = (timestamp) => {
+    const now = new Date();
+    const diffMs = now - timestamp;
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffDays > 0) return `${diffDays} วันที่ผ่านมา`;
+    if (diffHours > 0) return `${diffHours} ชั่วโมงที่ผ่านมา`;
+    return `${diffMinutes} นาทีที่ผ่านมา`;
   };
 
   return (
     <View style={styles.container}>
-      {/* วงกลมและปุ่มย้อนกลับ */}
-      <View style={styles.whiteCircle}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="chevron-back-outline" size={24} color="black" />
-          <Text style={styles.title}>โน้ตฝากซื้อของ</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="chevron-back-outline" size={30} color="black" />
+          <Text style={styles.headerText}>โน้ตฝากซื้อของ</Text>
         </TouchableOpacity>
       </View>
 
+      {/* วงกลมพื้นหลัง */}
+      <View style={styles.circle} />
+
+      {/* แสดงข้อความที่ส่งแล้ว */}
       <ScrollView style={styles.messagesContainer}>
-        {messages.map((msg, index) => (
+        {messages.map((message, index) => (
           <View key={index} style={styles.messageBubble}>
-            <View style={styles.userLabel}>
-              <Text style={styles.userLabelText}>User</Text>
+            {/* ส่วนหัวสีดำ */}
+            <View style={styles.messageHeader}>
+              <Text style={styles.userText}>User</Text>
             </View>
-            <View style={styles.messageContent}>
-              {msg.type === "text" ? (
-                <Text style={styles.messageText}>{msg.content}</Text>
-              ) : (
-                <Image
-                  source={{ uri: msg.content }}
-                  style={styles.messageImage}
-                />
-              )}
+
+            {/* ข้อความ */}
+            <View style={styles.messageBody}>
+              <Text style={styles.messageText}>{message.text}</Text>
+            </View>
+
+            {/* เวลาส่งข้อความ */}
+            <View style={styles.timestampContainer}>
+              <Text style={styles.timestampText}>{timeAgo(message.timestamp)}</Text>
             </View>
           </View>
         ))}
       </ScrollView>
 
-      {/* ช่องพิมพ์ข้อความ */}
-      <View style={styles.inputContainer}>
-        <TouchableOpacity onPress={pickImage} style={styles.iconBox}>
-          <Ionicons name="image-outline" size={24} color="black" />
-        </TouchableOpacity>
-        
-        <View style={styles.textInputContainer}>
-          <TextInput
-            placeholder="พิมพ์ข้อความ..."
-            value={text}
-            onChangeText={setText}
-            style={styles.textInput}
-          />
-        </View>
-        
-        <TouchableOpacity onPress={handleSend} style={styles.iconBox}>
-          <Ionicons name="paper-plane-outline" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      {/* ช่องพิมข้อความ */}
+      <TextInput
+        style={styles.input}
+        value={text}
+        onChangeText={setText}
+        placeholder="พิมข้อความ..."
+      />
+
+      {/* ปุ่มเลือกภาพ */}
+      <TouchableOpacity style={styles.box1} onPress={pickImage}>
+        {image ? (
+          <Image source={{ uri: image }} style={styles.image} />
+        ) : (
+          <Ionicons name="image-outline" size={30} color="black" />
+        )}
+      </TouchableOpacity>
+
+      {/* ปุ่มส่งข้อความ */}
+      <TouchableOpacity style={styles.box2} onPress={sendMessage}>
+        <Ionicons name="paper-plane-outline" size={30} color="black" />
+      </TouchableOpacity>
     </View>
   );
 };
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#9D0300",
-    padding: 15,
-    paddingTop: 50,
+    justifyContent: "center",
     alignItems: "center",
   },
-  whiteCircle: {
-    width: 450,
-    height: 200,
-    backgroundColor: "white",
-    borderBottomLeftRadius: 200,
-    borderBottomRightRadius: 200,
-    position: "center",
-    top: -70,
-    paddingLeft: 30,
-    paddingTop: 60,
+  header: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    zIndex: 10,
   },
   backButton: {
     flexDirection: "row",
     alignItems: "center",
+    left: -10,
   },
-  title: {
-    fontSize: 18,
+  headerText: {
+    fontSize: 20,
     fontWeight: "bold",
-    marginLeft: 10,
     color: "black",
+    marginLeft: 5,
+  },
+  circle: {
+    width: 466,
+    height: 477,
+    borderRadius: 250,
+    backgroundColor: "white",
+    bottom: 400,
   },
   messagesContainer: {
-    flex: 1,
-    width: "100%",
-    marginTop: -170,
+    position: "absolute",
+    top: 100,
+    width: "98%",
+    maxHeight: "50%",
+    paddingHorizontal: 10,
+    marginBottom: 20,
   },
   messageBubble: {
-    backgroundColor: "#FFF",
-    borderRadius: 15,
+    backgroundColor: "white",
+    borderRadius: 10,
     marginBottom: 10,
   },
-  userLabel: {
-    backgroundColor: "#000",
-    paddingVertical: 10,
+  messageHeader: {
+    backgroundColor: "black",
+    paddingVertical: 5,
     paddingHorizontal: 10,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
-  userLabelText: {
-    fontSize: 18,
-    color: "#FFF",
+  userText: {
+    color: "white",
     fontWeight: "bold",
   },
-  messageContent: {
-    padding: 15,
+  messageBody: {
+    padding: 10,
   },
   messageText: {
     fontSize: 16,
     color: "#000",
   },
-  messageImage: {
-    width: "100%",
-    height: 150,
-    borderRadius: 10,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 25,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: "#DDD",
-    width: "100%",
-    justifyContent: "space-between",
+  timestampContainer: {
+    backgroundColor: "#E0E0E0",
+    paddingVertical: 5,
     paddingHorizontal: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
-  textInputContainer: {
-    flex: 1,
-    backgroundColor: "#F5F5F5",
+  timestampText: {
+    fontSize: 12,
+    color: "#757575",
+  },
+  input: {
+    width: 280,
+    height: 45,
+    borderWidth: 1,
+    borderColor: "#fff",
     borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  textInput: {
+    paddingHorizontal: 15,
     fontSize: 16,
-    textAlign: "left",
+    backgroundColor: "#fff",
+    top: 190,
   },
-  iconBox: {
-    width: 40,
-    height: 40,
+  box1: {
+    width: 45,
+    height: 45,
+    backgroundColor: "#fff",
     borderRadius: 10,
-    backgroundColor: "#FFF",
+    top: 145,
+    right: 172,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#DDD",
+  },
+  box2: {
+    width: 45,
+    height: 45,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    top: 100,
+    left: 172,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: 45,
+    height: 45,
+    borderRadius: 10,
   },
 });
-
-export default ShoppingNotesScreen;
