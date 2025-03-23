@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-start',
     marginLeft: 10,
-    marginBottom: 100,
+    marginBottom: 20,
   },
   header: {
     fontSize: 18,
@@ -131,10 +131,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
   },
   addButton: {
-    backgroundColor: '#9D0300',
+    backgroundColor: '#9f0300',
     paddingVertical: 10,
     paddingHorizontal: 40,
     borderRadius: 20,
+    top: 150
   },
   addButtonText: {
     color: '#fff',
