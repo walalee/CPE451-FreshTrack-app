@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/posts'; // Mock API
 
@@ -8,13 +9,7 @@ const CouponScreen = () => {
     const [tab, setTab] = useState('all');
     const [coupons, setCoupons] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    
-    let navigation = null;
-    try {
-        navigation = useNavigation();
-    } catch (error) {
-        console.error('Navigation error:', error);
-    }
+    const navigation = useNavigation();
 
     useEffect(() => {
         fetchCoupons();
@@ -45,7 +40,10 @@ const CouponScreen = () => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>คูปองและโปรโมชั่น</Text>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                    <Ionicons name="chevron-back" size={24} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.title}>คูปองและโปรโมชั่น Tesco Lotus</Text>
             </View>
             
             <View style={styles.tabContainer}>
@@ -66,7 +64,7 @@ const CouponScreen = () => {
                     renderItem={({ item }) => (
                         <TouchableOpacity 
                             style={styles.couponCard} 
-                            onPress={() => navigation?.navigate ? navigation.navigate('CouponDetail', { coupon: item }) : null}
+                            onPress={() => navigation.navigate('CouponDetail', { coupon: item })}
                         >
                             <Text style={styles.couponTitle}>{item.title}</Text>
                             <Text>{item.description}</Text>
@@ -80,7 +78,8 @@ const CouponScreen = () => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#A00000', padding: 20 },
-    header: { paddingVertical: 10, alignItems: 'center' },
+    header: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
+    backButton: { marginRight: 10 },
     title: { fontSize: 18, fontWeight: 'bold', color: 'white' },
     tabContainer: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20 },
     tab: { padding: 10, backgroundColor: 'white', borderRadius: 8 },
