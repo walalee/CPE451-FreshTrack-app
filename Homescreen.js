@@ -7,10 +7,15 @@ import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faDrumstickBite } from '@fortawesome/free-solid-svg-icons/faDrumstickBite'
+import { faShrimp } from '@fortawesome/free-solid-svg-icons/faShrimp'
 import { faSuitcaseMedical } from '@fortawesome/free-solid-svg-icons/faSuitcaseMedical'
-import { faLemon } from '@fortawesome/free-solid-svg-icons/faLemon'
+import { faCarrot } from '@fortawesome/free-solid-svg-icons/faCarrot'
 import { faJarWheat } from '@fortawesome/free-solid-svg-icons/faJarWheat'
+import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar'
+import { faBell } from '@fortawesome/free-solid-svg-icons/faBell'
+import { faFlaskVial } from '@fortawesome/free-solid-svg-icons/faFlaskVial'
+import { faBone } from '@fortawesome/free-solid-svg-icons/faBone'
+import { faPumpSoap} from '@fortawesome/free-solid-svg-icons/faPumpSoap'
 import { useFonts } from 'expo-font';
 
 
@@ -64,11 +69,11 @@ function HomeScreenComponent() {
 
         <View style={styles.iconRow}>
           <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
-            <Icon name="calendar-clear-outline" size={26} color="#9D0300" />
+            <FontAwesomeIcon icon={faCalendar} size={26} color="#9D0300"/> 
           </TouchableOpacity>
 
           <TouchableOpacity>
-            <Icon name="notifications-outline" size={26} color="black" />
+          <FontAwesomeIcon icon={faBell} size={26} color="#9D0300"/> 
           </TouchableOpacity>
         </View>
       </View>
@@ -107,7 +112,7 @@ function HomeScreenComponent() {
             marginLeft: 20,
             marginRight: 8
           }}> 
-          <FontAwesomeIcon icon={faDrumstickBite} size={50} color="white"/>  
+          <FontAwesomeIcon icon={faShrimp} size={45} color="white"/>  
         </View>
 
         <View
@@ -120,7 +125,7 @@ function HomeScreenComponent() {
             alignItems: "center",
             marginHorizontal: 8
           }}>
-          <FontAwesomeIcon icon={faLemon} size={50} color="white"/>
+          <FontAwesomeIcon icon={faCarrot} size={45} color="white"/>
         
         </View>
         <View
@@ -133,7 +138,7 @@ function HomeScreenComponent() {
             alignItems: "center",
             marginHorizontal: 8
           }}>
-          <FontAwesomeIcon icon={faSuitcaseMedical} size={50} color="white"/>
+          <FontAwesomeIcon icon={faSuitcaseMedical} size={45} color="white"/>
         
         </View>
 
@@ -148,10 +153,59 @@ function HomeScreenComponent() {
             marginLeft: 10,
             marginRight: 20
           }}>
-          <FontAwesomeIcon icon={faJarWheat} size={50} color="white"/>
+          <FontAwesomeIcon icon={faJarWheat} size={45} color="white"/>
         
         </View>
       </View>
+
+      <View style ={{flexDirection: 'row'}}>
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: 20,
+            marginRight: 8,
+            marginTop: 30,
+          }}> 
+          <FontAwesomeIcon icon={faFlaskVial} size={45} color="white"/>  
+        </View>
+
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 8,
+            marginTop: 30,
+          }}>
+          <FontAwesomeIcon icon={faBone} size={45} color="white"/>
+        
+        </View>
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 8,
+            marginTop: 30,
+          }}>
+          <FontAwesomeIcon icon={faPumpSoap} size={45} color="white"/>
+        
+        </View>
+      </View>
+      
+
+      
 
 
 
