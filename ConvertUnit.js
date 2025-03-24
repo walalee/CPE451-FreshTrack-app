@@ -1,7 +1,30 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet, TextInput } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialIcons } from "@expo/vector-icons";
+
+const DropdownModal = ({ visible, onClose, onSelect, options }) => {
+  return (
+    <Modal visible={visible} animationType="slide" transparent>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <FlatList
+            data={options}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => { onSelect(item); onClose(); }} style={styles.option}>
+                <Text>{item}</Text>
+              </TouchableOpacity>
+            )}
+          />
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <Text style={styles.closeText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+};
 
 const UnitConverter = ({ navigation }) => {
   const [unitType, setUnitType] = useState("weight");
