@@ -13,7 +13,7 @@ import { faCarrot } from '@fortawesome/free-solid-svg-icons/faCarrot'
 import { faJarWheat } from '@fortawesome/free-solid-svg-icons/faJarWheat'
 import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar'
 import { faBell } from '@fortawesome/free-solid-svg-icons/faBell'
-import { faFlaskVial } from '@fortawesome/free-solid-svg-icons/faFlaskVial'
+import { faJugDetergent} from '@fortawesome/free-solid-svg-icons/faJugDetergent'
 import { faBone } from '@fortawesome/free-solid-svg-icons/faBone'
 import { faPumpSoap} from '@fortawesome/free-solid-svg-icons/faPumpSoap'
 import { useFonts } from 'expo-font';
@@ -171,7 +171,7 @@ function HomeScreenComponent() {
             marginRight: 8,
             marginTop: 30,
           }}> 
-          <FontAwesomeIcon icon={faFlaskVial} size={45} color="white"/>  
+          <FontAwesomeIcon icon={faJugDetergent} size={45} color="white"/>  
         </View>
 
         <View
