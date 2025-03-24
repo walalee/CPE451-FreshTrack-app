@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const SearchScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
