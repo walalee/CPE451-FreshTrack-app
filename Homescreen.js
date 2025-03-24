@@ -2,23 +2,36 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';  // เพิ่มการใช้งาน Stack.Navigator
-import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faShrimp } from '@fortawesome/free-solid-svg-icons/faShrimp'
+import { faSuitcaseMedical } from '@fortawesome/free-solid-svg-icons/faSuitcaseMedical'
+import { faCarrot } from '@fortawesome/free-solid-svg-icons/faCarrot'
+import { faJarWheat } from '@fortawesome/free-solid-svg-icons/faJarWheat'
+import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar'
+import { faBell } from '@fortawesome/free-solid-svg-icons/faBell'
+import { faFlaskVial } from '@fortawesome/free-solid-svg-icons/faFlaskVial'
+import { faBone } from '@fortawesome/free-solid-svg-icons/faBone'
+import { faPumpSoap} from '@fortawesome/free-solid-svg-icons/faPumpSoap'
 import { useFonts } from 'expo-font';
 
+
+
 // Screens
-import AddProduct from './AddProduct';
-import ConvertUnit from './ConvertUnit';
-import Note from './Note';
-import Profile from './Profile';
-import CalendarScreen from './CalendarScreen';
-import EditProduct from './EditProduct';  // อย่าลืม import `EditProduct`
-import FilterScreen from './FilterScreen';
-import ExpirationScreen from './ExpirationScreen';
-import CouponScreen from './CouponScreen';
-import NotiScreen from './NotiScreen';
+import AddProduct from './components/AddProduct';
+import ConvertUnit from './components/ConvertUnit';
+import Note from './components/Note';
+import Profile from './components/Profile';
+import CalendarScreen from './components/CalendarScreen';
+import EditProduct from './components/EditProduct'; 
+import SearchScreen from './components/SearchScreen';
+import FilterScreen from './components/FilterScreen';
+import ExpirationScreen from './components/ExpirationScreen';
+import CouponScreen from './components/CouponScreen';
+import NotiScreen from './components/NotiScreen';
 import CareScreen from './Category/CareScreen';
 import ChemicalScreen from './Category/ChemicalScreen';
 import FreshfoodScreen from './Category/FreshfoodScreen';
@@ -26,23 +39,21 @@ import MedicalScreen from './Category/MedicalScreen';
 import Category from './Category/PetfoodScreen'; 
 import ProcessedScreen from './Category/ProcessedScreen';
 import VegFruitsScreen from './Category/VegFruitsScreen';
+import Banner from './components/Banner';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();  // สร้าง Stack Navigator
 const {width} = Dimensions.get('window');
 
-const coupons = [
-  { id: 1, image: require('./assets/lotusCoupon.png') },
-  { id: 2, image: require('./assets/bigcCoupon.jpg') },
-  { id: 3, image: require('./assets/marko.png') },
-  { id: 4, image: require('./assets/topscoupon.jpg') },
-];
-
 // HomeScreenComponent
 function HomeScreenComponent() {
+
   const navigation = useNavigation();
+
   const [fontsLoaded] = useFonts({
-    Prompt: require('./assets/Prompt-Regular.ttf'),
+    PromptRegular: require('./assets/Prompt-Regular.ttf'),
+    PromptBold: require('./assets/Prompt-Bold.ttf'), 
+    PromptMedium: require('./assets/Prompt-Medium.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -54,33 +65,151 @@ function HomeScreenComponent() {
 
       {/* Header: ข้อความต้อนรับ + ไอคอน */}
       <View style={styles.headerRow}>
-        <Text style={styles.greetingText}>สวัสดีผู้ใช้</Text>
+        <Text style={styles.greetingText}>สวัสดี</Text>
 
         <View style={styles.iconRow}>
           <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
-            <Icon name="calendar-clear-outline" size={26} color="#9D0300" />
+            <FontAwesomeIcon icon={faCalendar} size={26} color="#9D0300"/> 
           </TouchableOpacity>
 
           <TouchableOpacity>
-            <Icon name="notifications-outline" size={26} color="black" />
+          <FontAwesomeIcon icon={faBell} size={26} color="#9D0300"/> 
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Icon name="search" size={20} color="#706A6A" />
-          <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
-        </View>
+          <TouchableOpacity onPress={() => navigation.navigate('SearchScreen')} style={styles.searchBar}>
+            <Icon name="search" size={20} color="#706A6A" />
+            <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
+          </TouchableOpacity>  
+        
         <TouchableOpacity onPress={() => navigation.navigate('FilterScreen')} style={styles.filterIconContainer}>
             <Icon name="options-outline" size={26} color="black" />
-          </TouchableOpacity>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.PromotionRow}>
         <Text style={styles.PromotionText}>Promotion</Text>
       </View>
+
+      <Banner />
+
+      <View style={styles.CategoryRow}>
+        <Text style={styles.CategoryText}>Category</Text>
+      </View>
+
+      <View style ={{flexDirection: 'row'}}>
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: 20,
+            marginRight: 8
+          }}> 
+          <FontAwesomeIcon icon={faShrimp} size={45} color="white"/>  
+        </View>
+
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 8
+          }}>
+          <FontAwesomeIcon icon={faCarrot} size={45} color="white"/>
+        
+        </View>
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 8
+          }}>
+          <FontAwesomeIcon icon={faSuitcaseMedical} size={45} color="white"/>
+        
+        </View>
+
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: 10,
+            marginRight: 20
+          }}>
+          <FontAwesomeIcon icon={faJarWheat} size={45} color="white"/>
+        
+        </View>
+      </View>
+
+      <View style ={{flexDirection: 'row'}}>
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: 20,
+            marginRight: 8,
+            marginTop: 30,
+          }}> 
+          <FontAwesomeIcon icon={faFlaskVial} size={45} color="white"/>  
+        </View>
+
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 8,
+            marginTop: 30,
+          }}>
+          <FontAwesomeIcon icon={faBone} size={45} color="white"/>
+        
+        </View>
+        <View
+          style={{
+            width: 80, // กำหนดขนาดวงกลม
+            height: 80, 
+            borderRadius: 40, // ทำให้เป็นวงกลม
+            backgroundColor: "#9D0300", 
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 8,
+            marginTop: 30,
+          }}>
+          <FontAwesomeIcon icon={faPumpSoap} size={45} color="white"/>
+        
+        </View>
+      </View>
+      
+
+      
+
+
+
+
 
     </View>
   );
@@ -115,24 +244,6 @@ function HomeStack() {
   );
 }
 
-export function CouponCarousel() {
-  return (
-    <View style={{ width: '100%', height: 200 }}>
-      <Swiper loop autoplay showsPagination={true}>
-        {coupons.map((coupon) => (
-          <View key={coupon.id} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Image
-              source={coupon.image}
-              style={{ width: width * 0.8, height: '100%', resizeMode: 'contain' }}
-            />
-          </View>
-        ))}
-      </Swiper>
-    </View>
-  );
-}
-
-
 // Tab.Navigator สำหรับหน้าหลัก
 export default function Homescreen() {
   return (
@@ -148,7 +259,7 @@ export default function Homescreen() {
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30
           },
-          tabBarLabelStyle: { fontFamily: 'Prompt', fontSize: 12, },
+          tabBarLabelStyle: { fontFamily: 'PromptMedium', fontSize: 12, },
         }}
       >
         <Tab.Screen 
@@ -222,10 +333,9 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     marginLeft: 15,
-    fontSize: 20,
+    fontSize: 22,
     color: 'black',
-    fontWeight: 'bold',
-    fontFamily: 'Prompt-Regular',
+    fontFamily: 'PromptMedium',
   },
   iconRow: {
     flexDirection: 'row',
@@ -250,7 +360,7 @@ const styles = StyleSheet.create({
   searchText: {
     marginLeft: 10,
     color: '#706A6A',
-    fontFamily: 'Prompt',
+    fontFamily: 'PromptMedium',
   },
 
   statusBar: {
@@ -264,25 +374,39 @@ const styles = StyleSheet.create({
   icon: { marginRight: 20},
 
   filterIconContainer: {
-    backgroundColor: '#E9E8E8', // สีพื้นหลัง (สามารถเปลี่ยนเป็นสีอื่นได้)
-    borderRadius: 10, // ทำให้ขอบมน
-    padding: 5, // เพิ่มขนาดพื้นที่รอบไอคอน
+    backgroundColor: '#E9E8E8',
+    borderRadius: 10,
+    padding: 5, 
     // marginLeft: 3, 
   },
 
   PromotionRow: {
-    flexDirection: 'row',         // จัดเรียงองค์ประกอบในแนวนอน (row)
-    justifyContent: 'space-between', // จัดให้อยู่ซ้าย-ขวาห่างกันพอดี
-    alignItems: 'center',         // จัดให้อยู่ตรงกลางในแนวตั้ง
-    marginBottom: 5,              // เพิ่มระยะห่างด้านล่าง 5
+    flexDirection: 'row',        
+    justifyContent: 'space-between', 
+    alignItems: 'center',         
+    marginBottom: 5,              
     paddingRight: 20
   }, 
 
   PromotionText: { 
-    fontFamily: 'Prompt',
+    fontFamily: 'PromptMedium',
     fontSize: 18,
     color: 'black',
-    //fontWeight: 'bold',
+    marginLeft: 15,
+  },
+
+  CategoryRow: {
+    flexDirection: 'row',        
+    justifyContent: 'space-between', 
+    alignItems: 'center',         
+    marginBottom: 5,              
+    paddingRight: 20
+  }, 
+
+  CategoryText: { 
+    fontFamily: 'PromptMedium',
+    fontSize: 18,
+    color: 'black',
     marginLeft: 15,
   },
 
