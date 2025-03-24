@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const SearchScreen = ({ navigation }) => {
+const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
 
