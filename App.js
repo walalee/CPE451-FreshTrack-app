@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import SplashScreen from './loadingscreen'; 
 import Homescreen from './Homescreen';  // ใช้ชื่อที่ถูกต้อง
-import CouponScreen from './CouponScreen';
+import CouponScreen from './components/CouponScreen';
 import CouponDetailScreen from './CouponDetailScreen';
 
 const App = () => {
