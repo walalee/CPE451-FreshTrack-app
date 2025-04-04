@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import CategoryScreen from './CategoryScreen';
 
-const ProcessedScreen = () => {
-  return (
-    <View>
-      <Text>This is ProcessedScreen</Text>
-    </View>
-  );
-};
+const processedFoodProducts = [
+  { id: '1', name: 'Canned Tuna', image: 'https://via.placeholder.com/100' },
+  { id: '2', name: 'Instant Noodles', image: 'https://via.placeholder.com/100' },
+  { id: '3', name: 'Sausages', image: 'https://via.placeholder.com/100' },
+];
+
+const ProcessedScreen = () => <CategoryScreen category="Processed Food" products={processedFoodProducts} />;
 
 export default ProcessedScreen;
