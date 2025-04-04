@@ -40,6 +40,8 @@ import Category from './Category/PetfoodScreen';
 import ProcessedScreen from './Category/ProcessedScreen';
 import VegFruitsScreen from './Category/VegFruitsScreen';
 import Banner from './components/Banner';
+import CouponDetailScreen from "./screens/CouponDetailScreen";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();  // สร้าง Stack Navigator
