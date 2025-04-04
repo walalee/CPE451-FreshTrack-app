@@ -1,9 +1,8 @@
-// เหลือเพิ่มตัวข้อความเชื่อมไปหน้าตารางอาหารสด กับ สแกนบาร์โค้ดให้ได้
+// สแกนบาร์โค้ดให้ได้
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
-import { Picker } from "@react-native-picker/picker";
 
 const EditProductScreen = ({ navigation }) => {
   const [productName, setProductName] = useState("");
@@ -67,12 +66,15 @@ const EditProductScreen = ({ navigation }) => {
           </View>
         </View>
 
+        <TouchableOpacity>
+          <Text style={styles.storageGuide}>ดูตารางแนะนำการเก็บอาหารสด คลิก</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.saveButton}>
           <Text style={styles.saveButtonText}>Save Product</Text>
         </TouchableOpacity>
       </View>
       
-      {/* แถบสีแดงเลือดหมูที่ด้านล่าง */}
       <View style={styles.bottomBar} />
     </View>
   );
@@ -94,6 +96,7 @@ const styles = StyleSheet.create({
   detailRow: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#E0E0E0" },
   detailTitle: { fontSize: 16, color: "#000" },
   detailValue: { fontSize: 16, color: "#888" },
+  storageGuide: { fontSize: 16, color: "#A00000", textAlign: "center", marginBottom: 15, textDecorationLine: "underline" },
   saveButton: { backgroundColor: "#A00000", borderRadius: 20, padding: 14, alignItems: "center", marginTop: 10 },
   saveButtonText: { fontSize: 18, color: "#fff", fontWeight: "bold" },
   bottomBar: { backgroundColor: "#A00000", height: 80, width: "100%", borderTopLeftRadius: 40, borderTopRightRadius: 40, position: "absolute", bottom: 0 },
