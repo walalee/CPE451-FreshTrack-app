@@ -1,5 +1,5 @@
 import React from 'react';
-import CategoryScreen from './CategoryScreen';
+
 
 const processedFoodProducts = [
   { id: '1', name: 'Canned Tuna', image: 'https://via.placeholder.com/100' },

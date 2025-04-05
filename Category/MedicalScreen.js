@@ -1,5 +1,5 @@
 import React from 'react';
-import CategoryScreen from './CategoryScreen';
+
 
 const medicalProducts = [
   { id: '1', name: 'Face Mask', image: 'https://via.placeholder.com/100' },

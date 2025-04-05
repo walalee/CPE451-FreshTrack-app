@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';  // เพิ่มการใช้งาน Stack.Navigator
-import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -17,9 +17,6 @@ import { faJugDetergent} from '@fortawesome/free-solid-svg-icons/faJugDetergent'
 import { faBone } from '@fortawesome/free-solid-svg-icons/faBone'
 import { faPumpSoap} from '@fortawesome/free-solid-svg-icons/faPumpSoap'
 import { useFonts } from 'expo-font';
-
-
-
 // Screens
 import AddProduct from './components/AddProduct';
 import ConvertUnit from './components/ConvertUnit';
@@ -27,8 +24,9 @@ import Note from './components/Note';
 import Profile from './components/Profile';
 import CalendarScreen from './components/CalendarScreen';
 import EditProduct from './components/EditProduct'; 
+import CouponDetailScreen from "./components/CouponDetailScreen";
 import SearchScreen from './components/SearchScreen';
-import FilterScreen from './components/FilterScreen';
+import FilterScreen from './components/FilterScreen';  // ตรวจสอบให้แน่ใจว่าเส้นทางถูกต้อง
 import ExpirationScreen from './components/ExpirationScreen';
 import CouponScreen from './components/CouponScreen';
 import NotiScreen from './components/NotiScreen';
@@ -40,7 +38,6 @@ import Category from './Category/PetfoodScreen';
 import ProcessedScreen from './Category/ProcessedScreen';
 import VegFruitsScreen from './Category/VegFruitsScreen';
 import Banner from './components/Banner';
-import CouponDetailScreen from "./screens/CouponDetailScreen";
 
 
 const Tab = createBottomTabNavigator();
@@ -50,10 +47,12 @@ const {width} = Dimensions.get('window');
 // HomeScreenComponent
 function HomeScreenComponent() {
 
+  const [filterVisible, setFilterVisible] = useState(false);
   const navigation = useNavigation();
 
   const [fontsLoaded] = useFonts({
     PromptRegular: require('./assets/Prompt-Regular.ttf'),
+    PromptLight: require('./assets/Prompt-Light.ttf'),
     PromptBold: require('./assets/Prompt-Bold.ttf'), 
     PromptMedium: require('./assets/Prompt-Medium.ttf'),
   });
@@ -62,157 +61,182 @@ function HomeScreenComponent() {
     return null;
   }
 
+  const handleApplyFilters = (selectedFilters) => {
+    console.log('Filters applied:', selectedFilters);
+    setFilterVisible(false);
+    // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
+  };
+
   return (
     <View style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Header: ข้อความต้อนรับ + ไอคอน */}
+        <View style={styles.headerRow}>
+          <Text style={styles.greetingText}>สวัสดี</Text>
 
-      {/* Header: ข้อความต้อนรับ + ไอคอน */}
-      <View style={styles.headerRow}>
-        <Text style={styles.greetingText}>สวัสดี</Text>
+          <View style={styles.iconRow}>
+            <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
+              <FontAwesomeIcon icon={faCalendar} size={26} color="#9D0300"/> 
+            </TouchableOpacity>
 
-        <View style={styles.iconRow}>
-          <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
-            <FontAwesomeIcon icon={faCalendar} size={26} color="#9D0300"/> 
+            <TouchableOpacity>
+            <FontAwesomeIcon icon={faBell} size={26} color="#9D0300"/> 
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Search Bar */}
+        <View style={styles.searchContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate('SearchScreen')} style={styles.searchBar}>
+              <Icon name="search" size={20} color="#706A6A" />
+              <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
+            </TouchableOpacity>  
+          
+          <TouchableOpacity style={styles.filterButton}
+                            onPress={() => setFilterVisible(true)}>
+              <Icon name="options-outline" size={26} color=" #E9E8E8" />
           </TouchableOpacity>
-
-          <TouchableOpacity>
-          <FontAwesomeIcon icon={faBell} size={26} color="#9D0300"/> 
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Search Bar */}
-      <View style={styles.searchContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('SearchScreen')} style={styles.searchBar}>
-            <Icon name="search" size={20} color="#706A6A" />
-            <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
-          </TouchableOpacity>  
-        
-        <TouchableOpacity onPress={() => navigation.navigate('FilterScreen')} style={styles.filterIconContainer}>
-            <Icon name="options-outline" size={26} color="black" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.PromotionRow}>
-        <Text style={styles.PromotionText}>Promotion</Text>
-      </View>
-
-      <Banner />
-
-      <View style={styles.CategoryRow}>
-        <Text style={styles.CategoryText}>Category</Text>
-      </View>
-
-      <View style ={{flexDirection: 'row'}}>
-        <View
-          style={{
-            width: 80, // กำหนดขนาดวงกลม
-            height: 80, 
-            borderRadius: 40, // ทำให้เป็นวงกลม
-            backgroundColor: "#9D0300", 
-            justifyContent: "center",
-            alignItems: "center",
-            marginLeft: 20,
-            marginRight: 8
-          }}> 
-          <FontAwesomeIcon icon={faShrimp} size={45} color="white"/>  
+          <FilterScreen
+            visible={filterVisible}
+            onClose={() => setFilterVisible(false)}
+            onApply={handleApplyFilters}
+        />
         </View>
 
-        <View
-          style={{
-            width: 80, // กำหนดขนาดวงกลม
-            height: 80, 
-            borderRadius: 40, // ทำให้เป็นวงกลม
-            backgroundColor: "#9D0300", 
-            justifyContent: "center",
-            alignItems: "center",
-            marginHorizontal: 8
-          }}>
-          <FontAwesomeIcon icon={faCarrot} size={45} color="white"/>
-        
-        </View>
-        <View
-          style={{
-            width: 80, // กำหนดขนาดวงกลม
-            height: 80, 
-            borderRadius: 40, // ทำให้เป็นวงกลม
-            backgroundColor: "#9D0300", 
-            justifyContent: "center",
-            alignItems: "center",
-            marginHorizontal: 8
-          }}>
-          <FontAwesomeIcon icon={faSuitcaseMedical} size={45} color="white"/>
-        
+        <View style={styles.PromotionRow}>
+          <Text style={styles.PromotionText}>Promotion</Text>
         </View>
 
-        <View
-          style={{
-            width: 80, // กำหนดขนาดวงกลม
-            height: 80, 
-            borderRadius: 40, // ทำให้เป็นวงกลม
-            backgroundColor: "#9D0300", 
-            justifyContent: "center",
-            alignItems: "center",
-            marginLeft: 10,
-            marginRight: 20
-          }}>
-          <FontAwesomeIcon icon={faJarWheat} size={45} color="white"/>
-        
-        </View>
-      </View>
+        <Banner />
 
-      <View style ={{flexDirection: 'row'}}>
-        <View
-          style={{
-            width: 80, // กำหนดขนาดวงกลม
-            height: 80, 
-            borderRadius: 40, // ทำให้เป็นวงกลม
-            backgroundColor: "#9D0300", 
-            justifyContent: "center",
-            alignItems: "center",
-            marginLeft: 20,
-            marginRight: 8,
-            marginTop: 30,
-          }}> 
-          <FontAwesomeIcon icon={faJugDetergent} size={45} color="white"/>  
+        <View style={styles.CategoryRow}>
+          <Text style={styles.CategoryText}>Category</Text>
         </View>
 
-        <View
-          style={{
-            width: 80, // กำหนดขนาดวงกลม
-            height: 80, 
-            borderRadius: 40, // ทำให้เป็นวงกลม
-            backgroundColor: "#9D0300", 
-            justifyContent: "center",
-            alignItems: "center",
-            marginHorizontal: 8,
-            marginTop: 30,
-          }}>
-          <FontAwesomeIcon icon={faBone} size={45} color="white"/>
-        
+        <View style ={{flexDirection: 'row',marginTop: 5,}}>
+
+        <View style={{ alignItems: 'center'}}>
+          <View
+            style={{
+              width: 80, // กำหนดขนาดวงกลม
+              height: 80, 
+              borderRadius: 40, // ทำให้เป็นวงกลม
+              backgroundColor: "#9D0300", 
+              justifyContent: "center",
+              alignItems: "center",
+              marginLeft: 20,
+              marginRight: 5
+            }}> 
+            <FontAwesomeIcon icon={faShrimp} size={45} color="white"/>  
+          </View>
+            <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>อาหารสด</Text>
         </View>
-        <View
-          style={{
-            width: 80, // กำหนดขนาดวงกลม
-            height: 80, 
-            borderRadius: 40, // ทำให้เป็นวงกลม
-            backgroundColor: "#9D0300", 
-            justifyContent: "center",
-            alignItems: "center",
-            marginHorizontal: 8,
-            marginTop: 30,
-          }}>
-          <FontAwesomeIcon icon={faPumpSoap} size={45} color="white"/>
-        
+          
+          <View style={{ alignItems: 'center'}}>
+            <View
+              style={{
+                width: 80, // กำหนดขนาดวงกลม
+                height: 80, 
+                borderRadius: 40, // ทำให้เป็นวงกลม
+                backgroundColor: "#9D0300", 
+                justifyContent: "center",
+                alignItems: "center",
+                marginHorizontal: 5
+              }}>
+              <FontAwesomeIcon icon={faCarrot} size={45} color="white"/>
+            </View>
+            <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>ผักและผลไม้</Text>
+          </View>
+          
+          <View style={{ alignItems: 'center',}}>
+            <View
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 40,
+                backgroundColor: "#9D0300",
+                justifyContent: "center",
+                alignItems: "center",
+                marginHorizontal: 5
+              }}>
+              <FontAwesomeIcon icon={faSuitcaseMedical} size={45} color="white" />
+            </View>
+              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>เวชภัณฑ์</Text>
+          </View>
+          
+          <View style={{ alignItems: 'center'}}>
+            <View
+              style={{
+                width: 80, // กำหนดขนาดวงกลม
+                height: 80, 
+                borderRadius: 40, // ทำให้เป็นวงกลม
+                backgroundColor: "#9D0300", 
+                justifyContent: "center",
+                alignItems: "center",
+                marginLeft: 5,
+                marginRight: 20
+              }}>
+              <FontAwesomeIcon icon={faJarWheat} size={45} color="white"/>
+            </View>
+              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>อาหารแปรรูป</Text>
+          </View>
         </View>
-      </View>
-      
 
-      
-
-
-
-
-
+        <View style ={{flexDirection: 'row', marginTop: 20}}>
+          <View style={{ alignItems: 'center'}}>
+            <View
+              style={{
+                width: 80, // กำหนดขนาดวงกลม
+                height: 80, 
+                borderRadius: 40, // ทำให้เป็นวงกลม
+                backgroundColor: "#9D0300", 
+                justifyContent: "center",
+                alignItems: "center",
+                marginLeft: 20,
+                marginRight: 5,
+              }}> 
+              <FontAwesomeIcon icon={faJugDetergent} size={45} color="white"/>  
+            </View>
+              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>เคมีภัณฑ์</Text>
+          </View>
+          
+          <View style={{ alignItems: 'center'}}>
+            <View
+              style={{
+                width: 80, // กำหนดขนาดวงกลม
+                height: 80, 
+                borderRadius: 40, // ทำให้เป็นวงกลม
+                backgroundColor: "#9D0300", 
+                justifyContent: "center",
+                alignItems: "center",
+                marginHorizontal: 5,
+              }}>
+              <FontAwesomeIcon icon={faBone} size={45} color="white"/>
+            </View>
+              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>สำหรับสัตว์เลี้ยง</Text>
+          </View>
+          
+          <View style={{ alignItems: 'center', width: 100}}>
+            <View
+              style={{
+                width: 80, // กำหนดขนาดวงกลม
+                height: 80, 
+                borderRadius: 40, // ทำให้เป็นวงกลม
+                backgroundColor: "#9D0300", 
+                justifyContent: "center",
+                alignItems: "center",
+                marginHorizontal: 5,
+              }}>
+                <FontAwesomeIcon icon={faPumpSoap} size={45} color="white"/>
+            </View>
+              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333', textAlign: 'center',
+                    flexWrap: 'wrap' }}>ผลิตภัณฑ์ดูแลร่างกาย</Text>
+          </View>
+        </View>
+        <View style={styles.CategoryRow}>
+          <Text style={styles.CategoryText}>Expiration</Text>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -341,7 +365,7 @@ const styles = StyleSheet.create({
   },
   iconRow: {
     flexDirection: 'row',
-    gap: 15,
+    gap: 10,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -373,13 +397,19 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   
-  icon: { marginRight: 20},
+  icon: { marginRight: 15},
 
   filterIconContainer: {
     backgroundColor: '#E9E8E8',
     borderRadius: 10,
     padding: 5, 
     // marginLeft: 3, 
+  },
+  filterButton: {
+    backgroundColor: '#E9E8E8',
+    padding: 7,
+    borderRadius: 10,
+    alignItems: 'center',
   },
 
   PromotionRow: {

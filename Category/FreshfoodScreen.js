@@ -1,5 +1,5 @@
 import React from 'react';
-import CategoryScreen from './CategoryScreen';
+
 
 const freshFoodProducts = [
   { id: '1', name: 'Apples', image: 'https://via.placeholder.com/100' },

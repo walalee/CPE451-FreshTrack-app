@@ -1,5 +1,5 @@
 import React from 'react';
-import CategoryScreen from './CategoryScreen';
+
 
 const petFoodProducts = [
   { id: '1', name: 'Dog Food', image: 'https://via.placeholder.com/100' },

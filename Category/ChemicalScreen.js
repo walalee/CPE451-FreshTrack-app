@@ -1,5 +1,4 @@
 import React from 'react';
-import CategoryScreen from './CategoryScreen';
 
 const chemicalProducts = [
   { id: '1', name: 'Detergent', image: 'https://via.placeholder.com/100' },
