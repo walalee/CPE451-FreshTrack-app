@@ -257,7 +257,7 @@ function HomeStack() {
       <Stack.Screen 
         name="EditProduct" 
         component={EditProduct}  // เพิ่ม EditProduct เข้ามาใน Stack
-        options={{ title: 'แก้ไขสินค้า' }} 
+        options={{ title: 'แก้ไขสินค้า', headerShown: false,}} 
       />
       <Stack.Screen 
         name="Calendar" 
@@ -318,6 +318,7 @@ export default function Homescreen() {
                 <Icon name="add-circle" size={40} color={color} /> 
               </View>
             ),
+            headerShown: false,
             tabBarLabel: '',
             tabBarItemStyle: { position: 'center'}, // ทำให้ลอยขึ้นมา
           }}
