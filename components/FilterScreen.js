@@ -10,11 +10,25 @@ import {
   Modal,
 } from 'react-native';
 
+import { useFonts } from 'expo-font';
+
 const { width, height } = Dimensions.get('window');
 
 const FilterScreen = ({ visible, onClose, onApply }) => {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const slideAnim = useState(new Animated.Value(width))[0]; // ⬅ เริ่มนอกจอด้านซ้าย
+
+  const [fontsLoaded] = useFonts({
+    'PromptMedium': require('../assets/Prompt-Medium.ttf'),
+    'PromptLight': require('../assets/Prompt-Light.ttf'),
+  });
+  
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  if (!fontsLoaded) return null;
 
   const filterOptions = [
     'ใกล้หมดอายุ',
@@ -56,7 +70,9 @@ const FilterScreen = ({ visible, onClose, onApply }) => {
 
         {/* กล่องกรองเลื่อนจากซ้าย */}
         <Animated.View style={[styles.content, { right: slideAnim }]}>
-          <Text style={styles.header}>ค้นหาแบบละเอียด</Text>
+          <Text style={[styles.header, { fontFamily: 'Prompt-Medium' }]}>
+            ค้นหาแบบละเอียด
+          </Text>
 
           <View style={styles.filterGroup}>
             {filterOptions.map((option, index) => (
@@ -71,6 +87,7 @@ const FilterScreen = ({ visible, onClose, onApply }) => {
                 <Text
                   style={{
                     color: selectedFilters.includes(option) ? '#fff' : '#333',
+                    fontFamily: 'PromptLight',
                   }}
                 >
                   {option}

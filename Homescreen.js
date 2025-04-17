@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';  // เพิ่
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faShrimp } from '@fortawesome/free-solid-svg-icons/faShrimp'
@@ -26,22 +27,21 @@ import CalendarScreen from './components/CalendarScreen';
 import EditProduct from './components/EditProduct'; 
 import CouponDetailScreen from "./components/CouponDetailScreen";
 import SearchScreen from './components/SearchScreen';
-import FilterScreen from './components/FilterScreen';  // ตรวจสอบให้แน่ใจว่าเส้นทางถูกต้อง
 import ExpirationScreen from './components/ExpirationScreen';
 import CouponScreen from './components/CouponScreen';
 import NotiScreen from './components/NotiScreen';
-import CareScreen from './Category/CareScreen';
-import ChemicalScreen from './Category/ChemicalScreen';
-import FreshfoodScreen from './Category/FreshfoodScreen';
-import MedicalScreen from './Category/MedicalScreen';
-import Category from './Category/PetfoodScreen'; 
-import ProcessedScreen from './Category/ProcessedScreen';
-import VegFruitsScreen from './Category/VegFruitsScreen';
 import Banner from './components/Banner';
 
+import FreshfoodScreen from './Category/FreshfoodScreen';
+import VegFruitsScreen from './Category/VegFruitsScreen';
+import MedicalScreen from './Category/MedicalScreen';
+import ProcessedScreen from './Category/ProcessedScreen';
+import ChemicalScreen from './Category/ChemicalScreen';
+import PetfoodScreen from './Category/PetfoodScreen'; 
+import CareScreen from './Category/CareScreen';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();  // สร้าง Stack Navigator
+const Stack = createStackNavigator();  
 const {width} = Dimensions.get('window');
 
 // HomeScreenComponent
@@ -92,15 +92,6 @@ function HomeScreenComponent() {
               <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
             </TouchableOpacity>  
           
-          <TouchableOpacity style={styles.filterButton}
-                            onPress={() => setFilterVisible(true)}>
-              <Icon name="options-outline" size={26} color=" #E9E8E8" />
-          </TouchableOpacity>
-          <FilterScreen
-            visible={filterVisible}
-            onClose={() => setFilterVisible(false)}
-            onApply={handleApplyFilters}
-        />
         </View>
 
         <View style={styles.PromotionRow}>
@@ -114,43 +105,28 @@ function HomeScreenComponent() {
         </View>
 
         <View style ={{flexDirection: 'row',marginTop: 5,}}>
-
-        <View style={{ alignItems: 'center'}}>
-          <View
-            style={{
-              width: 80, // กำหนดขนาดวงกลม
-              height: 80, 
-              borderRadius: 40, // ทำให้เป็นวงกลม
-              backgroundColor: "#9D0300", 
-              justifyContent: "center",
-              alignItems: "center",
-              marginLeft: 20,
-              marginRight: 5
-            }}> 
-            <FontAwesomeIcon icon={faShrimp} size={45} color="white"/>  
-          </View>
-            <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>อาหารสด</Text>
-        </View>
-          
-          <View style={{ alignItems: 'center'}}>
-            <View
-              style={{
-                width: 80, // กำหนดขนาดวงกลม
-                height: 80, 
-                borderRadius: 40, // ทำให้เป็นวงกลม
-                backgroundColor: "#9D0300", 
-                justifyContent: "center",
-                alignItems: "center",
-                marginHorizontal: 5
-              }}>
-              <FontAwesomeIcon icon={faCarrot} size={45} color="white"/>
+          <TouchableOpacity onPress={() => navigation.navigate('FreshfoodScreen')}>
+            <View style={{ alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 80, // กำหนดขนาดวงกลม
+                  height: 80, 
+                  borderRadius: 40, // ทำให้เป็นวงกลม
+                  backgroundColor: "#9D0300", 
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginLeft: 20,
+                  marginRight: 5
+                }}> 
+                <FontAwesomeIcon icon={faShrimp} size={45} color="white"/>  
+              </View>
+                <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>อาหารสด</Text>
             </View>
-            <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>ผักและผลไม้</Text>
-          </View>
+          </TouchableOpacity>
           
-          <View style={{ alignItems: 'center',}}>
-            <View
-              style={{
+          <TouchableOpacity onPress={() => navigation.navigate('VegFruitsScreen')}>
+            <View style={{ alignItems: 'center' }}>
+              <View style={{
                 width: 80,
                 height: 80,
                 borderRadius: 40,
@@ -159,80 +135,111 @@ function HomeScreenComponent() {
                 alignItems: "center",
                 marginHorizontal: 5
               }}>
-              <FontAwesomeIcon icon={faSuitcaseMedical} size={45} color="white" />
+                <FontAwesomeIcon icon={faCarrot} size={45} color="white"/>
+              </View>
+              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>ผักและผลไม้</Text>
             </View>
-              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>เวชภัณฑ์</Text>
-          </View>
+          </TouchableOpacity>
           
-          <View style={{ alignItems: 'center'}}>
-            <View
-              style={{
-                width: 80, // กำหนดขนาดวงกลม
-                height: 80, 
-                borderRadius: 40, // ทำให้เป็นวงกลม
-                backgroundColor: "#9D0300", 
+          <TouchableOpacity onPress={() => navigation.navigate('MedicalScreen')}>
+            <View style={{ alignItems: 'center' }}>
+              <View style={{
+                width: 80,
+                height: 80,
+                borderRadius: 40,
+                backgroundColor: "#9D0300",
+                justifyContent: "center",
+                alignItems: "center",
+                marginHorizontal: 5
+              }}>
+                <FontAwesomeIcon icon={faSuitcaseMedical} size={45} color="white"/>
+              </View>
+              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>เวชภัณฑ์</Text>
+            </View>
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => navigation.navigate('ProcessedScreen')}>
+            <View style={{ alignItems: 'center' }}>
+              <View style={{
+                width: 80,
+                height: 80,
+                borderRadius: 40,
+                backgroundColor: "#9D0300",
                 justifyContent: "center",
                 alignItems: "center",
                 marginLeft: 5,
                 marginRight: 20
               }}>
-              <FontAwesomeIcon icon={faJarWheat} size={45} color="white"/>
-            </View>
+                <FontAwesomeIcon icon={faJarWheat} size={45} color="white"/>
+              </View>
               <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>อาหารแปรรูป</Text>
-          </View>
+            </View>
+          </TouchableOpacity>
         </View>
 
         <View style ={{flexDirection: 'row', marginTop: 20}}>
-          <View style={{ alignItems: 'center'}}>
-            <View
-              style={{
-                width: 80, // กำหนดขนาดวงกลม
-                height: 80, 
-                borderRadius: 40, // ทำให้เป็นวงกลม
-                backgroundColor: "#9D0300", 
-                justifyContent: "center",
-                alignItems: "center",
-                marginLeft: 20,
-                marginRight: 5,
-              }}> 
-              <FontAwesomeIcon icon={faJugDetergent} size={45} color="white"/>  
+        <TouchableOpacity onPress={() => navigation.navigate('ChemicalScreen')}>
+          <View style={{ alignItems: 'center' }}>
+            <View style={{
+              width: 80,
+              height: 80,
+              borderRadius: 40,
+              backgroundColor: "#9D0300",
+              justifyContent: "center",
+              alignItems: "center",
+              marginLeft: 20,
+              marginRight: 5
+            }}>
+              <FontAwesomeIcon icon={faJugDetergent} size={45} color="white"/>
             </View>
-              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>เคมีภัณฑ์</Text>
+            <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>เคมีภัณฑ์</Text>
           </View>
+        </TouchableOpacity>
           
-          <View style={{ alignItems: 'center'}}>
-            <View
-              style={{
-                width: 80, // กำหนดขนาดวงกลม
-                height: 80, 
-                borderRadius: 40, // ทำให้เป็นวงกลม
-                backgroundColor: "#9D0300", 
-                justifyContent: "center",
-                alignItems: "center",
-                marginHorizontal: 5,
-              }}>
+        <TouchableOpacity onPress={() => navigation.navigate('PetfoodScreen')}>
+          <View style={{ alignItems: 'center' }}>
+            <View style={{
+              width: 80,
+              height: 80,
+              borderRadius: 40,
+              backgroundColor: "#9D0300",
+              justifyContent: "center",
+              alignItems: "center",
+              marginHorizontal: 5
+            }}>
               <FontAwesomeIcon icon={faBone} size={45} color="white"/>
             </View>
-              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>สำหรับสัตว์เลี้ยง</Text>
+            <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333' }}>สำหรับสัตว์เลี้ยง</Text>
           </View>
+        </TouchableOpacity>
           
-          <View style={{ alignItems: 'center', width: 100}}>
-            <View
-              style={{
-                width: 80, // กำหนดขนาดวงกลม
-                height: 80, 
-                borderRadius: 40, // ทำให้เป็นวงกลม
-                backgroundColor: "#9D0300", 
-                justifyContent: "center",
-                alignItems: "center",
-                marginHorizontal: 5,
-              }}>
-                <FontAwesomeIcon icon={faPumpSoap} size={45} color="white"/>
+        <TouchableOpacity onPress={() => navigation.navigate('CareScreen')}>
+        <View style={{ alignItems: 'center', width: 100 }}>
+          <View style={{
+            width: 80,
+            height: 80,
+            borderRadius: 40,
+            backgroundColor: "#9D0300",
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 5
+          }}>
+            <FontAwesomeIcon icon={faPumpSoap} size={45} color="white"/>
             </View>
-              <Text style={{ marginTop: 6, fontSize: 14, fontFamily: 'PromptMedium', color: '#333', textAlign: 'center',
-                    flexWrap: 'wrap' }}>ผลิตภัณฑ์ดูแลร่างกาย</Text>
+            <Text style={{
+              marginTop: 6,
+              fontSize: 14,
+              fontFamily: 'PromptMedium',
+              color: '#333',
+              textAlign: 'center',
+              flexWrap: 'wrap'
+            }}>
+              ผลิตภัณฑ์ดูแลร่างกาย
+            </Text>
           </View>
-        </View>
+        </TouchableOpacity>
+      </View>
+
         <View style={styles.CategoryRow}>
           <Text style={styles.CategoryText}>Expiration</Text>
         </View>
@@ -266,6 +273,18 @@ function HomeStack() {
           headerShown: false,
         }}
       />
+      <Stack.Screen 
+        name="SearchScreen" 
+        component={SearchScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen name="FreshfoodScreen" component={FreshfoodScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="VegFruitsScreen" component={VegFruitsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="MedicalScreen" component={MedicalScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ProcessedScreen" component={ProcessedScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ChemicalScreen" component={ChemicalScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="PetfoodScreen" component={PetfoodScreen}options={{ headerShown: false }}  />
+      <Stack.Screen name="CareScreen" component={CareScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
@@ -295,7 +314,7 @@ export default function Homescreen() {
             tabBarIcon: ({ color, size }) => (
               <Icon name="home-outline" size={size} color={color} />
             ),
-            tabBarLabelStyle: { fontFamily: 'Prompt', fontSize: 12 },
+            tabBarLabelStyle: { fontFamily: 'PromptMedium', fontSize: 12 },
             headerShown: false, // ไม่ให้แสดง header บนสุด
           }}
         />

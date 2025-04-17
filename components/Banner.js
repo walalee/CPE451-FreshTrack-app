@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, Image, FlatList, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+
 const { width } = Dimensions.get('window');
 const bannerWidth = width * 0.8;
 const bannerMargin = 10;
