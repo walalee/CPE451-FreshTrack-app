@@ -21,11 +21,7 @@ const FreshfoodScreen = () => {
 
   // ✅ ตัวเลือกฟิลเตอร์สำหรับอาหารสด (เนื้อสัตว์)
   const freshFoodFilters = [
-    'เนื้อหมู',
-    'เนื้อวัว',
-    'เนื้อไก่',
-    'เนื้อปลา',
-    'เนื้อแกะ', 
+    'อาหารสด',
   ];
 
   const [fontsLoaded] = useFonts({

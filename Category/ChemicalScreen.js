@@ -15,9 +15,7 @@ const ChemicalScreen = () => {
 
   // ตัวเลือกฟิลเตอร์สำหรับหมวดหมู่เคมีภัณฑ์
   const chemicalFilters = [
-    'น้ำยาล้างจาน',
-    'น้ำยาซักผ้า',
-    'น้ำยาทำความสะอาดพื้น',
+    'เคมีภัณฑ์',
   ];
 
   const handleApplyFilters = (selectedFilters) => {
