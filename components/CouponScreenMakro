@@ -6,7 +6,7 @@ import { useFonts } from 'expo-font';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-const CouponScreenLotus = () => {
+const CouponScreenBigC = () => {
     const [tab, setTab] = useState('all');
     const [coupons, setCoupons] = useState([]);
     const [ownedCouponsCount, setOwnedCouponsCount] = useState(0); 
@@ -68,7 +68,7 @@ const CouponScreenLotus = () => {
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
                     <Ionicons name="chevron-back" size={24} color="black" />
                 </TouchableOpacity>
-                <Text style={styles.title}>คูปองและโปรโมชั่น Tesco Lotus</Text>
+                <Text style={styles.title}>คูปองและโปรโมชั่น Makro</Text>
             </View>
 
             {/* แท็บเลือก */}
@@ -208,4 +208,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CouponScreenLotus;
+export default CouponScreenMakro;
