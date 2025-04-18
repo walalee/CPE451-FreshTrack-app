@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { useFonts } from 'expo-font';
 import { Dimensions } from 'react-native';
-
-
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import FilterScreen from '../components/FilterScreen';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const FreshfoodScreen = () => {
   const [searchText, setSearchText] = useState('');
@@ -23,15 +20,15 @@ const FreshfoodScreen = () => {
   };
 
   const [fontsLoaded] = useFonts({
-      PromptRegular: require('../assets/Prompt-Regular.ttf'),
-      PromptLight: require('../assets/Prompt-Light.ttf'),
-      PromptBold: require('../assets/Prompt-Bold.ttf'), 
-      PromptMedium: require('../assets/Prompt-Medium.ttf'),
-    });
-  
-    if (!fontsLoaded) {
-      return null;
-    }
+    PromptRegular: require('../assets/Prompt-Regular.ttf'),
+    PromptLight: require('../assets/Prompt-Light.ttf'),
+    PromptBold: require('../assets/Prompt-Bold.ttf'), 
+    PromptMedium: require('../assets/Prompt-Medium.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -40,21 +37,27 @@ const FreshfoodScreen = () => {
       <View style={styles.circleMiddleLeft} />
       <View style={styles.circleBottomRight} />
 
-        <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Icon name="arrow-back-outline" size={24} color="#000" />
-            </TouchableOpacity>
-            <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18 }}>
-                ผักและผลไม้
-            </Text> 
-        </View>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-back-outline" size={24} color="#000" />
+        </TouchableOpacity>
+        <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18 }}>
+          อาหารสด
+        </Text> 
+      </View>
 
-      
       {/* Search Bar and Filter Button */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#706A6A" />
-          <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="ค้นหาสินค้า"
+            placeholderTextColor="#706A6A"
+            value={searchText}
+            onChangeText={setSearchText}
+          />
         </View>
 
         <TouchableOpacity onPress={() => setFilterVisible(true)} style={styles.filterIconContainer}>
@@ -70,8 +73,7 @@ const FreshfoodScreen = () => {
           onApply={handleApplyFilters}
         />
       )}
-      </View>
-
+    </View>
   );
 };
 
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: 20, 
+    marginTop: 20,
   },
   headerText: {
     fontFamily: 'PromptMedium',
@@ -130,28 +132,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#E9E8E8',
     borderRadius: 10,
-    padding: 10,
+    paddingHorizontal: 10,
+    height: 45,
     flex: 1,
     marginRight: 10,
-
   },
-  searchText: {
+  searchInput: {
     fontFamily: 'PromptMedium',
     fontSize: 16,
-    color: '#706A6A',
+    color: '#000',
     marginLeft: 10,
+    flex: 1,
+    paddingVertical: 0,
+    height: 40,
   },
   filterIconContainer: {
     backgroundColor: '#E9E8E8',
     borderRadius: 10,
-    padding: 5, 
-    // marginLeft: 3, 
-  },
-  filterButton: {
-    backgroundColor: '#E9E8E8',
-    padding: 7,
-    borderRadius: 10,
-    alignItems: 'center',
+    padding: 5,
   },
 });
 
