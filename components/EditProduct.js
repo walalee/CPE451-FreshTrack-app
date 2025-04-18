@@ -1,8 +1,17 @@
-// สแกนบาร์โค้ดให้ได้
 import React, { useState } from "react";
-import {View,Text,TextInput,TouchableOpacity,StyleSheet,Image,Modal,ScrollView,} from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Modal,
+  ScrollView,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
+import { BarCodeScanner } from "expo-barcode-scanner";
 
 const EditProductScreen = ({ navigation }) => {
   const [productName, setProductName] = useState("");
@@ -11,13 +20,14 @@ const EditProductScreen = ({ navigation }) => {
   const [storageLocation, setStorageLocation] = useState("ช่องฟรีซตู้นี้");
   const [image, setImage] = useState(null);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+  const [scannerVisible, setScannerVisible] = useState(false);
 
   const categories = [
     "อาหารสด",
     "ผักและผลไม้",
     "ยาและอุปกรณ์ทางการแพทย์",
     "อาหารแปรรูป",
-    "เครื่องดื่ม",
+    "เคมีภัณฑ์",
     "สำหรับสัตว์เลี้ยง",
     "ผลิตภัณฑ์ดูแลร่างกาย",
   ];
@@ -33,6 +43,11 @@ const EditProductScreen = ({ navigation }) => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
+  };
+
+  const handleBarCodeScanned = ({ data }) => {
+    setProductName(data);
+    setScannerVisible(false);
   };
 
   return (
@@ -54,7 +69,7 @@ const EditProductScreen = ({ navigation }) => {
               <Icon name="camera-alt" type="material" color="#888" size={32} />
             )}
           </TouchableOpacity>
-          <TouchableOpacity style={styles.scanIcon}>
+          <TouchableOpacity style={styles.scanIcon} onPress={() => setScannerVisible(true)}>
             <Icon name="qr-code-scanner" type="material" color="#fff" size={24} />
           </TouchableOpacity>
         </View>
@@ -80,15 +95,23 @@ const EditProductScreen = ({ navigation }) => {
         <View style={styles.detailContainer}>
           <View style={styles.detailRow}>
             <Text style={styles.detailTitle}>วันหมดอายุ</Text>
-            <Text style={styles.detailValue}>{expiryDate}</Text>
+            <TextInput
+              style={styles.detailInput}
+              placeholder="00/00/00"
+              value={expiryDate}
+              onChangeText={setExpiryDate}
+            />
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailTitle}>สถานที่เก็บ</Text>
-            <Text style={styles.detailValue}>{storageLocation}</Text>
+            <TextInput
+              style={styles.detailInput}
+              placeholder="ตู้เย็น"
+              value={storageLocation}
+              onChangeText={setStorageLocation}
+            />
           </View>
         </View>
-
-        {/* ลบข้อความแนะนำการเก็บอาหารสดออกแล้ว */}
 
         <TouchableOpacity style={styles.saveButton}>
           <Text style={styles.saveButtonText}>Save Product</Text>
@@ -96,11 +119,7 @@ const EditProductScreen = ({ navigation }) => {
       </ScrollView>
 
       {/* หมวดหมู่ Modal */}
-      <Modal
-        visible={categoryModalVisible}
-        transparent={true}
-        animationType="slide"
-      >
+      <Modal visible={categoryModalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             {categories.map((category, index) => (
@@ -116,6 +135,22 @@ const EditProductScreen = ({ navigation }) => {
               </TouchableOpacity>
             ))}
           </View>
+        </View>
+      </Modal>
+
+      {/* Barcode Scanner Modal */}
+      <Modal visible={scannerVisible} transparent animationType="slide">
+        <View style={styles.scannerContainer}>
+          <BarCodeScanner
+            onBarCodeScanned={handleBarCodeScanned}
+            style={StyleSheet.absoluteFillObject}
+          />
+          <TouchableOpacity
+            style={styles.closeScannerButton}
+            onPress={() => setScannerVisible(false)}
+          >
+            <Text style={styles.closeScannerText}>ปิด</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
 
@@ -190,7 +225,12 @@ const styles = StyleSheet.create({
     borderBottomColor: "#E0E0E0",
   },
   detailTitle: { fontSize: 16, color: "#000" },
-  detailValue: { fontSize: 16, color: "#888" },
+  detailInput: {
+    flex: 1,
+    textAlign: "right",
+    fontSize: 16,
+    color: "#000",
+  },
   saveButton: {
     backgroundColor: "#A00000",
     borderRadius: 20,
@@ -229,7 +269,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
+  scannerContainer: {
+    flex: 1,
+    backgroundColor: "#000",
+    justifyContent: "flex-end",
+  },
+  closeScannerButton: {
+    backgroundColor: "#A00000",
+    padding: 12,
+    alignItems: "center",
+  },
+  closeScannerText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
 
 export default EditProductScreen;
-
