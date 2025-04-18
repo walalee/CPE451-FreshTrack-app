@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';  // เพิ่มการใช้งาน Stack.Navigator
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
-import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,6 +17,7 @@ import { faJugDetergent} from '@fortawesome/free-solid-svg-icons/faJugDetergent'
 import { faBone } from '@fortawesome/free-solid-svg-icons/faBone'
 import { faPumpSoap} from '@fortawesome/free-solid-svg-icons/faPumpSoap'
 import { useFonts } from 'expo-font';
+
 // Screens
 import AddProduct from './components/AddProduct';
 import ConvertUnit from './components/ConvertUnit';
@@ -247,37 +247,16 @@ function HomeScreenComponent() {
     </View>
   );
 };
-  
 
-
-// Stack Navigator สำหรับการจัดการหน้า EditProduct
+// Stack Navigator
 function HomeStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen 
-        name="Home" 
-        component={HomeScreenComponent} 
-        options={{
-          headerShown: false,
-        }} 
-      />
-      <Stack.Screen 
-        name="EditProduct" 
-        component={EditProduct}  // เพิ่ม EditProduct เข้ามาใน Stack
-        options={{ title: 'แก้ไขสินค้า', headerShown: false,}} 
-      />
-      <Stack.Screen 
-        name="Calendar" 
-        component={CalendarScreen}  
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen 
-        name="SearchScreen" 
-        component={SearchScreen} 
-        options={{ headerShown: false }} 
-      />
+      <Stack.Screen name="Home" component={HomeScreenComponent} options={{headerShown: false,}}/>
+      <Stack.Screen name="EditProduct" component={EditProduct} options={{ title: 'แก้ไขสินค้า', headerShown: false,}} />
+      <Stack.Screen name="Calendar" component={CalendarScreen}  options={{headerShown: false,}}/>
+      <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false }} />
+
       <Stack.Screen name="FreshfoodScreen" component={FreshfoodScreen} options={{ headerShown: false }} />
       <Stack.Screen name="VegFruitsScreen" component={VegFruitsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="MedicalScreen" component={MedicalScreen} options={{ headerShown: false }} />
