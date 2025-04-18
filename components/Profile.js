@@ -1,162 +1,231 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert, Clipboard, Modal, Button } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Clipboard,
+  Alert,
+  Modal,
+  Pressable,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-export default function UserProfile() {
-  const [friendId, setFriendId] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
-  const userId = "user12345678";
+const ProfileScreen = ({ navigation }) => {
+  const [nickname, setNickname] = useState("ชื่อเล่นของคุณ");
+  const [isEditing, setIsEditing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const userId = "user12345678"; // mock user ID
 
   const copyToClipboard = () => {
     Clipboard.setString(userId);
-    Alert.alert("คัดลอกแล้ว", "ID ถูกคัดลอกไปยังคลิปบอร์ดแล้ว");
-  };
-
-  const addFriend = () => {
-    if (friendId.trim()) {
-      Alert.alert("เพิ่มเพื่อนสำเร็จ", `เพิ่มเพื่อนด้วย ID: ${friendId}`);
-      setFriendId('');
-      setModalVisible(false);
-    } else {
-      Alert.alert("ข้อผิดพลาด", "กรุณาใส่ ID ผู้ใช้ก่อนเพิ่มเพื่อน");
-    }
+    Alert.alert("คัดลอกแล้ว", "ID ถูกคัดลอกไปยังคลิปบอร์ด");
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <TouchableOpacity>
-          <Ionicons name="chevron-back-outline" size={24} color="black" />
+      {/* ปุ่มย้อนกลับและหัวข้อ */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back-outline" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.header}>โปรไฟล์ผู้ใช้</Text>
+        <Text style={styles.title}>โปรไฟล์ผู้ใช้</Text>
       </View>
+
+      {/* Icon โปรไฟล์ */}
       <View style={styles.profileIconContainer}>
-        <View style={styles.profileIcon}>
-          <Ionicons name="person-outline" size={40} color="#fff" />
-        </View>
+        <Ionicons
+          name="person-outline"
+          size={64}
+          color="white"
+          style={styles.profileIcon}
+        />
       </View>
-      <View style={styles.userInfo}>
-        <Text style={styles.label}>ID :</Text>
-        <TextInput style={styles.userId} value={userId} editable={false} />
+
+      {/* user ID + ปุ่มก็อป */}
+      <View style={styles.userIdContainer}>
+        <Text style={styles.userIdLabel}>ID :</Text>
+        <Text style={styles.userId}>{userId}</Text>
         <TouchableOpacity onPress={copyToClipboard}>
-          <Ionicons name="copy" size={15} color="gray" style={styles.copyIcon} />
+          <Ionicons
+            name="copy-outline"
+            size={18}
+            color="#888"
+            style={{ marginLeft: 5 }}
+          />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={() => setModalVisible(true)}>
-        <Text style={styles.addButtonText}>เพิ่มเพื่อน</Text>
+
+      {/* ชื่อเล่น */}
+      <Text style={styles.label}>ชื่อเล่น</Text>
+      <View style={styles.inputWrapper}>
+        <TextInput
+          value={nickname}
+          onChangeText={setNickname}
+          editable={isEditing}
+          style={styles.input}
+        />
+        <TouchableOpacity onPress={() => setIsEditing(!isEditing)}>
+          <Ionicons name="pencil-outline" size={20} color="#000" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Email */}
+      <Text style={styles.label}>E-mail</Text>
+      <View style={styles.inputWrapper}>
+        <TextInput
+          placeholder="your@email.com"
+          style={styles.input}
+          editable={false}
+        />
+      </View>
+
+      {/* Password */}
+      <Text style={styles.label}>Password</Text>
+      <View style={styles.inputWrapper}>
+        <TextInput
+          placeholder="********"
+          secureTextEntry
+          style={styles.input}
+          editable={false}
+        />
+      </View>
+
+      {/* ปุ่มเพิ่มเพื่อน */}
+      <TouchableOpacity style={styles.button} onPress={() => setShowModal(true)}>
+        <Text style={styles.buttonText}>เพิ่มเพื่อน</Text>
       </TouchableOpacity>
 
-      {/* Modal */}
+      {/* Modal กรอก ID เพื่อน */}
       <Modal
+        visible={showModal}
+        transparent
         animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
+        onRequestClose={() => setShowModal(false)}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <TextInput
-              style={styles.input}
-              placeholder="ใส่ ID ผู้ใช้"
-              value={friendId}
-              onChangeText={setFriendId}
-            />
-            <View style={styles.modalButtons}>
-              <Button title="ย้อนกลับ" onPress={() => setModalVisible(false)} color="red" />
-              <Button title="เพิ่มเพื่อน" onPress={addFriend} color="green" />
-            </View>
-          </View>
-        </View>
+        <Pressable
+          style={styles.modalOverlay}
+          onPress={() => setShowModal(false)}
+        >
+          <Pressable
+            style={styles.slideUpModal}
+            onPress={(e) => e.stopPropagation()}
+          >
+            <Text style={styles.modalText}>กรอก ID เพื่อนของคุณเพื่อเพิ่มเพื่อน</Text>
+            <TextInput style={styles.modalInput} placeholder="Friend's ID" />
+            <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
+              <Text style={styles.buttonText}>เพิ่มเพื่อน</Text>
+            </TouchableOpacity>
+          </Pressable>
+        </Pressable>
       </Modal>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingTop: 50, // ไม่ให้ชิดกับ Status Bar
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    marginLeft: 10,
-    marginBottom: 20,
+    padding: 25,
+    backgroundColor: "#fff",
   },
   header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  title: {
     fontSize: 18,
-    marginLeft: 5,
+    fontWeight: "bold",
+    marginLeft: 10,
   },
   profileIconContainer: {
-    marginBottom: 25,
+    alignItems: "center",
+    marginBottom: 10,
   },
   profileIcon: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#9D0300',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#990000",
+    borderRadius: 50,
+    padding: 20,
   },
-  userInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 70,
+  userIdContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
   },
-  label: {
-    fontSize: 16,
+  userIdLabel: {
+    fontWeight: "bold",
+    color: "#555",
   },
   userId: {
-    marginLeft: 5,
-    padding: 5,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    backgroundColor: '#eee',
-    minWidth: 100,
+    marginHorizontal: 5,
+    color: "#555",
   },
-  copyIcon: {
-    marginLeft: 5,
+  label: {
+    marginBottom: 5,
+    fontWeight: "500",
+  },
+  inputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#e0e0e0",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    height: 50,
+    width: "100%",
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    width: '80%',
-    marginBottom: 20,
-    backgroundColor: '#f9f9f9',
-  },
-  addButton: {
-    backgroundColor: '#9f0300',
-    paddingVertical: 10,
-    paddingHorizontal: 40,
-    borderRadius: 20,
-    top: 150
-  },
-  addButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    fontSize: 14,
+    color: "#000",
   },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    width: '80%',
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  button: {
+    backgroundColor: "#990000",
+    borderRadius: 30,
+    paddingVertical: 12,
+    paddingHorizontal: 45,
+    alignSelf: "center",
     marginTop: 20,
   },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    justifyContent: "flex-end",
+  },
+  slideUpModal: {
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    padding: 25,
+    alignItems: "center",
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 50,
+  },
+  modalInput: {
+    backgroundColor: "#e0e0e0",
+    width: "80%",
+    height: 45,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+  },
 });
+
+export default ProfileScreen;
