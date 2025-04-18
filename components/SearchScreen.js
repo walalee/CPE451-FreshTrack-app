@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Dimensions } from 'react-native';
-
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import FilterScreen from './FilterScreen';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
@@ -16,11 +14,10 @@ const SearchScreen = () => {
   const handleApplyFilters = (selectedFilters) => {
     console.log('Filters applied:', selectedFilters);
     setFilterVisible(false);
-    // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Red Circles Background */}
       <View style={styles.circleTopRight} />
       <View style={styles.circleMiddleLeft} />
@@ -30,7 +27,14 @@ const SearchScreen = () => {
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#706A6A" />
-          <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="ค้นหาสินค้า..."
+            placeholderTextColor="#706A6A"
+            value={searchText}
+            onChangeText={setSearchText}
+            underlineColorAndroid="transparent"
+          />
         </View>
 
         <TouchableOpacity onPress={() => setFilterVisible(true)} style={styles.filterIconContainer}>
@@ -46,8 +50,7 @@ const SearchScreen = () => {
           onApply={handleApplyFilters}
         />
       )}
-      </View>
-
+    </SafeAreaView>
   );
 };
 
@@ -85,23 +88,11 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     backgroundColor: '#8B0000',
   },
-  header: {
-
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 50, // Adjusted to move down by 50
-  },
-  headerText: {
-    fontFamily: 'PromptMedium',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginLeft: 10,
-  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 10,
   },
   searchBar: {
     flexDirection: 'row',
@@ -111,25 +102,19 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     marginRight: 10,
-    marginTop: 5
   },
-  searchText: {
+  searchInput: {
     fontFamily: 'PromptMedium',
     fontSize: 16,
-    color: '#706A6A',
+    color: '#000',
     marginLeft: 10,
+    flex: 1,
+    padding: 0,
   },
   filterIconContainer: {
     backgroundColor: '#E9E8E8',
     borderRadius: 10,
-    padding: 5, 
-    // marginLeft: 3, 
-  },
-  filterButton: {
-    backgroundColor: '#E9E8E8',
-    padding: 7,
-    borderRadius: 10,
-    alignItems: 'center',
+    padding: 5,
   },
 });
 
