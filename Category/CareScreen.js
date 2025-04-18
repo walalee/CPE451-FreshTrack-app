@@ -13,6 +13,15 @@ const CareScreen = () => {
   const navigation = useNavigation(); 
   const [filterVisible, setFilterVisible] = useState(false);
 
+  // ตัวเลือกฟิลเตอร์สำหรับหมวดหมู่ผลิตภัณฑ์ดูแลร่างกาย
+  const bodyCareFilters = [
+    'สกินแคร์',
+    'แฮร์แคร์',
+    'อุปกรณ์สุขอนามัย',
+    'บอดี้โลชั่น',
+    'ครีมกันแดด',
+  ];
+
   const handleApplyFilters = (selectedFilters) => {
     console.log('Filters applied:', selectedFilters);
     setFilterVisible(false);
@@ -32,12 +41,12 @@ const CareScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Red Circles Background */}
+      {/* พื้นหลังวงกลมสีแดง */}
       <View style={styles.circleTopRight} />
       <View style={styles.circleMiddleLeft} />
       <View style={styles.circleBottomRight} />
 
-      {/* Header with Back button */}
+      {/* ส่วนหัวที่มีปุ่มย้อนกลับ */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back-outline" size={24} color="#000" />
@@ -47,7 +56,7 @@ const CareScreen = () => {
         </Text> 
       </View>
 
-      {/* Search Bar and Filter Button */}
+      {/* ช่องค้นหาและปุ่มฟิลเตอร์ */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#706A6A" />
@@ -65,12 +74,13 @@ const CareScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Filter Modal */}
+      {/* Modal ฟิลเตอร์ */}
       {filterVisible && (
         <FilterScreen
           visible={filterVisible}
           onClose={() => setFilterVisible(false)}
           onApply={handleApplyFilters}
+          filterOptions={bodyCareFilters}  // ส่งตัวเลือกฟิลเตอร์ใหม่
         />
       )}
     </View>

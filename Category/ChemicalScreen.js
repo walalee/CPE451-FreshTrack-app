@@ -13,6 +13,13 @@ const ChemicalScreen = () => {
   const navigation = useNavigation(); 
   const [filterVisible, setFilterVisible] = useState(false);
 
+  // ตัวเลือกฟิลเตอร์สำหรับหมวดหมู่เคมีภัณฑ์
+  const chemicalFilters = [
+    'น้ำยาล้างจาน',
+    'น้ำยาซักผ้า',
+    'น้ำยาทำความสะอาดพื้น',
+  ];
+
   const handleApplyFilters = (selectedFilters) => {
     console.log('Filters applied:', selectedFilters);
     setFilterVisible(false);
@@ -71,6 +78,7 @@ const ChemicalScreen = () => {
           visible={filterVisible}
           onClose={() => setFilterVisible(false)}
           onApply={handleApplyFilters}
+          filterOptions={chemicalFilters} // ส่งตัวเลือกฟิลเตอร์ใหม่
         />
       )}
     </View>

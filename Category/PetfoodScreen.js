@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import { useFonts } from 'expo-font';
-import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import FilterScreen from '../components/FilterScreen';
@@ -13,12 +12,6 @@ const PetfoodScreen = () => {
   const navigation = useNavigation(); 
   const [filterVisible, setFilterVisible] = useState(false);
 
-  const handleApplyFilters = (selectedFilters) => {
-    console.log('Filters applied:', selectedFilters);
-    setFilterVisible(false);
-    // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
-  };
-
   const [fontsLoaded] = useFonts({
     PromptRegular: require('../assets/Prompt-Regular.ttf'),
     PromptLight: require('../assets/Prompt-Light.ttf'),
@@ -26,28 +19,43 @@ const PetfoodScreen = () => {
     PromptMedium: require('../assets/Prompt-Medium.ttf'),
   });
 
+  const handleApplyFilters = (selectedFilters) => {
+    console.log('Filters applied:', selectedFilters);
+    setFilterVisible(false);
+    // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
+  };
+
+  // ✅ ตัวเลือกฟิลเตอร์สำหรับหมวดอาหารสัตว์เลี้ยง
+  const petfoodFilters = [
+    'อาหารแมว',
+    'อาหารสุนัข',
+    'อาหารปลา',
+    'อาหารแห้ง',
+    'ขนมสัตว์เลี้ยง',
+  ];
+
   if (!fontsLoaded) {
     return null;
   }
 
   return (
     <View style={styles.container}>
-      {/* Red Circles Background */}
+      {/* พื้นหลังวงกลมแดง */}
       <View style={styles.circleTopRight} />
       <View style={styles.circleMiddleLeft} />
       <View style={styles.circleBottomRight} />
 
-      {/* Header */}
+      {/* หัวข้อ + ปุ่มย้อนกลับ */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back-outline" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18 }}>
+        <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18, marginLeft: 10 }}>
           สำหรับสัตว์เลี้ยง
         </Text> 
       </View>
 
-      {/* Search Bar and Filter Button */}
+      {/* แถบค้นหา + ปุ่มฟิลเตอร์ */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#706A6A" />
@@ -65,12 +73,13 @@ const PetfoodScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Filter Modal */}
+      {/* แสดงกล่องฟิลเตอร์ */}
       {filterVisible && (
         <FilterScreen
           visible={filterVisible}
           onClose={() => setFilterVisible(false)}
           onApply={handleApplyFilters}
+          filterOptions={petfoodFilters} // ✅ ส่งตัวเลือกฟิลเตอร์
         />
       )}
     </View>
@@ -116,11 +125,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     marginTop: 20, 
-  },
-  headerText: {
-    fontFamily: 'PromptMedium',
-    fontSize: 18,
-    marginLeft: 10,
   },
   searchContainer: {
     flexDirection: 'row',

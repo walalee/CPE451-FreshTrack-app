@@ -19,6 +19,15 @@ const FreshfoodScreen = () => {
     // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
   };
 
+  // ✅ ตัวเลือกฟิลเตอร์สำหรับอาหารสด (เนื้อสัตว์)
+  const freshFoodFilters = [
+    'เนื้อหมู',
+    'เนื้อวัว',
+    'เนื้อไก่',
+    'เนื้อปลา',
+    'เนื้อแกะ', 
+  ];
+
   const [fontsLoaded] = useFonts({
     PromptRegular: require('../assets/Prompt-Regular.ttf'),
     PromptLight: require('../assets/Prompt-Light.ttf'),
@@ -71,6 +80,7 @@ const FreshfoodScreen = () => {
           visible={filterVisible}
           onClose={() => setFilterVisible(false)}
           onApply={handleApplyFilters}
+          filterOptions={freshFoodFilters} // ✅ ส่งตัวเลือกฟิลเตอร์ใหม่
         />
       )}
     </View>

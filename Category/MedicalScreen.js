@@ -19,6 +19,15 @@ const MedicalScreen = () => {
     // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
   };
 
+  // ✅ ตัวเลือกฟิลเตอร์สำหรับหมวดเวชภัณฑ์
+  const medicalFilters = [
+    'ยาสามัญประจำบ้าน',
+    'เวชภัณฑ์สำหรับเด็ก',
+    'เวชภัณฑ์สำหรับผู้สูงอายุ',
+    'ยารักษาโรคทั่วไป',
+    'เครื่องมือแพทย์',
+  ];
+
   const [fontsLoaded] = useFonts({
     PromptRegular: require('../assets/Prompt-Regular.ttf'),
     PromptLight: require('../assets/Prompt-Light.ttf'),
@@ -32,22 +41,22 @@ const MedicalScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Red Circles Background */}
+      {/* พื้นหลังวงกลมแดง */}
       <View style={styles.circleTopRight} />
       <View style={styles.circleMiddleLeft} />
       <View style={styles.circleBottomRight} />
 
-      {/* Header */}
+      {/* หัวข้อ + ปุ่มย้อนกลับ */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back-outline" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18 }}>
+        <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18, marginLeft: 10 }}>
           เวชภัณฑ์
         </Text> 
       </View>
 
-      {/* Search Bar and Filter Button */}
+      {/* แถบค้นหา + ปุ่มฟิลเตอร์ */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#706A6A" />
@@ -65,12 +74,13 @@ const MedicalScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Filter Modal */}
+      {/* แสดงกล่องฟิลเตอร์ */}
       {filterVisible && (
         <FilterScreen
           visible={filterVisible}
           onClose={() => setFilterVisible(false)}
           onApply={handleApplyFilters}
+          filterOptions={medicalFilters} // ✅ ส่งตัวเลือกฟิลเตอร์
         />
       )}
     </View>
