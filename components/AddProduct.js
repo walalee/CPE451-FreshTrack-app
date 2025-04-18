@@ -8,10 +8,17 @@ import {
   Image,
   Modal,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import {
+  useFonts,
+  Prompt_400Regular,
+  Prompt_500Medium,
+  Prompt_700Bold,
+} from "@expo-google-fonts/prompt";
 
 const EditProductScreen = ({ navigation }) => {
   const [productName, setProductName] = useState("");
@@ -21,6 +28,12 @@ const EditProductScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const [scannerVisible, setScannerVisible] = useState(false);
+
+  const [fontsLoaded] = useFonts({
+    Prompt_400Regular,
+    Prompt_500Medium,
+    Prompt_700Bold,
+  });
 
   const categories = [
     "อาหารสด",
@@ -49,6 +62,10 @@ const EditProductScreen = ({ navigation }) => {
     setProductName(data);
     setScannerVisible(false);
   };
+
+  if (!fontsLoaded) {
+    return <ActivityIndicator size="large" color="#A00000" style={{ flex: 1 }} />;
+  }
 
   return (
     <View style={styles.container}>
@@ -113,7 +130,6 @@ const EditProductScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {/* ข้อความคลิกดูตารางแนะนำ */}
         <TouchableOpacity onPress={() => {/* ใส่ navigation หรือ modal ได้ที่นี่ */}}>
           <Text style={styles.infoText}>
             ดูตารางแนะนำการเก็บอาหารสด คลิก
@@ -125,7 +141,7 @@ const EditProductScreen = ({ navigation }) => {
         </TouchableOpacity>
       </ScrollView>
 
-      {/* หมวดหมู่ Modal */}
+      {/* Modal: เลือกหมวดหมู่ */}
       <Modal visible={categoryModalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -145,7 +161,7 @@ const EditProductScreen = ({ navigation }) => {
         </View>
       </Modal>
 
-      {/* Barcode Scanner Modal */}
+      {/* Modal: แสกนบาร์โค้ด */}
       <Modal visible={scannerVisible} transparent animationType="slide">
         <View style={styles.scannerContainer}>
           <BarCodeScanner
@@ -166,6 +182,8 @@ const EditProductScreen = ({ navigation }) => {
   );
 };
 
+const fontFamily = "Prompt_400Regular";
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#F5F5F5", paddingTop: 20 },
   header: {
@@ -176,9 +194,9 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ddd",
     marginTop: 20,
   },
-  headerTitle: { fontSize: 18, fontWeight: "bold", marginLeft: 10 },
+  headerTitle: { fontSize: 18, fontWeight: "bold", marginLeft: 10, fontFamily },
   content: { padding: 20 },
-  label: { fontSize: 16, fontWeight: "bold", marginBottom: 5 },
+  label: { fontSize: 16, fontWeight: "bold", marginBottom: 5, fontFamily },
   imageContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -207,6 +225,7 @@ const styles = StyleSheet.create({
     padding: 14,
     fontSize: 16,
     marginBottom: 15,
+    fontFamily,
   },
   categoryContainer: {
     flexDirection: "row",
@@ -217,7 +236,7 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 15,
   },
-  categoryText: { fontSize: 16, color: "#000" },
+  categoryText: { fontSize: 16, color: "#000", fontFamily },
   detailContainer: {
     backgroundColor: "#fff",
     borderRadius: 5,
@@ -231,12 +250,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#E0E0E0",
   },
-  detailTitle: { fontSize: 16, color: "#000" },
+  detailTitle: { fontSize: 16, color: "#000", fontFamily },
   detailInput: {
     flex: 1,
     textAlign: "right",
     fontSize: 16,
     color: "#000",
+    fontFamily,
   },
   saveButton: {
     backgroundColor: "#A00000",
@@ -245,7 +265,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
-  saveButtonText: { fontSize: 18, color: "#fff", fontWeight: "bold" },
+  saveButtonText: { fontSize: 18, color: "#fff", fontWeight: "bold", fontFamily },
   bottomBar: {
     backgroundColor: "#A00000",
     height: 80,
@@ -275,6 +295,7 @@ const styles = StyleSheet.create({
   categoryButtonText: {
     fontSize: 16,
     textAlign: "center",
+    fontFamily,
   },
   scannerContainer: {
     flex: 1,
@@ -290,6 +311,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+    fontFamily,
   },
   infoText: {
     fontSize: 14,
@@ -297,6 +319,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
     textDecorationLine: "underline",
+    fontFamily,
   },
 });
 
