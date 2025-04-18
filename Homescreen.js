@@ -16,6 +16,7 @@ import { faBell } from '@fortawesome/free-solid-svg-icons/faBell'
 import { faJugDetergent} from '@fortawesome/free-solid-svg-icons/faJugDetergent'
 import { faBone } from '@fortawesome/free-solid-svg-icons/faBone'
 import { faPumpSoap} from '@fortawesome/free-solid-svg-icons/faPumpSoap'
+
 import { useFonts } from 'expo-font';
 
 // Screens
@@ -25,10 +26,8 @@ import Note from './components/Note';
 import Profile from './components/Profile';
 import CalendarScreen from './components/CalendarScreen';
 import EditProduct from './components/EditProduct'; 
-import CouponDetailScreen from "./components/CouponDetailScreen";
 import SearchScreen from './components/SearchScreen';
 import ExpirationScreen from './components/ExpirationScreen';
-import CouponScreen from './components/CouponScreen';
 import NotiScreen from './components/NotiScreen';
 import Banner from './components/Banner';
 
