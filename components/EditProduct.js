@@ -13,6 +13,7 @@ import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useFonts, Prompt_400Regular, Prompt_700Bold } from "@expo-google-fonts/prompt";
+import { useFonts } from 'expo-font';
 
 const EditProductScreen = ({ navigation }) => {
   const [productName, setProductName] = useState("");

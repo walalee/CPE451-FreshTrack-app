@@ -13,6 +13,7 @@ import {
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { useFonts } from 'expo-font';
 import {
   useFonts,
   Prompt_400Regular,
