@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 const LoginScreen = ({ navigation }) => {
@@ -8,10 +8,16 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* ส่วนหัวสีแดง */}
+      
+      <View style={styles.container}>
       <LinearGradient colors={["#9D0300", "#9D0300"]} style={styles.header}>
-        {/* ที่โลโก้ (คุณสามารถเพิ่มรูปตรงนี้ได้) */}
-      </LinearGradient>
+       </LinearGradient>
+      <Image
+        source={require('./assets/logoWhite.png')}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+    </View>
 
       {/* ส่วนขาวตรงกลาง */}
       <View style={styles.content}>
@@ -58,13 +64,18 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.85,
     backgroundColor: "#9D0300",
   },
   header: {
     height: "33%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  logo: {
+    width: 400, // ปรับขนาดโลโก้ตามต้องการ
+    height: 200,
+    top: -50,
   },
   content: {
     flex: 1,

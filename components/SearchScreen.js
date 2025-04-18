@@ -1,38 +1,56 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-//import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import FilterScreen from './FilterScreen';
+
+const { width } = Dimensions.get('window');
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
-  //const navigation = useNavigation(); 
+  const navigation = useNavigation(); 
+  const [filterVisible, setFilterVisible] = useState(false);
+
+  const handleApplyFilters = (selectedFilters) => {
+    console.log('Filters applied:', selectedFilters);
+    setFilterVisible(false);
+  };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Red Circles Background */}
       <View style={styles.circleTopRight} />
       <View style={styles.circleMiddleLeft} />
       <View style={styles.circleBottomRight} />
       
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={26} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>ค้นหาสินค้า</Text>
-      </View>
-      
       {/* Search Bar and Filter Button */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#706A6A" />
-          <Text style={styles.searchText}>คลิกเพื่อค้นหาสินค้า</Text>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="ค้นหาสินค้า..."
+            placeholderTextColor="#706A6A"
+            value={searchText}
+            onChangeText={setSearchText}
+            underlineColorAndroid="transparent"
+          />
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('FilterScreen')} style={styles.filterIconContainer}>
-          <Icon name="options-outline" size={26} color="black" />
+
+        <TouchableOpacity onPress={() => setFilterVisible(true)} style={styles.filterIconContainer}>
+          <Icon name="options-outline" size={31} color="black" />
         </TouchableOpacity>
       </View>
-    </View>
+
+      {/* Filter Modal */}
+      {filterVisible && (
+        <FilterScreen
+          visible={filterVisible}
+          onClose={() => setFilterVisible(false)}
+          onApply={handleApplyFilters}
+        />
+      )}
+    </SafeAreaView>
   );
 };
 
@@ -70,48 +88,33 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     backgroundColor: '#8B0000',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 50, // Adjusted to move down by 50
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginLeft: 10,
-  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 10,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#E9E8E8',
     borderRadius: 10,
     padding: 10,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
     flex: 1,
     marginRight: 10,
   },
-  searchText: {
+  searchInput: {
+    fontFamily: 'PromptMedium',
     fontSize: 16,
-    color: '#706A6A',
+    color: '#000',
     marginLeft: 10,
+    flex: 1,
+    padding: 0,
   },
   filterIconContainer: {
-    backgroundColor: 'white',
+    backgroundColor: '#E9E8E8',
     borderRadius: 10,
-    padding: 10,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    padding: 5,
   },
 });
 
