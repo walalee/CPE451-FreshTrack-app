@@ -2,15 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-const CouponScreen = () => {
+const CouponScreenLotus = () => {
     const [tab, setTab] = useState('all');
     const [coupons, setCoupons] = useState([]);
     const [ownedCouponsCount, setOwnedCouponsCount] = useState(0); 
     const [isLoading, setIsLoading] = useState(true);
     const navigation = useNavigation();
+
+    const [fontsLoaded] = useFonts({
+        PromptRegular: require('./assets/Prompt-Regular.ttf'),
+        PromptLight: require('./assets/Prompt-Light.ttf'),
+        PromptBold: require('./assets/Prompt-Bold.ttf'), 
+        PromptMedium: require('./assets/Prompt-Medium.ttf'),
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     useEffect(() => {
         fetchCoupons();
@@ -42,7 +54,7 @@ const CouponScreen = () => {
 
     useEffect(() => {
         if (tab === 'mine') {
-            setCoupons(coupons.filter(c => c.owned));
+            setCoupons(prevCoupons => prevCoupons.filter(c => c.owned));
         } else {
             fetchCoupons();
         }
@@ -148,7 +160,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: 10,
         marginTop: 15,
-        // backgroundColor: 'darkred',
         padding: 10,
         borderRadius: 15,
     },
@@ -172,10 +183,10 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         marginBottom: 10,
-        flexDirection: 'row', // จัดเรียงในแนวนอน
-        justifyContent: 'space-between', // ให้สองฝั่งชิดขอบ
-        alignItems: 'center', // จัดให้อยู่ตรงกลางแนวตั้ง
-        paddingHorizontal: 25, // เพิ่มระยะห่างขอบ
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 25,
     },
 
     ownedCouponText: {
