@@ -1,27 +1,22 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Modal,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal, ScrollView } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { useFonts } from 'expo-font';
-import {
-  useFonts,
-  Prompt_400Regular,
-  Prompt_500Medium,
-  Prompt_700Bold,
-} from "@expo-google-fonts/prompt";
+import { useFonts } from "expo-font";
 
-const EditProductScreen = ({ navigation }) => {
+const AddProductScreen = ({ navigation }) => {
+  const [fontsLoaded] = useFonts({
+    PromptRegular: require('./assets/Prompt-Regular.ttf'),
+    PromptLight: require('./assets/Prompt-Light.ttf'),
+    PromptBold: require('./assets/Prompt-Bold.ttf'),
+    PromptMedium: require('./assets/Prompt-Medium.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   const [productName, setProductName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("หมวดหมู่");
   const [expiryDate, setExpiryDate] = useState("00/00/00");
@@ -29,12 +24,6 @@ const EditProductScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const [scannerVisible, setScannerVisible] = useState(false);
-
-  const [fontsLoaded] = useFonts({
-    Prompt_400Regular,
-    Prompt_500Medium,
-    Prompt_700Bold,
-  });
 
   const categories = [
     "อาหารสด",
@@ -64,9 +53,10 @@ const EditProductScreen = ({ navigation }) => {
     setScannerVisible(false);
   };
 
-  if (!fontsLoaded) {
-    return <ActivityIndicator size="large" color="#A00000" style={{ flex: 1 }} />;
-  }
+  const handleClickGuide = () => {
+    // ฟังก์ชันสำหรับเปิดตารางแนะนำการเก็บอาหารสด
+    navigation.navigate("FoodStorageGuide");  // สมมติว่าเป็นหน้าต่างใหม่ที่แสดงตารางแนะนำการเก็บอาหารสด
+  };
 
   return (
     <View style={styles.container}>
@@ -131,18 +121,17 @@ const EditProductScreen = ({ navigation }) => {
           </View>
         </View>
 
-        <TouchableOpacity onPress={() => {/* ใส่ navigation หรือ modal ได้ที่นี่ */}}>
-          <Text style={styles.infoText}>
-            ดูตารางแนะนำการเก็บอาหารสด คลิก
-          </Text>
-        </TouchableOpacity>
-
         <TouchableOpacity style={styles.saveButton}>
           <Text style={styles.saveButtonText}>Save Product</Text>
         </TouchableOpacity>
+
+        {/* เพิ่มปุ่มที่คลิกเพื่อดูตารางแนะนำการเก็บอาหารสด */}
+        <TouchableOpacity onPress={handleClickGuide} style={styles.guideButton}>
+          <Text style={styles.guideButtonText}>ดูตารางแนะนำการเก็บอาหารสด คลิก</Text>
+        </TouchableOpacity>
       </ScrollView>
 
-      {/* Modal: เลือกหมวดหมู่ */}
+      {/* Category Modal */}
       <Modal visible={categoryModalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -162,7 +151,7 @@ const EditProductScreen = ({ navigation }) => {
         </View>
       </Modal>
 
-      {/* Modal: แสกนบาร์โค้ด */}
+      {/* Barcode Scanner Modal */}
       <Modal visible={scannerVisible} transparent animationType="slide">
         <View style={styles.scannerContainer}>
           <BarCodeScanner
@@ -183,145 +172,20 @@ const EditProductScreen = ({ navigation }) => {
   );
 };
 
-const fontFamily = "Prompt_400Regular";
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F5F5F5", paddingTop: 20 },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+  // ... (โค้ดสไตล์เดิม)
+  guideButton: {
     marginTop: 20,
-  },
-  headerTitle: { fontSize: 18, fontWeight: "bold", marginLeft: 10, fontFamily },
-  content: { padding: 20 },
-  label: { fontSize: 16, fontWeight: "bold", marginBottom: 5, fontFamily },
-  imageContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  imagePlaceholder: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#E0E0E0",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "flex-start",
-  },
-  image: { width: 100, height: 100, borderRadius: 8 },
-  scanIcon: {
-    marginLeft: 200,
-    backgroundColor: "#A00000",
-    borderRadius: 70,
-    padding: 7,
-    marginTop: 58,
-  },
-  input: {
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    padding: 14,
-    fontSize: 16,
-    marginBottom: 15,
-    fontFamily,
-  },
-  categoryContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    padding: 14,
-    marginBottom: 15,
-  },
-  categoryText: { fontSize: 16, color: "#000", fontFamily },
-  detailContainer: {
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    padding: 14,
-    marginBottom: 20,
-  },
-  detailRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
-  },
-  detailTitle: { fontSize: 16, color: "#000", fontFamily },
-  detailInput: {
-    flex: 1,
-    textAlign: "right",
-    fontSize: 16,
-    color: "#000",
-    fontFamily,
-  },
-  saveButton: {
     backgroundColor: "#A00000",
     borderRadius: 20,
     padding: 14,
     alignItems: "center",
-    marginTop: 10,
   },
-  saveButtonText: { fontSize: 18, color: "#fff", fontWeight: "bold", fontFamily },
-  bottomBar: {
-    backgroundColor: "#A00000",
-    height: 80,
-    width: "100%",
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    position: "absolute",
-    bottom: 0,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0,0,0,0.3)",
-  },
-  modalContent: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  categoryButton: {
-    backgroundColor: "#F0F0F0",
-    padding: 14,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  categoryButtonText: {
+  guideButtonText: {
     fontSize: 16,
-    textAlign: "center",
-    fontFamily,
-  },
-  scannerContainer: {
-    flex: 1,
-    backgroundColor: "#000",
-    justifyContent: "flex-end",
-  },
-  closeScannerButton: {
-    backgroundColor: "#A00000",
-    padding: 12,
-    alignItems: "center",
-  },
-  closeScannerText: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-    fontFamily,
-  },
-  infoText: {
-    fontSize: 14,
-    color: "#A00000",
-    textAlign: "center",
-    marginBottom: 10,
-    textDecorationLine: "underline",
-    fontFamily,
+    fontFamily: "PromptRegular",
   },
 });
 
-export default EditProductScreen;
+export default AddProductScreen;

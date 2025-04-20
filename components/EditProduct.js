@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Modal,
-  ScrollView,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal, ScrollView } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { useFonts, Prompt_400Regular, Prompt_700Bold } from "@expo-google-fonts/prompt";
-import { useFonts } from 'expo-font';
+import { useFonts } from "expo-font";  // เพิ่มการใช้งาน useFonts
 
 const EditProductScreen = ({ navigation }) => {
+  const [fontsLoaded] = useFonts({
+    PromptRegular: require('./assets/Prompt-Regular.ttf'),
+    PromptLight: require('./assets/Prompt-Light.ttf'),
+    PromptBold: require('./assets/Prompt-Bold.ttf'),
+    PromptMedium: require('./assets/Prompt-Medium.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return null;  // รอจนกว่าไฟล์ฟอนต์จะโหลดเสร็จ
+  }
+
   const [productName, setProductName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("หมวดหมู่");
   const [expiryDate, setExpiryDate] = useState("00/00/00");
@@ -23,15 +24,6 @@ const EditProductScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const [scannerVisible, setScannerVisible] = useState(false);
-
-  const [fontsLoaded] = useFonts({
-    Prompt_400Regular,
-    Prompt_700Bold,
-  });
-
-  if (!fontsLoaded) {
-    return null; // Loading fonts
-  }
 
   const categories = [
     "อาหารสด",
@@ -67,11 +59,11 @@ const EditProductScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" type="material" color="#A00000" size={24} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { fontFamily: "Prompt_700Bold" }]}>แก้ไขข้อมูลสินค้า</Text>
+        <Text style={styles.headerTitle}>แก้ไขข้อมูลสินค้า</Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={[styles.label, { fontFamily: "Prompt_700Bold" }]}>รูปภาพสินค้า</Text>
+        <Text style={styles.label}>รูปภาพสินค้า</Text>
         <View style={styles.imageContainer}>
           <TouchableOpacity onPress={pickImage} style={styles.imagePlaceholder}>
             {image ? (
@@ -85,40 +77,38 @@ const EditProductScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={[styles.label, { fontFamily: "Prompt_700Bold" }]}>ชื่อสินค้า</Text>
+        <Text style={styles.label}>ชื่อสินค้า</Text>
         <TextInput
-          style={[styles.input, { fontFamily: "Prompt_400Regular" }]}
+          style={styles.input}
           placeholder="ชื่อสินค้า"
           value={productName}
           onChangeText={setProductName}
         />
 
-        <Text style={[styles.label, { fontFamily: "Prompt_700Bold" }]}>หมวดหมู่</Text>
+        <Text style={styles.label}>หมวดหมู่</Text>
         <TouchableOpacity
           style={styles.categoryContainer}
           onPress={() => setCategoryModalVisible(true)}
         >
-          <Text style={[styles.categoryText, { fontFamily: "Prompt_400Regular" }]}>
-            {selectedCategory}
-          </Text>
+          <Text style={styles.categoryText}>{selectedCategory}</Text>
           <Icon name="chevron-right" type="material" color="#888" size={24} />
         </TouchableOpacity>
 
-        <Text style={[styles.label, { fontFamily: "Prompt_700Bold" }]}>รายละเอียด</Text>
+        <Text style={styles.label}>รายละเอียด</Text>
         <View style={styles.detailContainer}>
           <View style={styles.detailRow}>
-            <Text style={[styles.detailTitle, { fontFamily: "Prompt_400Regular" }]}>วันหมดอายุ</Text>
+            <Text style={styles.detailTitle}>วันหมดอายุ</Text>
             <TextInput
-              style={[styles.detailInput, { fontFamily: "Prompt_400Regular" }]}
+              style={styles.detailInput}
               placeholder="00/00/00"
               value={expiryDate}
               onChangeText={setExpiryDate}
             />
           </View>
           <View style={styles.detailRow}>
-            <Text style={[styles.detailTitle, { fontFamily: "Prompt_400Regular" }]}>สถานที่เก็บ</Text>
+            <Text style={styles.detailTitle}>สถานที่เก็บ</Text>
             <TextInput
-              style={[styles.detailInput, { fontFamily: "Prompt_400Regular" }]}
+              style={styles.detailInput}
               placeholder="ตู้เย็น"
               value={storageLocation}
               onChangeText={setStorageLocation}
@@ -127,11 +117,11 @@ const EditProductScreen = ({ navigation }) => {
         </View>
 
         <TouchableOpacity style={styles.saveButton}>
-          <Text style={[styles.saveButtonText, { fontFamily: "Prompt_700Bold" }]}>Save Product</Text>
+          <Text style={styles.saveButtonText}>Save Product</Text>
         </TouchableOpacity>
       </ScrollView>
 
-      {/* หมวดหมู่ Modal */}
+      {/* Category Modal */}
       <Modal visible={categoryModalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -144,9 +134,7 @@ const EditProductScreen = ({ navigation }) => {
                   setCategoryModalVisible(false);
                 }}
               >
-                <Text style={[styles.categoryButtonText, { fontFamily: "Prompt_400Regular" }]}>
-                  {category}
-                </Text>
+                <Text style={styles.categoryButtonText}>{category}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -164,7 +152,7 @@ const EditProductScreen = ({ navigation }) => {
             style={styles.closeScannerButton}
             onPress={() => setScannerVisible(false)}
           >
-            <Text style={[styles.closeScannerText, { fontFamily: "Prompt_700Bold" }]}>ปิด</Text>
+            <Text style={styles.closeScannerText}>ปิด</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -184,9 +172,19 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ddd",
     marginTop: 20,
   },
-  headerTitle: { fontSize: 18, marginLeft: 10 },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginLeft: 10,
+    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+  },
   content: { padding: 20 },
-  label: { fontSize: 16, marginBottom: 5 },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+  },
   imageContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -214,6 +212,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 14,
     fontSize: 16,
+    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
     marginBottom: 15,
   },
   categoryContainer: {
@@ -225,7 +224,11 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 15,
   },
-  categoryText: { fontSize: 16, color: "#000" },
+  categoryText: {
+    fontSize: 16,
+    color: "#000",
+    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+  },
   detailContainer: {
     backgroundColor: "#fff",
     borderRadius: 5,
@@ -239,12 +242,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#E0E0E0",
   },
-  detailTitle: { fontSize: 16, color: "#000" },
+  detailTitle: {
+    fontSize: 16,
+    color: "#000",
+    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+  },
   detailInput: {
     flex: 1,
     textAlign: "right",
     fontSize: 16,
     color: "#000",
+    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
   },
   saveButton: {
     backgroundColor: "#A00000",
@@ -253,7 +261,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
-  saveButtonText: { fontSize: 18, color: "#fff" },
+  saveButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    fontFamily: "PromptBold",  // ใช้ฟอนต์ PromptBold
+  },
   bottomBar: {
     backgroundColor: "#A00000",
     height: 80,
@@ -283,6 +296,7 @@ const styles = StyleSheet.create({
   categoryButtonText: {
     fontSize: 16,
     textAlign: "center",
+    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
   },
   scannerContainer: {
     flex: 1,
@@ -298,6 +312,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+    fontFamily: "PromptBold",  // ใช้ฟอนต์ PromptBold
   },
 });
 
