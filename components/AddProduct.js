@@ -2,28 +2,14 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal, ScrollView } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import { useFonts } from "expo-font";
 
 const AddProductScreen = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    PromptRegular: require('./assets/Prompt-Regular.ttf'),
-    PromptLight: require('./assets/Prompt-Light.ttf'),
-    PromptBold: require('./assets/Prompt-Bold.ttf'),
-    PromptMedium: require('./assets/Prompt-Medium.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
   const [productName, setProductName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("หมวดหมู่");
   const [expiryDate, setExpiryDate] = useState("00/00/00");
   const [storageLocation, setStorageLocation] = useState("ช่องฟรีซตู้นี้");
   const [image, setImage] = useState(null);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
-  const [scannerVisible, setScannerVisible] = useState(false);
 
   const categories = [
     "อาหารสด",
@@ -48,14 +34,8 @@ const AddProductScreen = ({ navigation }) => {
     }
   };
 
-  const handleBarCodeScanned = ({ data }) => {
-    setProductName(data);
-    setScannerVisible(false);
-  };
-
   const handleClickGuide = () => {
-    // ฟังก์ชันสำหรับเปิดตารางแนะนำการเก็บอาหารสด
-    navigation.navigate("FoodStorageGuide");  // สมมติว่าเป็นหน้าต่างใหม่ที่แสดงตารางแนะนำการเก็บอาหารสด
+    navigation.navigate("FoodStorageGuide");
   };
 
   return (
@@ -76,9 +56,6 @@ const AddProductScreen = ({ navigation }) => {
             ) : (
               <Icon name="camera-alt" type="material" color="#888" size={32} />
             )}
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.scanIcon} onPress={() => setScannerVisible(true)}>
-            <Icon name="qr-code-scanner" type="material" color="#fff" size={24} />
           </TouchableOpacity>
         </View>
 
@@ -125,7 +102,6 @@ const AddProductScreen = ({ navigation }) => {
           <Text style={styles.saveButtonText}>Save Product</Text>
         </TouchableOpacity>
 
-        {/* เพิ่มปุ่มที่คลิกเพื่อดูตารางแนะนำการเก็บอาหารสด */}
         <TouchableOpacity onPress={handleClickGuide} style={styles.guideButton}>
           <Text style={styles.guideButtonText}>ดูตารางแนะนำการเก็บอาหารสด คลิก</Text>
         </TouchableOpacity>
@@ -151,29 +127,13 @@ const AddProductScreen = ({ navigation }) => {
         </View>
       </Modal>
 
-      {/* Barcode Scanner Modal */}
-      <Modal visible={scannerVisible} transparent animationType="slide">
-        <View style={styles.scannerContainer}>
-          <BarCodeScanner
-            onBarCodeScanned={handleBarCodeScanned}
-            style={StyleSheet.absoluteFillObject}
-          />
-          <TouchableOpacity
-            style={styles.closeScannerButton}
-            onPress={() => setScannerVisible(false)}
-          >
-            <Text style={styles.closeScannerText}>ปิด</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-
       <View style={styles.bottomBar} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  // ... (โค้ดสไตล์เดิม)
+  // สไตล์ทั้งหมดจะใช้ฟอนต์ default ของ React Native (Roboto หรือ sans-serif)
   guideButton: {
     marginTop: 20,
     backgroundColor: "#A00000",
@@ -184,7 +144,7 @@ const styles = StyleSheet.create({
   guideButtonText: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "PromptRegular",
+    fontFamily: "Roboto", // ใช้ฟอนต์ default ของ React Native
   },
 });
 

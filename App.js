@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+// App.js
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Homescreen from './Homescreen';
 import SplashScreen from './loadingscreen'; 
-import Homescreen from './Homescreen';  // ใช้ชื่อที่ถูกต้อง
+import LoginScreen from './components/Login'; 
 
 
+const Stack = createStackNavigator();
 
-const App = () => {
-  const [loading, setLoading] = useState(true);
-
-  return loading ? (
-    <SplashScreen onFinish={() => setLoading(false)} />
-  ) : (
-    <Homescreen />
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Splash">
+        <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} /> {/* ชื่อ "Login" ต้องตรงกับที่ใช้ใน navigation */}
+        <Stack.Screen name="Home" component={Homescreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-export default App;
+}

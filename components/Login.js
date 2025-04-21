@@ -13,7 +13,7 @@ const LoginScreen = ({ navigation }) => {
       <LinearGradient colors={["#9D0300", "#9D0300"]} style={styles.header}>
        </LinearGradient>
       <Image
-        source={require('./assets/logoWhite.png')}
+        source={require('../assets/logoWhite.png')}
         style={styles.logo}
         resizeMode="contain"
       />

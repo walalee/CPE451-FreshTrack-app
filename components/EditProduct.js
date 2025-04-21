@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal, ScrollView } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import { useFonts } from "expo-font";  // เพิ่มการใช้งาน useFonts
+import { useFonts } from "expo-font";
 
 const EditProductScreen = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
-    PromptRegular: require('./assets/Prompt-Regular.ttf'),
-    PromptLight: require('./assets/Prompt-Light.ttf'),
-    PromptBold: require('./assets/Prompt-Bold.ttf'),
-    PromptMedium: require('./assets/Prompt-Medium.ttf'),
+    PromptRegular: require('../assets/Prompt-Regular.ttf'),
+PromptLight: require('../assets/Prompt-Light.ttf'),
+PromptBold: require('../assets/Prompt-Bold.ttf'),
+PromptMedium: require('../assets/Prompt-Medium.ttf'),
+
   });
 
   if (!fontsLoaded) {
-    return null;  // รอจนกว่าไฟล์ฟอนต์จะโหลดเสร็จ
+    return null;
   }
 
   const [productName, setProductName] = useState("");
@@ -23,7 +23,6 @@ const EditProductScreen = ({ navigation }) => {
   const [storageLocation, setStorageLocation] = useState("ช่องฟรีซตู้นี้");
   const [image, setImage] = useState(null);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
-  const [scannerVisible, setScannerVisible] = useState(false);
 
   const categories = [
     "อาหารสด",
@@ -48,11 +47,6 @@ const EditProductScreen = ({ navigation }) => {
     }
   };
 
-  const handleBarCodeScanned = ({ data }) => {
-    setProductName(data);
-    setScannerVisible(false);
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -71,9 +65,6 @@ const EditProductScreen = ({ navigation }) => {
             ) : (
               <Icon name="camera-alt" type="material" color="#888" size={32} />
             )}
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.scanIcon} onPress={() => setScannerVisible(true)}>
-            <Icon name="qr-code-scanner" type="material" color="#fff" size={24} />
           </TouchableOpacity>
         </View>
 
@@ -141,22 +132,6 @@ const EditProductScreen = ({ navigation }) => {
         </View>
       </Modal>
 
-      {/* Barcode Scanner Modal */}
-      <Modal visible={scannerVisible} transparent animationType="slide">
-        <View style={styles.scannerContainer}>
-          <BarCodeScanner
-            onBarCodeScanned={handleBarCodeScanned}
-            style={StyleSheet.absoluteFillObject}
-          />
-          <TouchableOpacity
-            style={styles.closeScannerButton}
-            onPress={() => setScannerVisible(false)}
-          >
-            <Text style={styles.closeScannerText}>ปิด</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-
       <View style={styles.bottomBar} />
     </View>
   );
@@ -176,14 +151,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginLeft: 10,
-    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+    fontFamily: "PromptRegular",
   },
   content: { padding: 20 },
   label: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 5,
-    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+    fontFamily: "PromptRegular",
   },
   imageContainer: {
     flexDirection: "row",
@@ -200,19 +175,12 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   image: { width: 100, height: 100, borderRadius: 8 },
-  scanIcon: {
-    marginLeft: 200,
-    backgroundColor: "#A00000",
-    borderRadius: 70,
-    padding: 7,
-    marginTop: 58,
-  },
   input: {
     backgroundColor: "#fff",
     borderRadius: 5,
     padding: 14,
     fontSize: 16,
-    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+    fontFamily: "PromptRegular",
     marginBottom: 15,
   },
   categoryContainer: {
@@ -227,7 +195,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 16,
     color: "#000",
-    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+    fontFamily: "PromptRegular",
   },
   detailContainer: {
     backgroundColor: "#fff",
@@ -245,14 +213,14 @@ const styles = StyleSheet.create({
   detailTitle: {
     fontSize: 16,
     color: "#000",
-    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+    fontFamily: "PromptRegular",
   },
   detailInput: {
     flex: 1,
     textAlign: "right",
     fontSize: 16,
     color: "#000",
-    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
+    fontFamily: "PromptRegular",
   },
   saveButton: {
     backgroundColor: "#A00000",
@@ -265,7 +233,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
-    fontFamily: "PromptBold",  // ใช้ฟอนต์ PromptBold
+    fontFamily: "PromptBold",
   },
   bottomBar: {
     backgroundColor: "#A00000",
@@ -296,23 +264,7 @@ const styles = StyleSheet.create({
   categoryButtonText: {
     fontSize: 16,
     textAlign: "center",
-    fontFamily: "PromptRegular",  // ใช้ฟอนต์ PromptRegular
-  },
-  scannerContainer: {
-    flex: 1,
-    backgroundColor: "#000",
-    justifyContent: "flex-end",
-  },
-  closeScannerButton: {
-    backgroundColor: "#A00000",
-    padding: 12,
-    alignItems: "center",
-  },
-  closeScannerText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-    fontFamily: "PromptBold",  // ใช้ฟอนต์ PromptBold
+    fontFamily: "PromptRegular",
   },
 });
 
