@@ -21,7 +21,7 @@ const FakeBarcode = () => {
   );
 };
 
-const CouponDetailScreenLotus = ({ route }) => {
+const CouponDetailScreenBigC = ({ route }) => {
   const { coupon } = route.params;
   
   const [fontsLoaded] = useFonts({
