@@ -11,12 +11,24 @@ import {
   Pressable,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useFonts } from 'expo-font';
 
 const ProfileScreen = ({ navigation }) => {
   const [nickname, setNickname] = useState("ชื่อเล่นของคุณ");
   const [isEditing, setIsEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const userId = "user12345678"; // mock user ID
+
+const [fontsLoaded] = useFonts({
+    PromptRegular: require('../assets/Prompt-Regular.ttf'),
+    PromptLight: require('../assets/Prompt-Light.ttf'),
+    PromptBold: require('../assets/Prompt-Bold.ttf'),
+    PromptMedium: require('../assets/Prompt-Medium.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const copyToClipboard = () => {
     Clipboard.setString(userId);
@@ -137,7 +149,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
     marginLeft: 10,
   },
   profileIconContainer: {
@@ -156,16 +168,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   userIdLabel: {
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
     color: "#555",
   },
   userId: {
     marginHorizontal: 5,
+    fontFamily: "PromptRegular",
     color: "#555",
   },
   label: {
     marginBottom: 5,
-    fontWeight: "500",
+    fontSize: 16,
+    fontFamily: "PromptMedium",
   },
   inputWrapper: {
     flexDirection: "row",
@@ -180,6 +194,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 14,
+    fontFamily: "PromptLight",
     color: "#000",
   },
   button: {
@@ -192,7 +207,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontWeight: "bold",
+    fontFamily: "PromptMedium",
   },
   modalOverlay: {
     flex: 1,
@@ -216,6 +231,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 16,
+    fontFamily: "PromptRegular",
     marginBottom: 50,
   },
   modalInput: {

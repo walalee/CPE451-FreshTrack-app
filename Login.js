@@ -8,10 +8,22 @@ import {
   Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useFonts } from 'expo-font';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
+const [fontsLoaded] = useFonts({
+    PromptRegular: require('./assets/Prompt-Regular.ttf'),
+    PromptLight: require('./assets/Prompt-Light.ttf'),
+    PromptBold: require('./assets/Prompt-Bold.ttf'),
+    PromptMedium: require('./assets/Prompt-Medium.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -54,7 +66,7 @@ const LoginScreen = ({ navigation }) => {
         {/* ปุ่ม Continue */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.replace("MainApp")} // ใช้ replace เพื่อไม่ให้ย้อนกลับไป login
+          onPress={() => navigation.replace("MainApp")}
         >
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
@@ -101,19 +113,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 100,
-    fontWeight: "bold",
+    fontFamily: "PromptBold",
     marginTop: 20,
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
     color: "black",
     margin: 20,
   },
   label: {
     alignSelf: "flex-start",
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
     marginBottom: 5,
   },
   input: {
@@ -136,14 +148,15 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
   },
   signupText: {
-    marginTop: 40,
+    marginTop: 20,
     fontSize: 16,
+    fontFamily: "PromptRegular",
   },
   signupLink: {
     color: "#9D0300",
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
   },
 });

@@ -2,11 +2,24 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
+import { useFonts } from 'expo-font';
 
 const App = ({ navigation }) => {
   const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   const [messages, setMessages] = useState([]);
+
+const [fontsLoaded] = useFonts({
+    PromptRegular: require('../assets/Prompt-Regular.ttf'),
+    PromptLight: require('../assets/Prompt-Light.ttf'),
+    PromptBold: require('../assets/Prompt-Bold.ttf'),
+    PromptMedium: require('../assets/Prompt-Medium.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
 
   // ฟังก์ชันเลือกภาพ
   const pickImage = async () => {
@@ -131,7 +144,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
     color: "black",
     marginLeft: 5,
   },
@@ -164,13 +177,14 @@ const styles = StyleSheet.create({
   },
   userText: {
     color: "white",
-    fontWeight: "bold",
+    fontFamily: "PromptMedium",
   },
   messageBody: {
     padding: 10,
   },
   messageText: {
     fontSize: 16,
+    fontFamily: "PromptLight",
     color: "#000",
   },
   timestampContainer: {
@@ -182,6 +196,7 @@ const styles = StyleSheet.create({
   },
   timestampText: {
     fontSize: 12,
+    fontFamily: "PromptRegular",
     color: "#757575",
   },
   input: {
@@ -192,6 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 15,
     fontSize: 16,
+    fontFamily: "PromptLight",
     backgroundColor: "#fff",
     top: 190,
   },
