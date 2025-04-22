@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-const CouponScreenLotus = () => {
+const CouponScreenTops = () => {
   const [tab, setTab] = useState('all');
   const [allCoupons, setAllCoupons] = useState([]);
   const [coupons, setCoupons] = useState([]);

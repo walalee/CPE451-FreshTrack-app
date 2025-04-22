@@ -3,9 +3,10 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator }
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
+
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-const CouponScreenLotus = () => {
+const CouponScreenBigC = () => {
   const [tab, setTab] = useState('all');
   const [allCoupons, setAllCoupons] = useState([]);
   const [coupons, setCoupons] = useState([]);
@@ -270,4 +271,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CouponDetailScreenBigC;
+export default CouponScreenBigC;
