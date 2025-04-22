@@ -54,7 +54,7 @@ const LoginScreen = ({ navigation }) => {
         {/* ปุ่ม Continue */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.replace("Home")} // ใช้ replace เพื่อไม่ให้ย้อนกลับไป login
+          onPress={() => navigation.replace("MainApp")} // ใช้ replace เพื่อไม่ให้ย้อนกลับไป login
         >
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>

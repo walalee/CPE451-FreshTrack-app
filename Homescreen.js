@@ -269,7 +269,6 @@ function HomeStack() {
 // Tab.Navigator สำหรับหน้าหลัก
 export default function Homescreen() {
   return (
-    <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: 'white',
@@ -341,7 +340,6 @@ export default function Homescreen() {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 }
 

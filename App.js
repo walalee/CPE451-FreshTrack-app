@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
-import SplashScreen from './loadingscreen'; 
-import Homescreen from './Homescreen'; 
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './Login';
+import HomeStack from './Homescreen'; // Stack ที่มี HomeScreenComponent อยู่ในนั้น
 
-const App = () => {
-  const [loading, setLoading] = useState(true);
+const Stack = createStackNavigator();
 
-  return loading ? (
-    <SplashScreen onFinish={() => setLoading(false)} />
-  ) : (
-    <LoginScreen />
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="MainApp" component={HomeStack} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-export default App;
+}
