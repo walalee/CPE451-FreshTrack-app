@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import firestore from "@react-native-firebase/firestore";
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faShrimp } from '@fortawesome/free-solid-svg-icons/faShrimp'
@@ -51,6 +53,7 @@ function HomeScreenComponent() {
 
   const [filterVisible, setFilterVisible] = useState(false);
   const navigation = useNavigation();
+  const [products, setProducts] = useState([]);
 
   const [fontsLoaded] = useFonts({
     PromptRegular: require('./assets/Prompt-Regular.ttf'),
@@ -63,10 +66,20 @@ function HomeScreenComponent() {
     return null;
   }
 
-  const handleApplyFilters = (selectedFilters) => {
-    console.log('Filters applied:', selectedFilters);
-    setFilterVisible(false);
-  };
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection("products")
+      .orderBy("expirationDate", "asc") // เรียงจากวันหมดอายุ
+      .onSnapshot(snapshot => {
+        const list = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setProducts(list);
+      });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -244,6 +257,13 @@ function HomeScreenComponent() {
         <View style={styles.CategoryRow}>
           <Text style={styles.CategoryText}>Expiration</Text>
         </View>
+        {products.length === 0 ? (
+          <Text style={styles.emptyText}>ยังไม่มีสินค้า</Text>
+        ) : (
+          products.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))
+        )}
       </ScrollView>
     </View>
   );
