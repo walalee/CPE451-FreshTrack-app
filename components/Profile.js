@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 50,
   },
   title: {
     fontSize: 18,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   profileIconContainer: {
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: 20,
   },
   profileIcon: {
     backgroundColor: "#990000",

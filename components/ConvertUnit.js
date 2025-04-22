@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet, TextInput } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { useFonts } from 'expo-font';
 
 const DropdownModal = ({ visible, onClose, onSelect, options }) => {
   return (
@@ -82,13 +84,24 @@ const UnitConverter = ({ navigation }) => {
     setSelectedUnit2(selectedUnit1);
   };
 
+  const [fontsLoaded] = useFonts({
+      PromptRegular: require('../assets/Prompt-Regular.ttf'),
+      PromptLight: require('../assets/Prompt-Light.ttf'),
+      PromptBold: require('../assets/Prompt-Bold.ttf'),
+      PromptMedium: require('../assets/Prompt-Medium.ttf'),
+    });
+  
+    if (!fontsLoaded) {
+      return null;
+    }
+
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         {/* ปุ่มย้อนกลับ */}
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <MaterialIcons name="arrow-back" size={24} color="black" />
+          <Ionicons name="chevron-back-outline" size={24} color="black" />
         </TouchableOpacity>
 
         {/* หัวข้อของหน้า */}
@@ -178,12 +191,12 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
   },
   tabs: { flexDirection: "row", justifyContent: "center", marginBottom: 20 },
   tab: { padding: 10, flex: 1, alignItems: "center", backgroundColor: "#ddd", borderRadius: 10, margin: 5 },
   activeTab: { backgroundColor: "#D9291A" },
-  tabText: { fontSize: 18, fontWeight: "bold", color: "#333" },
+  tabText: { fontSize: 18, fontFamily: "PromptRegular", color: "#333" },
   activeTabText: { color: "#fff" },
   inputContainer: {
     flexDirection: "row",
@@ -195,7 +208,7 @@ const styles = StyleSheet.create({
   },
   picker: { flex: 2 },
   input: { flex: 2, fontSize: 20, textAlign: "right", paddingRight: 10 },
-  unitLabel: { fontSize: 20, fontWeight: "bold" },
+  unitLabel: { fontSize: 20, fontFamily: "PromptRegular" },
   swapButton: { alignSelf: "center", marginVertical: 5 },
   numpad: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginTop: 30 },
   numButton: {
@@ -206,7 +219,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     borderRadius: 10,
   },
-  numText: { fontSize: 24, fontWeight: "bold" },
+  numText: { fontSize: 24, fontFamily: "PromptRegular", },
 });
 
 export default UnitConverter;

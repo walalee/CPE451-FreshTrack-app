@@ -30,6 +30,8 @@ import SearchScreen from './components/SearchScreen';
 import ExpirationScreen from './components/ExpirationScreen';
 import NotiScreen from './components/NotiScreen';
 import Banner from './components/Banner';
+import StorageGuideScreen from './components/FreshFoodTable';
+
 
 import FreshfoodScreen from './Category/FreshfoodScreen';
 import VegFruitsScreen from './Category/VegFruitsScreen';
@@ -38,6 +40,7 @@ import ProcessedScreen from './Category/ProcessedScreen';
 import ChemicalScreen from './Category/ChemicalScreen';
 import PetfoodScreen from './Category/PetfoodScreen'; 
 import CareScreen from './Category/CareScreen';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();  
@@ -262,6 +265,7 @@ function HomeStack() {
       <Stack.Screen name="ChemicalScreen" component={ChemicalScreen} options={{ headerShown: false }} />
       <Stack.Screen name="PetfoodScreen" component={PetfoodScreen}options={{ headerShown: false }}  />
       <Stack.Screen name="CareScreen" component={CareScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="FreshfoodTable" component={StorageGuideScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
@@ -269,77 +273,82 @@ function HomeStack() {
 // Tab.Navigator สำหรับหน้าหลัก
 export default function Homescreen() {
   return (
-      <Tab.Navigator
-        screenOptions={{
-          tabBarActiveTintColor: 'white',
-          tabBarInactiveTintColor: 'white',
-          tabBarStyle: { 
-            backgroundColor: '#9D0300', 
-            height: 60, 
-            position: 'center',
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30
-          },
-          tabBarLabelStyle: { fontFamily: 'PromptMedium', fontSize: 12, },
-        }}
-      >
-        <Tab.Screen 
-          name="หน้าหลัก" 
-          component={HomeStack}  // เปลี่ยนเป็น HomeStack แทน
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="home-outline" size={size} color={color} />
-            ),
-            tabBarLabelStyle: { fontFamily: 'PromptMedium', fontSize: 12 },
-            headerShown: false, // ไม่ให้แสดง header บนสุด
-          }}
-        />
-        <Tab.Screen 
-          name="แปลงหน่วย" 
-          component={ConvertUnit} 
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="scale-outline" size={size} color={color} />
-            ),
-            headerShown: false,
-          }}
-        />
-       <Tab.Screen 
-          name="เพิ่มสินค้า" 
-          component={AddProduct} 
-          options={{
-            tabBarIcon: ({ color }) => (
-              <View style={styles.addButtonContainer}>
-                <Icon name="add-circle" size={40} color={color} /> 
-              </View>
-            ),
-            headerShown: false,
-            tabBarLabel: '',
-            tabBarItemStyle: { position: 'center'}, // ทำให้ลอยขึ้นมา
-          }}
-        />
-
-        <Tab.Screen 
-          name="ฝากโน๊ต" 
-          component={Note} 
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="document-text-outline" size={size} color={color} />
-            ),
-            headerShown: false,
-          }}
-        />
-        <Tab.Screen 
-          name="โปรไฟล์" 
-          component={Profile} 
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="person-outline" size={size} color={color} />
-            ),
-            headerShown: false,
-          }}
-        />
-      </Tab.Navigator>
+    <Tab.Navigator
+    screenOptions={{
+      tabBarActiveTintColor: 'white',
+      tabBarInactiveTintColor: 'white',
+      tabBarStyle: {
+        backgroundColor: '#9D0300',
+        height: 60,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        paddingHorizontal: 10,
+      },
+      tabBarLabelStyle: { 
+        fontFamily: 'PromptMedium', 
+        fontSize: 12,
+        paddingBottom: 5,
+      },
+      tabBarItemStyle: { 
+        paddingVertical: 5,
+      },
+    }}
+  >
+    <Tab.Screen 
+      name="หน้าหลัก" 
+      component={HomeStack}
+      options={{
+        tabBarIcon: ({ color }) => (
+          <Icon name="home-outline" size={24} color={color} />
+        ),
+        headerShown: false,
+      }}
+    />
+    <Tab.Screen 
+      name="แปลงหน่วย" 
+      component={ConvertUnit} 
+      options={{
+        tabBarIcon: ({ color }) => (
+          <Icon name="scale-outline" size={24} color={color} />
+        ),
+        headerShown: false,
+      }}
+    />
+    <Tab.Screen 
+      name="เพิ่มสินค้า" 
+      component={AddProduct} 
+      options={{
+        tabBarIcon: ({ color }) => (
+          <View style={styles.addButtonContainer}>
+            <Icon name="add-circle" size={44} color={color} />
+          </View>
+        ),
+        tabBarLabel: '',
+        headerShown: false,
+      }}
+    />
+    <Tab.Screen 
+      name="ฝากโน๊ต" 
+      component={Note} 
+      options={{
+        tabBarIcon: ({ color }) => (
+          <Icon name="document-text-outline" size={24} color={color} />
+        ),
+        headerShown: false,
+      }}
+    />
+    <Tab.Screen 
+      name="โปรไฟล์" 
+      component={Profile} 
+      options={{
+        tabBarIcon: ({ color }) => (
+          <Icon name="person-outline" size={24} color={color} />
+        ),
+        headerShown: false,
+      }}
+    />
+  </Tab.Navigator>
+  
   );
 }
 
@@ -352,6 +361,22 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingRight: 20
   },
+  addButtonContainer: {
+    position: 'absolute',
+    top: -7,
+    backgroundColor: '#9D0300',
+    borderRadius: 30,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  
   greetingText: {
     marginLeft: 15,
     fontSize: 22,

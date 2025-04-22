@@ -70,7 +70,7 @@ const FilterScreen = ({ visible, onClose, onApply }) => {
 
         {/* กล่องกรองเลื่อนจากซ้าย */}
         <Animated.View style={[styles.content, { right: slideAnim }]}>
-          <Text style={[styles.header, { fontFamily: 'Prompt-Medium' }]}>
+          <Text style={[styles.header, { fontFamily: 'PromptMedium' }]}>
             ค้นหาแบบละเอียด
           </Text>
 

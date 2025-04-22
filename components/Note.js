@@ -65,7 +65,7 @@ const [fontsLoaded] = useFonts({
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="chevron-back-outline" size={30} color="black" />
+          <Ionicons name="chevron-back-outline" size={24} color="black" />
           <Text style={styles.headerText}>โน้ตฝากซื้อของ</Text>
         </TouchableOpacity>
       </View>
