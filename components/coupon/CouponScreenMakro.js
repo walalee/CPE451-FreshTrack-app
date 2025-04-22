@@ -8,7 +8,7 @@ import CouponDetailScreenMakro from './CouponDetailScreenMakro';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-const CouponScreenLotus = () => {
+const CouponScreenMakro = () => {
   const [tab, setTab] = useState('all');
   const [allCoupons, setAllCoupons] = useState([]);
   const [coupons, setCoupons] = useState([]);
@@ -273,4 +273,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CouponDetailScreenMakro;
+export default CouponScreenMakro;
