@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';  // เพิ่มการใช้งาน Stack.Navigator
+import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -63,7 +63,6 @@ function HomeScreenComponent() {
   const handleApplyFilters = (selectedFilters) => {
     console.log('Filters applied:', selectedFilters);
     setFilterVisible(false);
-    // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
   };
 
   return (

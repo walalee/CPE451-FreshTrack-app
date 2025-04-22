@@ -1,22 +1,23 @@
-// App.js
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Homescreen from './Homescreen';
-import SplashScreen from './loadingscreen'; 
-import LoginScreen from './components/Login'; 
 
+import SplashScreen from './loadingscreen';
+import LoginScreen from './Login';
+import Homescreen from './Homescreen';
 
 const Stack = createStackNavigator();
 
-export default function App() {
+const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash">
+      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} /> {/* ชื่อ "Login" ต้องตรงกับที่ใช้ใน navigation */}
+        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={Homescreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default App;

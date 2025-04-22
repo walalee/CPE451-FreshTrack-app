@@ -14,10 +14,10 @@ const AddProductScreen = ({ navigation }) => {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    PromptRegular: require('../assets/Prompt-Regular.ttf'),
-    PromptLight: require('../assets/Prompt-Light.ttf'),
-    PromptBold: require('../assets/Prompt-Bold.ttf'),
-    PromptMedium: require('../assets/Prompt-Medium.ttf'),
+    PromptRegular: require('./assets/Prompt-Regular.ttf'),
+    PromptLight: require('./assets/Prompt-Light.ttf'),
+    PromptBold: require('./assets/Prompt-Bold.ttf'),
+    PromptMedium: require('./assets/Prompt-Medium.ttf'),
   });
 
   if (!fontsLoaded) {
