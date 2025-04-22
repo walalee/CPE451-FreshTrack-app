@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   guideButtonText: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "Roboto", // ใช้ฟอนต์ default ของ React Native
+    fontFamily: "Roboto", 
   },
 });
 
