@@ -31,6 +31,11 @@ import ExpirationScreen from './components/ExpirationScreen';
 import NotiScreen from './components/NotiScreen';
 import Banner from './components/Banner';
 
+import CouponScreenBigC from './components/coupon/CouponScreenBigC';
+import CouponScreenLotus from './components/coupon/CouponScreenLotus';
+import CouponScreenMakro from './components/coupon/CouponScreenMakro';
+import CouponScreenTops from './components/coupon/CouponScreenTops';
+
 import FreshfoodScreen from './Category/FreshfoodScreen';
 import VegFruitsScreen from './Category/VegFruitsScreen';
 import MedicalScreen from './Category/MedicalScreen';

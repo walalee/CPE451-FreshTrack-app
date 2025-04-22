@@ -1,22 +1,22 @@
-// App.js
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import Homescreen from './Homescreen';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
 import SplashScreen from './loadingscreen'; 
-import LoginScreen from './components/Login'; 
+import LoginScreen from './Login';
+import Homescreen from './Homescreen';
 
+const App = () => {
+  const [loading, setLoading] = useState(true);       // ควบคุม splash
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // ควบคุม login
 
-const Stack = createStackNavigator();
+  if (loading) {
+    return <SplashScreen onFinish={() => setLoading(false)} />;
+  }
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash">
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} /> {/* ชื่อ "Login" ต้องตรงกับที่ใช้ใน navigation */}
-        <Stack.Screen name="Home" component={Homescreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+  if (!isLoggedIn) {
+    return <LoginScreen onLoginSuccess={() => setIsLoggedIn(true)} />;
+  }
+
+  return <Homescreen />;
+};
+
+export default App;
