@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,Image } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 const LoginScreen = ({ navigation }) => {
@@ -8,16 +15,17 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      
       <View style={styles.container}>
-      <LinearGradient colors={["#9D0300", "#9D0300"]} style={styles.header}>
-       </LinearGradient>
-      <Image
-        source={require('./assets/logoWhite.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-    </View>
+        <LinearGradient
+          colors={["#9D0300", "#9D0300"]}
+          style={styles.header}
+        ></LinearGradient>
+        <Image
+          source={require("./assets/logoWhite.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
 
       {/* ส่วนขาวตรงกลาง */}
       <View style={styles.content}>
@@ -44,14 +52,20 @@ const LoginScreen = ({ navigation }) => {
         />
 
         {/* ปุ่ม Continue */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.replace("Home")} // ใช้ replace เพื่อไม่ให้ย้อนกลับไป login
+        >
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
 
         {/* สมัครสมาชิก */}
         <Text style={styles.signupText}>
           ยังไม่มีบัญชีผู้ใช้ใช่หรือไม่?{" "}
-          <Text style={styles.signupLink} onPress={() => navigation.navigate("Signup")}>
+          <Text
+            style={styles.signupLink}
+            onPress={() => navigation.navigate("Signup")}
+          >
             Sign Up
           </Text>
         </Text>
