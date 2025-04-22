@@ -14,10 +14,10 @@ const CouponScreenBigC = () => {
     const navigation = useNavigation();
 
     const [fontsLoaded] = useFonts({
-        PromptRegular: require('./assets/Prompt-Regular.ttf'),
-        PromptLight: require('./assets/Prompt-Light.ttf'),
-        PromptBold: require('./assets/Prompt-Bold.ttf'), 
-        PromptMedium: require('./assets/Prompt-Medium.ttf'),
+        PromptRegular: require('../../assets/Prompt-Regular.ttf'),
+        PromptLight: require('../../assets/Prompt-Light.ttf'),
+        PromptBold: require('../../assets/Prompt-Bold.ttf'), 
+        PromptMedium: require('../../assets/Prompt-Medium.ttf'),
     });
 
     if (!fontsLoaded) {
@@ -68,7 +68,7 @@ const CouponScreenBigC = () => {
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
                     <Ionicons name="chevron-back" size={24} color="black" />
                 </TouchableOpacity>
-                <Text style={styles.title}>คูปองและโปรโมชั่น Makro</Text>
+                <Text style={styles.title}>คูปองและโปรโมชั่น BigC</Text>
             </View>
 
             {/* แท็บเลือก */}
@@ -106,7 +106,7 @@ const CouponScreenBigC = () => {
                     renderItem={({ item }) => (
                         <TouchableOpacity 
                             style={styles.couponCard} 
-                            onPress={() => navigation.navigate('CouponDetail', { coupon: item })}
+                            onPress={() => navigation.navigate('CouponDetailScreenBigC', { coupon: item })}
                         >
                             <Text style={styles.couponTitle}>{item.title}</Text>
                             <Text>{item.description}</Text>
@@ -208,4 +208,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CouponScreenMakro;
+export default CouponScreenBigC;
