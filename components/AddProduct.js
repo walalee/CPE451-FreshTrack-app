@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
-import Modal from 'react-native-modal';
+import Modal from "react-native-modal";
 import { useFonts } from 'expo-font';
 
 const AddProductScreen = ({ navigation }) => {
@@ -14,10 +14,10 @@ const AddProductScreen = ({ navigation }) => {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    PromptRegular: require('../assets/Prompt-Regular.ttf'),
-    PromptLight: require('../assets/Prompt-Light.ttf'),
-    PromptBold: require('../assets/Prompt-Bold.ttf'),
-    PromptMedium: require('../assets/Prompt-Medium.ttf'),
+    PromptRegular: require('./assets/Prompt-Regular.ttf'),
+    PromptLight: require('./assets/Prompt-Light.ttf'),
+    PromptBold: require('./assets/Prompt-Bold.ttf'),
+    PromptMedium: require('./assets/Prompt-Medium.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -44,7 +44,7 @@ const AddProductScreen = ({ navigation }) => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     margin: 0,
   },
+
   modalContent: {
     backgroundColor: "#fff",
     paddingVertical: 20,
@@ -273,20 +274,20 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
   },
+
   modalItem: {
     paddingVertical: 15,
     borderBottomColor: "#ddd",
     borderBottomWidth: 1,
   },
+
   modalItemText: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "Roboto", 
-    color: "#000",
+    fontFamily: "PromptRegular",
     textAlign: "center",
-    fontFamily: "PromptRegular"
-
-  },
+  }
+  
 });
 
 export default AddProductScreen;

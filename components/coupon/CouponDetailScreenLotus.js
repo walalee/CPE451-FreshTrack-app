@@ -23,6 +23,7 @@ const FakeBarcode = () => {
 
 const CouponDetailScreenLotus = ({ route }) => {
   const { coupon } = route.params;
+  
   const [fontsLoaded] = useFonts({
     PromptRegular: require('../assets/Prompt-Regular.ttf'),
     PromptLight: require('../assets/Prompt-Light.ttf'),

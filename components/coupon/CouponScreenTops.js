@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator }
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
+import CouponDetailScreenTops from './CouponDetailScreenTops';
+
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 const CouponScreenTops = () => {

@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 
-import CouponDetailScreenBigC from './CouponDetailScreenLotus';
+import CouponDetailScreenLotus from './CouponDetailScreenLotus';
 
 
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
