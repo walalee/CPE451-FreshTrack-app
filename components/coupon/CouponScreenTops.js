@@ -3,8 +3,6 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator }
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-import CouponDetailScreenTops from './CouponDetailScreenTops';
-
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 const CouponScreenTops = () => {
@@ -87,7 +85,7 @@ const CouponScreenTops = () => {
     <View style={styles.container}>
       <View style={styles.headerBackground} />
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <TouchableOpacity onPress={() => navigation.goBack('Homescreen')} style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.title}>คูปองและโปรโมชั่น Tops</Text>
