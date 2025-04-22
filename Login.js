@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
         />
 
         {/* ปุ่ม Continue */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Homescreen")}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
 
