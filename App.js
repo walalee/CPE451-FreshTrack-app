@@ -1,22 +1,15 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
-import SplashScreen from './loadingscreen';
-import LoginScreen from './Login';
-import Homescreen from './Homescreen';
-
-const Stack = createStackNavigator();
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
+import SplashScreen from './loadingscreen'; 
+import Homescreen from './Homescreen'; 
 
 const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Home" component={Homescreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+  const [loading, setLoading] = useState(true);
+
+  return loading ? (
+    <SplashScreen onFinish={() => setLoading(false)} />
+  ) : (
+    <Homescreen />
   );
 };
 

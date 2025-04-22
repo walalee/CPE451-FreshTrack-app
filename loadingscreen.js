@@ -1,19 +1,12 @@
 import React, { useEffect } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-const SplashScreen = () => {
-  const navigation = useNavigation();  // ดึง navigation แบบปลอดภัยจาก React Navigation
-
+const SplashScreen = ({ onFinish }) => {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (navigation && typeof navigation.replace === 'function') {
-        navigation.replace('Login'); // เปลี่ยนหน้าไป Login
-      }
-    }, 3000);
-
-    return () => clearTimeout(timer); // เคลียร์ timer เมื่อ unmount
-  }, [navigation]);
+    setTimeout(() => {
+      onFinish();
+    }, 3000); 
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -31,10 +24,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#9D0300',
+    backgroundColor: '#9D0300', // สีพื้นหลังของ Splash Screen
   },
   logo: {
-    width: 400,
+    width: 400, // ปรับขนาดโลโก้ตามต้องการ
     height: 200,
   },
 });
