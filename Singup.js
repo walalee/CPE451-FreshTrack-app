@@ -1,28 +1,46 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,Image } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useFonts } from 'expo-font';
 
-const SignupScreen = () => {
+const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+const [fontsLoaded] = useFonts({
+    PromptRegular: require('./assets/Prompt-Regular.ttf'),
+    PromptLight: require('./assets/Prompt-Light.ttf'),
+    PromptBold: require('./assets/Prompt-Bold.ttf'),
+    PromptMedium: require('./assets/Prompt-Medium.ttf'),
+  });
+
   return (
     <View style={styles.container}>
-
       <View style={styles.container}>
-            <LinearGradient colors={["#9D0300", "#9D0300"]} style={styles.header}>
-             </LinearGradient>
-            <Image
-              source={require('../assets/logoWhite.png')}
-              style={styles.logo}
-              resizeMode="contain"
-            />
-          </View>
+        <LinearGradient
+          colors={["#9D0300", "#9D0300"]}
+          style={styles.header}
+        ></LinearGradient>
+        <Image
+          source={require("./assets/logoWhite.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
 
       {/* ส่วนขาวตรงกลาง */}
       <View style={styles.content}>
         <Text style={styles.title}>Sign Up</Text>
-        <Text style={styles.subtitle}>ยินดีต้อนรับ กรอกข้อมูลเพื่อสร้างบัญชี</Text>
+        <Text style={styles.subtitle}>
+          ยินดีต้อนรับ กรอกข้อมูลเพื่อสร้างบัญชี
+        </Text>
 
         {/* ช่องกรอกอีเมล */}
         <Text style={styles.label}>E-mail</Text>
@@ -44,12 +62,12 @@ const SignupScreen = () => {
         />
 
         {/* ปุ่ม Continue */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.replace("Login")}
+        >
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
-
-       
-        
       </View>
     </View>
   );
@@ -81,20 +99,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 100,
-    fontWeight: "bold",
+    fontSize: 80,
+    fontFamily: "PromptBold",
     marginTop: 20,
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
     color: "black",
     margin: 20,
   },
   label: {
     alignSelf: "flex-start",
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
     marginBottom: 5,
   },
   input: {
@@ -117,7 +135,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "PromptRegular",
   },
-
 });
