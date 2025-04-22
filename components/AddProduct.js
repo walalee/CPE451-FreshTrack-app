@@ -113,8 +113,6 @@ const AddProductScreen = ({ navigation }) => {
           ))}
         </View>
       </Modal>
-
-      <View style={styles.bottomBar} />
     </View>
   );
 };
@@ -252,16 +250,6 @@ const styles = StyleSheet.create({
     fontFamily: "PromptBold"
   },
 
-  bottomBar: { 
-    backgroundColor: "#A00000", 
-    height: 80, 
-    width: "100%", 
-    borderTopLeftRadius: 40, 
-    borderTopRightRadius: 40, 
-    position: "absolute", 
-    bottom: 0 
-  },
-
   modal: {
     justifyContent: "flex-end",
     margin: 0,
@@ -287,7 +275,6 @@ const styles = StyleSheet.create({
     fontFamily: "PromptRegular",
     textAlign: "center",
   }
-  
 });
 
 export default AddProductScreen;
