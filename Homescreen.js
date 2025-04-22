@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-import firestore from "@react-native-firebase/firestore";
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -33,6 +31,7 @@ import ExpirationScreen from './components/ExpirationScreen';
 import NotiScreen from './components/NotiScreen';
 import Banner from './components/Banner';
 import StorageGuideScreen from './components/FreshFoodTable';
+import Card from './components/Card';
 
 
 import FreshfoodScreen from './Category/FreshfoodScreen';
@@ -65,21 +64,6 @@ function HomeScreenComponent() {
   if (!fontsLoaded) {
     return null;
   }
-
-  useEffect(() => {
-    const unsubscribe = firestore()
-      .collection("products")
-      .orderBy("expirationDate", "asc") // เรียงจากวันหมดอายุ
-      .onSnapshot(snapshot => {
-        const list = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setProducts(list);
-      });
-
-    return () => unsubscribe();
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -257,13 +241,9 @@ function HomeScreenComponent() {
         <View style={styles.CategoryRow}>
           <Text style={styles.CategoryText}>Expiration</Text>
         </View>
-        {products.length === 0 ? (
-          <Text style={styles.emptyText}>ยังไม่มีสินค้า</Text>
-        ) : (
-          products.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))
-        )}
+        <View style={{ flex: 1 }}>
+          <Card />
+        </View>
       </ScrollView>
     </View>
   );
@@ -286,6 +266,8 @@ function HomeStack() {
       <Stack.Screen name="PetfoodScreen" component={PetfoodScreen}options={{ headerShown: false }}  />
       <Stack.Screen name="CareScreen" component={CareScreen} options={{ headerShown: false }} />
       <Stack.Screen name="FreshfoodTable" component={StorageGuideScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Crad" component={Card} options={{ headerShown: false }} />
+      
     </Stack.Navigator>
   );
 }

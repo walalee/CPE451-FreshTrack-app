@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, ScrollView } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -35,9 +35,36 @@ const FreshfoodScreen = () => {
     return null;
   }
 
+  const freshProducts = [
+    {
+      name: 'นมสดรสจืด',
+      expiry: '2025-05-10',
+      category: 'อาหารสด',
+      location: 'ตู้เย็น',
+      quantity: '2 กล่อง',
+      image: require('../assets/cardPic/milk.png'),
+    },
+    {
+      name: 'ไข่ไก่เบอร์ 2',
+      expiry: '2025-04-30',
+      category: 'อาหารสด',
+      location: 'ตู้เย็น',
+      quantity: '10 ฟอง',
+      image: require('../assets/cardPic/egg2.jpg'),
+    },
+    {
+      name: 'เนื้อไก่แช่แข็ง',
+      expiry: '2025-05-12',
+      category: 'อาหารสด',
+      location: 'ช่องฟรีซ',
+      quantity: '2 แพ็ค',
+      image: require('../assets/cardPic/chiken.png'),
+    },
+  ];
+
   return (
     <View style={styles.container}>
-      {/* Red Circles Background */}
+      {/* Red Circles */}
       <View style={styles.circleTopRight} />
       <View style={styles.circleMiddleLeft} />
       <View style={styles.circleBottomRight} />
@@ -47,12 +74,12 @@ const FreshfoodScreen = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back-outline" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18 }}>
+        <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18, marginLeft: 10 }}>
           อาหารสด
-        </Text> 
+        </Text>
       </View>
 
-      {/* Search Bar and Filter Button */}
+      {/* Search & Filter */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#706A6A" />
@@ -64,7 +91,6 @@ const FreshfoodScreen = () => {
             onChangeText={setSearchText}
           />
         </View>
-
         <TouchableOpacity onPress={() => setFilterVisible(true)} style={styles.filterIconContainer}>
           <Icon name="options-outline" size={31} color="black" />
         </TouchableOpacity>
@@ -76,9 +102,24 @@ const FreshfoodScreen = () => {
           visible={filterVisible}
           onClose={() => setFilterVisible(false)}
           onApply={handleApplyFilters}
-          filterOptions={freshFoodFilters} // ✅ ส่งตัวเลือกฟิลเตอร์ใหม่
+          filterOptions={['อาหารสด']}
         />
       )}
+
+      {/* Card List */}
+      <ScrollView contentContainerStyle={styles.cardList}>
+        {filteredProducts.map((item, index) => (
+          <TouchableOpacity key={index} style={styles.card}>
+            <Image source={item.image} style={styles.image} />
+            <View style={styles.details}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.text}>วันหมดอายุ: {item.expiry}</Text>
+              <Text style={styles.text}>สถานที่เก็บ: {item.location}</Text>
+              <Text style={styles.text}>จำนวน: {item.quantity}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 };

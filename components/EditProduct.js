@@ -1,27 +1,29 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal, ScrollView, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { useFonts } from "expo-font";
+import { useRoute } from '@react-navigation/native';
 
 const EditProductScreen = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
     PromptRegular: require('../assets/Prompt-Regular.ttf'),
-PromptLight: require('../assets/Prompt-Light.ttf'),
-PromptBold: require('../assets/Prompt-Bold.ttf'),
-PromptMedium: require('../assets/Prompt-Medium.ttf'),
-
+    PromptLight: require('../assets/Prompt-Light.ttf'),
+    PromptBold: require('../assets/Prompt-Bold.ttf'),
+    PromptMedium: require('../assets/Prompt-Medium.ttf'),
   });
 
-  if (!fontsLoaded) {
-    return null;
-  }
+  // รับข้อมูล product จาก route params
+  const route = useRoute();
+  const { product } = route.params || {};
 
-  const [productName, setProductName] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("หมวดหมู่");
-  const [expiryDate, setExpiryDate] = useState("00/00/00");
-  const [storageLocation, setStorageLocation] = useState("ช่องฟรีซตู้นี้");
-  const [image, setImage] = useState(null);
+  // กำหนด state จากข้อมูล product
+  const [productName, setProductName] = useState(product?.name || '');
+  const [expiryDate, setExpiryDate] = useState(product?.expiry || '');
+  const [category, setCategory] = useState(product?.category || '');
+  const [location, setLocation] = useState(product?.location || '');
+  const [quantity, setQuantity] = useState(product?.quantity || '');
+  const [image, setImage] = useState(product?.image || null);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
 
   const categories = [
@@ -47,6 +49,33 @@ PromptMedium: require('../assets/Prompt-Medium.ttf'),
     }
   };
 
+  const handleSave = () => {
+    const updatedProduct = {
+      ...product,
+      name: productName,
+      expiry: expiryDate,
+      category: category,
+      location: location,
+      quantity: quantity,
+      image: image
+    };
+
+    Alert.alert(
+      "บันทึกสำเร็จ",
+      "ข้อมูลสินค้าถูกบันทึกเรียบร้อยแล้ว",
+      [
+        {
+          text: "ตกลง",
+          onPress: () => navigation.goBack(),
+        }
+      ]
+    );
+  };
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -61,7 +90,7 @@ PromptMedium: require('../assets/Prompt-Medium.ttf'),
         <View style={styles.imageContainer}>
           <TouchableOpacity onPress={pickImage} style={styles.imagePlaceholder}>
             {image ? (
-              <Image source={{ uri: image }} style={styles.image} />
+              <Image source={image} style={styles.image} />
             ) : (
               <Icon name="camera-alt" type="material" color="#888" size={32} />
             )}
@@ -71,7 +100,6 @@ PromptMedium: require('../assets/Prompt-Medium.ttf'),
         <Text style={styles.label}>ชื่อสินค้า</Text>
         <TextInput
           style={styles.input}
-          placeholder="ชื่อสินค้า"
           value={productName}
           onChangeText={setProductName}
         />
@@ -81,7 +109,7 @@ PromptMedium: require('../assets/Prompt-Medium.ttf'),
           style={styles.categoryContainer}
           onPress={() => setCategoryModalVisible(true)}
         >
-          <Text style={styles.categoryText}>{selectedCategory}</Text>
+          <Text style={styles.categoryText}>{category}</Text>
           <Icon name="chevron-right" type="material" color="#888" size={24} />
         </TouchableOpacity>
 
@@ -91,7 +119,6 @@ PromptMedium: require('../assets/Prompt-Medium.ttf'),
             <Text style={styles.detailTitle}>วันหมดอายุ</Text>
             <TextInput
               style={styles.detailInput}
-              placeholder="00/00/00"
               value={expiryDate}
               onChangeText={setExpiryDate}
             />
@@ -100,32 +127,39 @@ PromptMedium: require('../assets/Prompt-Medium.ttf'),
             <Text style={styles.detailTitle}>สถานที่เก็บ</Text>
             <TextInput
               style={styles.detailInput}
-              placeholder="ตู้เย็น"
-              value={storageLocation}
-              onChangeText={setStorageLocation}
+              value={location}
+              onChangeText={setLocation}
+            />
+          </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailTitle}>จำนวน</Text>
+            <TextInput
+              style={styles.detailInput}
+              value={quantity}
+              onChangeText={setQuantity}
+              keyboardType="numeric"
             />
           </View>
         </View>
 
-        <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Save Product</Text>
+        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+          <Text style={styles.saveButtonText}>บันทึก</Text>
         </TouchableOpacity>
       </ScrollView>
 
-      {/* Category Modal */}
       <Modal visible={categoryModalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            {categories.map((category, index) => (
+            {categories.map((cat, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.categoryButton}
                 onPress={() => {
-                  setSelectedCategory(category);
+                  setCategory(cat);
                   setCategoryModalVisible(false);
                 }}
               >
-                <Text style={styles.categoryButtonText}>{category}</Text>
+                <Text style={styles.categoryButtonText}>{cat}</Text>
               </TouchableOpacity>
             ))}
           </View>
