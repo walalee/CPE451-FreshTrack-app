@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
-import Modal from "react-native-modal";
+import Modal from 'react-native-modal';
 import { useFonts } from 'expo-font';
 
 const AddProductScreen = ({ navigation }) => {
@@ -14,10 +14,10 @@ const AddProductScreen = ({ navigation }) => {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    PromptRegular: require('./assets/Prompt-Regular.ttf'),
-    PromptLight: require('./assets/Prompt-Light.ttf'),
-    PromptBold: require('./assets/Prompt-Bold.ttf'),
-    PromptMedium: require('./assets/Prompt-Medium.ttf'),
+    PromptRegular: require('../assets/Prompt-Regular.ttf'),
+    PromptLight: require('../assets/Prompt-Light.ttf'),
+    PromptBold: require('../assets/Prompt-Bold.ttf'),
+    PromptMedium: require('../assets/Prompt-Medium.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -280,14 +280,12 @@ const styles = StyleSheet.create({
   },
   modalItemText: {
     fontSize: 16,
-<<<<<<< HEAD
     color: "#fff",
     fontFamily: "Roboto", 
-=======
     color: "#000",
     textAlign: "center",
     fontFamily: "PromptRegular"
->>>>>>> 436574afa2f45a0d85428670427a829d04fa94d6
+
   },
 });
 

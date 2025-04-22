@@ -2,6 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, Image, FlatList, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import CouponScreenBigC from './coupon/CouponScreenBigC';
+import CouponScreenLotus from './coupon/CouponScreenLotus';
+import CouponScreenMakro from './coupon/CouponScreenMakro';
+import CouponScreenTops from './coupon/CouponScreenTops';
+
+
 
 const { width } = Dimensions.get('window');
 const bannerWidth = width * 0.8;
@@ -60,7 +66,24 @@ const Banner = () => {
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('Coupons', { brand: item.brand })}>
+          <TouchableOpacity onPress={() => {
+            switch (item.brand) {
+              case 'Lotus':
+                navigation.navigate('CouponScreenLotus');
+                break;
+              case 'BigC':
+                navigation.navigate('CouponScreenBigC');
+                break;
+              case 'Makro':
+                navigation.navigate('CouponScreenMakro');
+                break;
+              case 'Tops':
+                navigation.navigate('CouponScreenTops');
+                break;
+              default:
+                break;
+            }
+          }}>
             <Image source={item.image} style={styles.bannerImage} />
           </TouchableOpacity>
         )}
