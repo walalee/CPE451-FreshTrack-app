@@ -3,8 +3,12 @@ import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Text, Icon } from "react-native-elements";
 import { Table, Row, Rows } from "react-native-table-component";
 
+// คอมโพเนนต์หลักของหน้าจอแนะนำการเก็บวัตถุดิบ
 const StorageGuideScreen = ({ navigation }) => {
+  // หัวตาราง
   const tableHead = ["วัตถุดิบ", "แช่เย็น (2-4°C)", "แช่แข็ง (-18°C หรือต่ำกว่า)"];
+
+  // ข้อมูลในตารางแต่ละแถว
   const tableData = [
     ["ปลา", "1-2 วัน", "3-6 เดือน"],
     ["กุ้ง", "1-2 วัน", "4-6 เดือน"],
@@ -22,15 +26,16 @@ const StorageGuideScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* วงกลมพื้นหลัง */}
+      {/* พื้นหลังแบบวงกลมเพื่อความสวยงาม */}
       <View style={styles.backgroundContainer}>
         <View style={styles.circleTop} />
         <View style={styles.circleBottom} />
       </View>
 
-      {/* เนื้อหาทั้งหมด */}
+      {/* ส่วนของเนื้อหาหลัก */}
       <View style={styles.contentContainer}>
-        {/* แถบ Header */}
+
+        {/* แถบด้านบน พร้อมปุ่มย้อนกลับ */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-back" type="material" color="#000" size={28} />
@@ -38,16 +43,18 @@ const StorageGuideScreen = ({ navigation }) => {
           <Text style={styles.headerTitle}>ตารางแนะนำของสด</Text>
         </View>
 
-        {/* ตาราง */}
+        {/* ตารางข้อมูลวัตถุดิบ */}
         <ScrollView>
           <View style={styles.tableWrapper}>
             <View style={styles.tableContainer}>
               <Table borderStyle={{ borderWidth: 1, borderColor: "#9D0300" }} style={styles.table}>
+                {/* แสดงหัวตาราง */}
                 <Row
                   data={tableHead}
                   style={styles.head}
                   textStyle={styles.headText}
                 />
+                {/* แสดงข้อมูลแต่ละแถว */}
                 <Rows data={tableData} textStyle={styles.text} />
               </Table>
             </View>
@@ -58,16 +65,18 @@ const StorageGuideScreen = ({ navigation }) => {
   );
 };
 
+// สไตล์ทั้งหมดของหน้าจอนี้
 const styles = StyleSheet.create({
+  // คอนเทนเนอร์หลักของหน้า
   container: {
     flex: 1,
     backgroundColor: "#fff",
   },
 
-  // ========== วงกลมพื้นหลัง ==========
+  // ================= วงกลมพื้นหลังตกแต่ง =================
   backgroundContainer: {
-    ...StyleSheet.absoluteFillObject, // ทำให้เต็มหน้าจอ
-    zIndex: -1, // ทำให้มันอยู่ข้างหลังทุกอย่าง
+    ...StyleSheet.absoluteFillObject, // ให้เต็มหน้าจอ
+    zIndex: -1, // อยู่ข้างหลังทุกอย่าง
   },
   circleTop: {
     position: "absolute",
@@ -75,8 +84,8 @@ const styles = StyleSheet.create({
     height: 250,
     borderRadius: 125,
     backgroundColor: "#9D0300",
-    top: 150, // ขยับลงจาก -100 เป็น 0
-    left: -100,
+    top: 150, // จากบนลงมา 150
+    left: -100, // ออกมานอกซ้ายเล็กน้อย
   },
   circleBottom: {
     position: "absolute",
@@ -84,33 +93,35 @@ const styles = StyleSheet.create({
     height: 250,
     borderRadius: 125,
     backgroundColor: "#9D0300",
-    bottom: 60, // ขยับขึ้นจาก -50 เป็น 20
-    right: -70,
+    bottom: 60, // ขึ้นจากล่างมา 60
+    right: -70, // ออกนอกขวาเล็กน้อย
   },
 
-  // ========== ส่วนของเนื้อหาหลัก ==========
+  // ================= ส่วนเนื้อหาหลัก =================
   contentContainer: {
     flex: 1,
-    zIndex: 1, // ทำให้เนื้อหาอยู่ข้างหน้าวงกลม
-    paddingTop: 60, // ขยับทุกอย่างลง (จาก 40 เป็น 60)
+    zIndex: 1, // อยู่ข้างหน้าวงกลม
+    paddingTop: 60, // ขยับทุกอย่างลง
   },
+
+  // ================= Header =================
   header: {
-    flexDirection: "row",
+    flexDirection: "row", // แนวนอน
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+    borderBottomColor: "#ddd", // เส้นใต้
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 10,
+    marginLeft: 10, // เว้นจากไอคอน
   },
 
-  // ========== ตาราง ==========
+  // ================= ตาราง =================
   tableWrapper: {
     padding: 16,
-    marginTop: 22, // ขยับตารางลง (จาก 20 เป็น 22)
+    marginTop: 22,
   },
   tableContainer: {
     backgroundColor: "#fff",
@@ -120,14 +131,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
+    elevation: 3, // เงาใน Android
   },
   table: {
     backgroundColor: "#fff",
   },
   head: {
     height: 50,
-    backgroundColor: "#9D0300",
+    backgroundColor: "#9D0300", // สีแดงเข้ม
   },
   headText: {
     margin: 6,
@@ -142,4 +153,5 @@ const styles = StyleSheet.create({
   },
 });
 
+// ส่งออกคอมโพเนนต์เพื่อใช้งาน
 export default StorageGuideScreen;

@@ -227,11 +227,12 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: "PromptBold",
     marginBottom: 5
   },
   text: {
     fontSize: 14,
+    fontFamily: "PromptRegular",
     marginBottom: 3
   }
 });
