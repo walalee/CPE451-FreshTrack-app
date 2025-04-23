@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,11 +18,6 @@ const FreshfoodScreen = () => {
     setFilterVisible(false);
     // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
   };
-
-  // ✅ ตัวเลือกฟิลเตอร์สำหรับอาหารสด (เนื้อสัตว์)
-  const freshFoodFilters = [
-    'อาหารสด',
-  ];
 
   const [fontsLoaded] = useFonts({
     PromptRegular: require('../assets/Prompt-Regular.ttf'),
@@ -61,6 +56,11 @@ const FreshfoodScreen = () => {
       image: require('../assets/cardPic/chiken.png'),
     },
   ];
+
+  // 🔍 กรองข้อมูลตาม searchText
+  const filteredProducts = freshProducts.filter(item =>
+    item.name.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <View style={styles.container}>
@@ -197,6 +197,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9E8E8',
     borderRadius: 10,
     padding: 5,
+  },
+  cardList: {
+    paddingVertical: 20,
+  },
+  card: {
+    flexDirection: 'row',
+    backgroundColor: '#F9F9F9',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 15,
+    elevation: 3,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    marginRight: 10,
+  },
+  details: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  name: {
+    fontFamily: 'PromptBold',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  text: {
+    fontFamily: 'PromptRegular',
+    fontSize: 14,
+    color: '#555',
   },
 });
 
