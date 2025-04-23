@@ -1,11 +1,17 @@
+// นำเข้า React และ Hook ที่จำเป็นจาก React Native และไลบรารีต่าง ๆ
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal, ScrollView, Alert } from "react-native";
+import {
+  View, Text, TextInput, TouchableOpacity, StyleSheet,
+  Image, Modal, ScrollView, Alert
+} from "react-native";
 import { Icon } from "react-native-elements";
-import * as ImagePicker from "expo-image-picker";
-import { useFonts } from "expo-font";
-import { useRoute } from '@react-navigation/native';
+import * as ImagePicker from "expo-image-picker"; // สำหรับเลือกภาพจากแกลเลอรี
+import { useFonts } from "expo-font"; // โหลดฟอนต์ใช้งานเอง
+import { useRoute } from '@react-navigation/native'; // ใช้รับค่าจาก route params
 
+// Component หลัก
 const EditProductScreen = ({ navigation }) => {
+  // โหลดฟอนต์ Prompt จาก assets
   const [fontsLoaded] = useFonts({
     PromptRegular: require('../assets/Prompt-Regular.ttf'),
     PromptLight: require('../assets/Prompt-Light.ttf'),
@@ -13,11 +19,11 @@ const EditProductScreen = ({ navigation }) => {
     PromptMedium: require('../assets/Prompt-Medium.ttf'),
   });
 
-  // รับข้อมูล product จาก route params
+  // ดึง product ที่ส่งมาจากหน้าอื่นผ่าน route.params
   const route = useRoute();
   const { product } = route.params || {};
 
-  // กำหนด state จากข้อมูล product
+  // ตั้งค่าข้อมูล state เริ่มต้นจาก product
   const [productName, setProductName] = useState(product?.name || '');
   const [expiryDate, setExpiryDate] = useState(product?.expiry || '');
   const [category, setCategory] = useState(product?.category || '');
@@ -26,16 +32,13 @@ const EditProductScreen = ({ navigation }) => {
   const [image, setImage] = useState(product?.image || null);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
 
+  // รายการหมวดหมู่สินค้า
   const categories = [
-    "อาหารสด",
-    "ผักและผลไม้",
-    "ยาและอุปกรณ์ทางการแพทย์",
-    "อาหารแปรรูป",
-    "เคมีภัณฑ์",
-    "สำหรับสัตว์เลี้ยง",
-    "ผลิตภัณฑ์ดูแลร่างกาย",
+    "อาหารสด", "ผักและผลไม้", "ยาและอุปกรณ์ทางการแพทย์",
+    "อาหารแปรรูป", "เคมีภัณฑ์", "สำหรับสัตว์เลี้ยง", "ผลิตภัณฑ์ดูแลร่างกาย",
   ];
 
+  // ฟังก์ชันเลือกภาพจากแกลเลอรี
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -45,10 +48,11 @@ const EditProductScreen = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(result.assets[0].uri); // เซตภาพที่เลือกเข้า state
     }
   };
 
+  // ฟังก์ชันบันทึกข้อมูล
   const handleSave = () => {
     const updatedProduct = {
       ...product,
@@ -60,24 +64,20 @@ const EditProductScreen = ({ navigation }) => {
       image: image
     };
 
-    Alert.alert(
-      "บันทึกสำเร็จ",
-      "ข้อมูลสินค้าถูกบันทึกเรียบร้อยแล้ว",
-      [
-        {
-          text: "ตกลง",
-          onPress: () => navigation.goBack(),
-        }
-      ]
-    );
+    // แสดง Alert และย้อนกลับหน้าก่อนหน้า
+    Alert.alert("บันทึกสำเร็จ", "ข้อมูลสินค้าถูกบันทึกเรียบร้อยแล้ว", [
+      { text: "ตกลง", onPress: () => navigation.goBack() }
+    ]);
   };
 
+  // ถ้าฟอนต์ยังโหลดไม่เสร็จ ให้ return null เพื่อรอ
   if (!fontsLoaded) {
     return null;
   }
 
   return (
     <View style={styles.container}>
+      {/* หัวข้อด้านบน */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" type="material" color="#A00000" size={24} />
@@ -85,18 +85,21 @@ const EditProductScreen = ({ navigation }) => {
         <Text style={styles.headerTitle}>แก้ไขข้อมูลสินค้า</Text>
       </View>
 
+      {/* ฟอร์มแก้ไขข้อมูล */}
       <ScrollView contentContainerStyle={styles.content}>
+        {/* รูปสินค้า */}
         <Text style={styles.label}>รูปภาพสินค้า</Text>
         <View style={styles.imageContainer}>
           <TouchableOpacity onPress={pickImage} style={styles.imagePlaceholder}>
             {image ? (
-              <Image source={image} style={styles.image} />
+              <Image source={{ uri: image }} style={styles.image} />
             ) : (
               <Icon name="camera-alt" type="material" color="#888" size={32} />
             )}
           </TouchableOpacity>
         </View>
 
+        {/* ช่องกรอกชื่อ */}
         <Text style={styles.label}>ชื่อสินค้า</Text>
         <TextInput
           style={styles.input}
@@ -104,6 +107,7 @@ const EditProductScreen = ({ navigation }) => {
           onChangeText={setProductName}
         />
 
+        {/* เลือกหมวดหมู่ */}
         <Text style={styles.label}>หมวดหมู่</Text>
         <TouchableOpacity
           style={styles.categoryContainer}
@@ -113,6 +117,7 @@ const EditProductScreen = ({ navigation }) => {
           <Icon name="chevron-right" type="material" color="#888" size={24} />
         </TouchableOpacity>
 
+        {/* รายละเอียดอื่น ๆ */}
         <Text style={styles.label}>รายละเอียด</Text>
         <View style={styles.detailContainer}>
           <View style={styles.detailRow}>
@@ -142,11 +147,13 @@ const EditProductScreen = ({ navigation }) => {
           </View>
         </View>
 
+        {/* ปุ่มบันทึก */}
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>บันทึก</Text>
         </TouchableOpacity>
       </ScrollView>
 
+      {/* Modal สำหรับเลือกหมวดหมู่ */}
       <Modal visible={categoryModalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -166,140 +173,10 @@ const EditProductScreen = ({ navigation }) => {
         </View>
       </Modal>
 
+      {/* แถบล่างโค้งสีแดง */}
       <View style={styles.bottomBar} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F5F5F5", paddingTop: 20 },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-    marginTop: 20,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginLeft: 10,
-    fontFamily: "PromptRegular",
-  },
-  content: { padding: 20 },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-    fontFamily: "PromptRegular",
-  },
-  imageContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  imagePlaceholder: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#E0E0E0",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "flex-start",
-  },
-  image: { width: 100, height: 100, borderRadius: 8 },
-  input: {
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    padding: 14,
-    fontSize: 16,
-    fontFamily: "PromptRegular",
-    marginBottom: 15,
-  },
-  categoryContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    padding: 14,
-    marginBottom: 15,
-  },
-  categoryText: {
-    fontSize: 16,
-    color: "#000",
-    fontFamily: "PromptRegular",
-  },
-  detailContainer: {
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    padding: 14,
-    marginBottom: 20,
-  },
-  detailRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
-  },
-  detailTitle: {
-    fontSize: 16,
-    color: "#000",
-    fontFamily: "PromptRegular",
-  },
-  detailInput: {
-    flex: 1,
-    textAlign: "right",
-    fontSize: 16,
-    color: "#000",
-    fontFamily: "PromptRegular",
-  },
-  saveButton: {
-    backgroundColor: "#A00000",
-    borderRadius: 20,
-    padding: 14,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  saveButtonText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-    fontFamily: "PromptBold",
-  },
-  bottomBar: {
-    backgroundColor: "#A00000",
-    height: 80,
-    width: "100%",
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    position: "absolute",
-    bottom: 0,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0,0,0,0.3)",
-  },
-  modalContent: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  categoryButton: {
-    backgroundColor: "#F0F0F0",
-    padding: 14,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  categoryButtonText: {
-    fontSize: 16,
-    textAlign: "center",
-    fontFamily: "PromptRegular",
-  },
-});
 
 export default EditProductScreen;
