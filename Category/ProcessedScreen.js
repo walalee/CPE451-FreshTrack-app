@@ -1,16 +1,48 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { useFonts } from 'expo-font';
+import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import FilterScreen from '../components/FilterScreen';
 
 const { width } = Dimensions.get('window');
 
-const ProcessedScreen = () => {
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * ProcessedScreen is a React component that displays a list of processed food products.
+ * It includes a search bar, filter options, and a list of products represented by 
+ * ProductCard components. Users can filter the products using predefined categories.
+ * The component uses custom fonts and displays styled background elements.
+ * 
+ * State:
+ * - searchText: The current text in the search bar.
+ * - filterVisible: A boolean indicating whether the filter options are visible.
+ * - fontsLoaded: A boolean indicating whether custom fonts are loaded.
+ * 
+ * Functions:
+ * - handleApplyFilters: Applies the selected filters and hides the filter options.
+ * 
+ * UI Elements:
+ * - Search bar with an icon to filter products by name.
+ * - Toggleable filter screen for selecting product categories.
+ * - Displays a list of products in the 'อาหารแปรรูป' category.
+ * 
+ * Dependencies:
+ * - Uses 'react-native-vector-icons/Ionicons' for icons.
+ * - Uses 'expo-font' for loading custom fonts.
+ * - Uses 'useNavigation' hook from '@react-navigation/native' for navigation.
+ */
+
+/*******  71c5beb1-1a66-47de-ae20-016bb9fb67e7  *******/const ProcessedScreen = () => {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation(); 
   const [filterVisible, setFilterVisible] = useState(false);
+
+  const handleApplyFilters = (selectedFilters) => {
+    console.log('Filters applied:', selectedFilters);
+    setFilterVisible(false);
+  };
 
   const [fontsLoaded] = useFonts({
     PromptRegular: require('../assets/Prompt-Regular.ttf'),
@@ -19,39 +51,56 @@ const ProcessedScreen = () => {
     PromptMedium: require('../assets/Prompt-Medium.ttf'),
   });
 
-  const handleApplyFilters = (selectedFilters) => {
-    console.log('Filters applied:', selectedFilters);
-    setFilterVisible(false);
-    // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
-  };
-
-  // ✅ ตัวเลือกฟิลเตอร์สำหรับหมวดอาหารแปรรูป
-  const processedFilters = [
-    'อาหารแปรรูป',
-  ];
-
   if (!fontsLoaded) {
     return null;
   }
 
+  const processedProducts = [
+    {
+      name: 'ข้าวหอมมะลิ',
+      expiry: '2026-01-01',
+      category: 'อาหารแปรรูป',
+      location: 'ตู้กับข้าว',
+      quantity: '1 ถุง',
+      image: require('../assets/cardPic/rice.jpg'),
+    },
+    {
+      name: 'น้ำปลาแท้',
+      expiry: '2026-12-15',
+      category: 'อาหารแปรรูป',
+      location: 'ตู้กับข้าว',
+      quantity: '1 ขวด',
+      image: require('../assets/cardPic/fish.jpg'),
+    },
+    {
+      name: 'น้ำดื่ม',
+      expiry: '2026-03-01',
+      category: 'อาหารแปรรูป',
+      location: 'ชั้นวางของ',
+      quantity: '6 ขวด',
+      image: require('../assets/cardPic/water.jpg'),
+    },
+  ];
+
+  const filteredProducts = processedProducts.filter(item =>
+    item.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
-      {/* พื้นหลังวงกลมแดง */}
       <View style={styles.circleTopRight} />
       <View style={styles.circleMiddleLeft} />
       <View style={styles.circleBottomRight} />
 
-      {/* หัวข้อ + ปุ่มย้อนกลับ */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back-outline" size={24} color="#000" />
         </TouchableOpacity>
         <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18, marginLeft: 10 }}>
           อาหารแปรรูป
-        </Text> 
+        </Text>
       </View>
 
-      {/* แถบค้นหา + ปุ่มฟิลเตอร์ */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#706A6A" />
@@ -63,21 +112,33 @@ const ProcessedScreen = () => {
             onChangeText={setSearchText}
           />
         </View>
-
         <TouchableOpacity onPress={() => setFilterVisible(true)} style={styles.filterIconContainer}>
           <Icon name="options-outline" size={31} color="black" />
         </TouchableOpacity>
       </View>
 
-      {/* แสดงกล่องฟิลเตอร์ */}
       {filterVisible && (
         <FilterScreen
           visible={filterVisible}
           onClose={() => setFilterVisible(false)}
           onApply={handleApplyFilters}
-          filterOptions={processedFilters} // ✅ ส่งตัวเลือกฟิลเตอร์
+          filterOptions={['อาหารแปรรูป']}
         />
       )}
+
+      <ScrollView contentContainerStyle={styles.cardList}>
+        {filteredProducts.map((item, index) => (
+          <TouchableOpacity key={index} style={styles.card}>
+            <Image source={item.image} style={styles.image} />
+            <View style={styles.details}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.text}>วันหมดอายุ: {item.expiry}</Text>
+              <Text style={styles.text}>สถานที่เก็บ: {item.location}</Text>
+              <Text style={styles.text}>จำนวน: {item.quantity}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -120,7 +181,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: 20, 
+    marginTop: 20,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -150,6 +211,41 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9E8E8',
     borderRadius: 10,
     padding: 5,
+  },
+  cardList: {
+    paddingVertical: 20,
+  },
+  card: {
+    flexDirection: 'row',
+    backgroundColor: '#FFF4F4',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 15,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    marginRight: 15,
+  },
+  details: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  name: {
+    fontFamily: 'PromptBold',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  text: {
+    fontFamily: 'PromptRegular',
+    fontSize: 14,
+    color: '#333',
   },
 });
 

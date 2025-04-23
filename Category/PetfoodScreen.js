@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { useFonts } from 'expo-font';
+import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import FilterScreen from '../components/FilterScreen';
@@ -12,6 +13,11 @@ const PetfoodScreen = () => {
   const navigation = useNavigation(); 
   const [filterVisible, setFilterVisible] = useState(false);
 
+  const handleApplyFilters = (selectedFilters) => {
+    console.log('Filters applied:', selectedFilters);
+    setFilterVisible(false);
+  };
+
   const [fontsLoaded] = useFonts({
     PromptRegular: require('../assets/Prompt-Regular.ttf'),
     PromptLight: require('../assets/Prompt-Light.ttf'),
@@ -19,39 +25,40 @@ const PetfoodScreen = () => {
     PromptMedium: require('../assets/Prompt-Medium.ttf'),
   });
 
-  const handleApplyFilters = (selectedFilters) => {
-    console.log('Filters applied:', selectedFilters);
-    setFilterVisible(false);
-    // TODO: นำ selectedFilters ไปใช้กับการ query สินค้าจาก backend
-  };
-
-  // ✅ ตัวเลือกฟิลเตอร์สำหรับหมวดอาหารสัตว์เลี้ยง
-  const petfoodFilters = [
-    'สำหรับสัตว์เลี้ยง',
-  ];
-
   if (!fontsLoaded) {
     return null;
   }
 
+  const petProducts = [
+    {
+      name: 'อาหารเปียกแมว',
+      expiry: '2025-06-05',
+      category: 'สำหรับสัตว์เลี้ยง',
+      location: 'ชั้นวางของ',
+      quantity: '2 ซอง',
+      image: require('../assets/cardPic/catfood.png'),
+    },
+  ];
+
+  const filteredProducts = petProducts.filter(item =>
+    item.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
-      {/* พื้นหลังวงกลมแดง */}
       <View style={styles.circleTopRight} />
       <View style={styles.circleMiddleLeft} />
       <View style={styles.circleBottomRight} />
 
-      {/* หัวข้อ + ปุ่มย้อนกลับ */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back-outline" size={24} color="#000" />
         </TouchableOpacity>
         <Text style={{ fontFamily: 'Prompt-Medium', fontSize: 18, marginLeft: 10 }}>
           สำหรับสัตว์เลี้ยง
-        </Text> 
+        </Text>
       </View>
 
-      {/* แถบค้นหา + ปุ่มฟิลเตอร์ */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#706A6A" />
@@ -63,21 +70,33 @@ const PetfoodScreen = () => {
             onChangeText={setSearchText}
           />
         </View>
-
         <TouchableOpacity onPress={() => setFilterVisible(true)} style={styles.filterIconContainer}>
           <Icon name="options-outline" size={31} color="black" />
         </TouchableOpacity>
       </View>
 
-      {/* แสดงกล่องฟิลเตอร์ */}
       {filterVisible && (
         <FilterScreen
           visible={filterVisible}
           onClose={() => setFilterVisible(false)}
           onApply={handleApplyFilters}
-          filterOptions={petfoodFilters} // ✅ ส่งตัวเลือกฟิลเตอร์
+          filterOptions={['สำหรับสัตว์เลี้ยง']}
         />
       )}
+
+      <ScrollView contentContainerStyle={styles.cardList}>
+        {filteredProducts.map((item, index) => (
+          <TouchableOpacity key={index} style={styles.card}>
+            <Image source={item.image} style={styles.image} />
+            <View style={styles.details}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.text}>วันหมดอายุ: {item.expiry}</Text>
+              <Text style={styles.text}>สถานที่เก็บ: {item.location}</Text>
+              <Text style={styles.text}>จำนวน: {item.quantity}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -120,7 +139,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: 20, 
+    marginTop: 20,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -150,6 +169,41 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9E8E8',
     borderRadius: 10,
     padding: 5,
+  },
+  cardList: {
+    paddingVertical: 20,
+  },
+  card: {
+    flexDirection: 'row',
+    backgroundColor: '#FFF4F4',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 15,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    marginRight: 15,
+  },
+  details: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  name: {
+    fontFamily: 'PromptBold',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  text: {
+    fontFamily: 'PromptRegular',
+    fontSize: 14,
+    color: '#333',
   },
 });
 
