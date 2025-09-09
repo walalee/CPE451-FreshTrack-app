@@ -1,6 +1,6 @@
 ﻿# CPE451-FreshTrack-app
 
-![FreshTrack Demo](./assets/freshtrack.gif)
+![FreshTrack Demo](./assets/cardPic/freshtrack.gif)
 
 ## Application'S Function
 - Sign Up
